@@ -1,5 +1,1 @@
-import type { Metadata } from "next";
-import { ExperimentShell } from "@/components/experiment-shell";
-import { LifeWeeks } from "@/components/life-weeks";
-export const metadata: Metadata = { title: "Quanto cabe em uma vida?", description: "Uma visualização interativa para tornar semanas, anos e escolhas menos abstratos." };
-export default function Page(){return <ExperimentShell number="05" eyebrow="tempo + filosofia" title="Quanto cabe em uma vida?" intro="Anos são unidades grandes demais para caber na intuição. Aqui, cada ponto é uma semana — não como contagem regressiva, mas como uma forma de enxergar escala."><LifeWeeks/></ExperimentShell>}
+import type { Metadata } from "next";import { ExperimentShell } from "@/components/experiment-shell";import { LifeWeeks } from "@/components/life-weeks";export const metadata:Metadata={title:"Quanto cabe em uma vida?",description:"Transforme anos em semanas para enxergar o tempo em outra escala."};export default function Page(){return <ExperimentShell slug="vida" title="Quanto cabe em uma vida?" intro="Anos são grandes demais para a intuição. Troque a unidade por semanas e veja a escala mudar — sem transformar o tempo numa meta de produtividade."><LifeWeeks/></ExperimentShell>}

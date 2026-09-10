@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
-export const metadata: Metadata = { title: "Sobre", description: "O manifesto do ENTRE e os princípios por trás das experiências." };
+export const metadata: Metadata = { title: "Sobre", description: "Por que o ENTRE existe e como as experiências são pensadas." };
 
 export default function About() {
-  return (
-    <article className="essay-page">
-      <p className="overline">manifesto</p>
-      <h1>A internet ainda pode ser um lugar estranho, bonito e curioso.</h1>
-      <p className="lead">ENTRE nasceu de uma ideia simples: algumas coisas são entendidas melhor quando deixam de ser texto e viram experiência.</p>
-      <div className="essay-columns">
-        <section><h2>Não explicar antes da hora.</h2><p>Primeiro você desce, escuta, escolhe, erra, percebe. A explicação vem depois. Conhecimento gruda melhor quando encontra uma experiência para morar.</p></section>
-        <section><h2>Sem recompensa artificial.</h2><p>Não há pontos, sequência diária, ranking ou cadastro. A recompensa é descobrir alguma coisa que você não sabia — ou perceber uma coisa conhecida de outro jeito.</p></section>
-        <section><h2>Humano, não solene.</h2><p>Filosofia pode brincar. Ciência pode ser bonita. Arte pode explicar. O projeto não trata curiosidade como matéria escolar nem inteligência como performance.</p></section>
-        <section><h2>Aberto por princípio.</h2><p>O site não precisa saber quem você é. As experiências rodam no navegador, não exigem conta e não guardam as respostas que você dá.</p></section>
-      </div>
-      <aside className="author-note"><p>ENTRE é um projeto autoral de <strong>Yuri Domingues</strong>, construído como um jardim que pode continuar recebendo ideias.</p></aside>
-    </article>
-  );
+  return <article className="essay-page">
+    <p className="overline">sobre o ENTRE</p>
+    <h1>Uma coleção de ideias que você pode experimentar.</h1>
+    <p className="lead">O ENTRE parte de uma regra simples: quando uma interface consegue transformar uma ideia abstrata em ação, vale tentar antes de explicar.</p>
+    <div className="essay-columns">
+      <section><span>01</span><h2>Experiência antes da explicação.</h2><p>Você rola, escuta, escolhe ou compara. Depois o site dá nome ao que acabou de acontecer.</p></section>
+      <section><span>02</span><h2>Curiosidade, não desempenho.</h2><p>Não há pontos, ranking, sequência diária ou resultado para compartilhar. Nada aqui mede se você é “bom” em alguma coisa.</p></section>
+      <section><span>03</span><h2>Visual com função.</h2><p>Ilustração, movimento e som entram quando ajudam a entender. Se não ajudam, saem. A estética não deve esconder a ideia.</p></section>
+      <section><span>04</span><h2>Privacidade por padrão.</h2><p>Você não precisa criar conta. As escolhas feitas dentro das experiências não são enviadas para um perfil ou banco de respostas.</p></section>
+    </div>
+    <aside className="author-note"><p>Projeto autoral de <strong>Yuri Domingues</strong>. Feito para crescer como uma pequena biblioteca de experiências independentes.</p></aside>
+  </article>;
 }

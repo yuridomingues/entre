@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 type Layer="pulse"|"bass"|"harmony"|"spark";
-const initialLayers: Record<Layer, boolean> = {pulse:true,bass:true,harmony:true,spark:true};
+const initialLayers: Record<Layer, boolean>={pulse:true,bass:true,harmony:true,spark:true};
 export function MusicLab(){
  const ctx=useRef<AudioContext|null>(null),timer=useRef<ReturnType<typeof setInterval>|null>(null);
- const [playing,setPlaying]=useState(false); const [layers,setLayers]=useState(initialLayers); const [wave,setWave]=useState<OscillatorType>("sine");
+ const [playing,setPlaying]=useState(false),[layers,setLayers]=useState(initialLayers),[wave,setWave]=useState<OscillatorType>("sine");
  const layersRef=useRef(layers),waveRef=useRef(wave);
- useEffect(()=>{layersRef.current=layers},[layers]); useEffect(()=>{waveRef.current=wave},[wave]);
+ useEffect(()=>{layersRef.current=layers},[layers]);useEffect(()=>{waveRef.current=wave},[wave]);
  const stop=()=>{if(timer.current)clearInterval(timer.current);timer.current=null;setPlaying(false)};
  useEffect(()=>()=>{if(timer.current)clearInterval(timer.current);ctx.current?.close()},[]);
  const tone=(freq:number,dur=.16,vol=.035,type:OscillatorType=waveRef.current)=>{if(!ctx.current)return;const c=ctx.current,o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(vol,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+dur);o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+dur)};
@@ -14,15 +14,16 @@ export function MusicLab(){
  const start=async()=>{ctx.current??=new AudioContext();await ctx.current.resume();tick();timer.current=setInterval(tick,620);setPlaying(true)};
  const toggle=(k:Layer)=>setLayers(v=>({...v,[k]:!v[k]}));
  return <div className="music-lab">
+  <div className="instruction-banner"><span>como usar</span><p><strong>1.</strong> ouça tudo junto <strong>2.</strong> desligue uma camada <strong>3.</strong> compare o que mudou</p></div>
   <section className="sound-console">
-   <div className="now-playing"><span className={playing?"pulse-dot active":"pulse-dot"}/><div><small>composição generativa</small><strong>{playing?"tocando":"em silêncio"}</strong></div></div>
-   <button className="play-button" onClick={playing?stop:start}>{playing?"■ parar":"▶ ouvir"}</button>
+   <div className="now-playing"><span className={playing?"pulse-dot active":"pulse-dot"}/><div><small>som gerado no seu navegador</small><strong>{playing?"composição tocando":"áudio parado"}</strong></div></div>
+   <button className="play-button" onClick={playing?stop:start} aria-pressed={playing}>{playing?"■ parar":"▶ ouvir composição"}</button>
    <div className="equalizer" aria-hidden="true">{Array.from({length:20}).map((_,i)=><i key={i} style={{height:playing?`${25+(i*37)%72}%`:"8%"}}/>)}</div>
   </section>
-  <section className="mixer"><h2>Tire uma camada.</h2><p>Uma música pode ser percebida como um objeto único, mas é feita de eventos simultâneos.</p>
-   {([['pulse','pulso','organiza o tempo'],['bass','baixo','dá chão e referência'],['harmony','harmonia','empilha frequências'],['spark','melodia','cria movimento']] as [Layer,string,string][]).map(([k,n,d])=><button key={k} onClick={()=>toggle(k)} className={layers[k]?"track on":"track"}><span>{layers[k]?"●":"○"}</span><strong>{n}</strong><small>{d}</small></button>)}
+  <section className="mixer"><p className="step-label">parte 1 · camadas</p><h2>Uma música pode parecer uma coisa só.</h2><p>Desligue uma parte por vez e ouça o espaço que ela ocupava.</p>
+   {([["pulse","pulso","marca a repetição"],["bass","baixo","dá uma referência grave"],["harmony","harmonia","empilha notas simultâneas"],["spark","melodia","desenha movimento"]] as [Layer,string,string][]).map(([k,n,d])=><button key={k} onClick={()=>toggle(k)} className={layers[k]?"track on":"track"} aria-pressed={layers[k]}><span>{layers[k]?"ligada":"desligada"}</span><strong>{n}</strong><small>{d}</small></button>)}
   </section>
-  <section className="wave-lab"><div><p className="overline">timbre</p><h2>A mesma nota pode ter corpos diferentes.</h2><p>Escolha uma forma de onda e toque Lá4 (440 Hz). A frequência fundamental continua a mesma; muda a distribuição de harmônicos e, com ela, a textura que percebemos.</p></div><div className="wave-controls"><select value={wave} onChange={e=>setWave(e.target.value as OscillatorType)} aria-label="Forma de onda"><option value="sine">senoidal — pura</option><option value="triangle">triangular — macia</option><option value="square">quadrada — áspera</option><option value="sawtooth">dente de serra — brilhante</option></select><button className="pill-button" onClick={async()=>{ctx.current??=new AudioContext();await ctx.current.resume();tone(440,.8,.05,wave)}}>ouvir 440 Hz</button></div></section>
-  <aside className="source-note">O áudio é sintetizado localmente com Web Audio API; nenhuma música gravada é enviada ou utilizada.</aside>
+  <section className="wave-lab"><div><p className="step-label">parte 2 · timbre</p><h2>A mesma nota pode ter texturas diferentes.</h2><p>Escolha uma forma de onda e toque Lá4 (440 Hz). A frequência fundamental continua igual; a forma da onda muda a mistura de frequências que ouvimos.</p></div><div className="wave-controls"><label htmlFor="wave">forma de onda</label><select id="wave" value={wave} onChange={e=>setWave(e.target.value as OscillatorType)}><option value="sine">senoidal — mais pura</option><option value="triangle">triangular — mais macia</option><option value="square">quadrada — mais áspera</option><option value="sawtooth">dente de serra — mais brilhante</option></select><button className="pill-button" onClick={async()=>{ctx.current??=new AudioContext();await ctx.current.resume();tone(440,.8,.05,wave)}}>ouvir a mesma nota</button></div></section>
+  <aside className="source-note">Nenhuma gravação é usada. Todo o som desta página é sintetizado localmente com Web Audio API.</aside>
  </div>
 }

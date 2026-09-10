@@ -1,24 +1,55 @@
 import Link from "next/link";
-
-const experiments = [
-  { slug:"arvore",number:"01",eyebrow:"natureza + tempo",title:"A árvore que viu tudo",description:"Quinhentos anos cabem em uma rolagem. Veja o mundo mudar no tempo de uma árvore.",prompt:"desça por 526 anos",className:"card-moss" },
-  { slug:"mente",number:"02",eyebrow:"psicologia + percepção",title:"O mundo que seu cérebro inventa",description:"Você não percebe tudo que vê. Teste atenção, cor, memória e as pequenas apostas que o cérebro faz.",prompt:"teste sua percepção",className:"card-violet" },
-  { slug:"musica",number:"03",eyebrow:"música + física",title:"Anatomia de uma música",description:"Desmonte som em frequência, ritmo, harmonia e textura — e monte tudo de novo com os próprios ouvidos.",prompt:"ligue o som",className:"card-sun" },
-  { slug:"conversa",number:"04",eyebrow:"linguagem + psicologia",title:"A história de uma conversa",description:"De 'calor hoje, né?' até perguntas que mudam uma relação. Explore o que faz uma conversa ganhar profundidade.",prompt:"comece falando",className:"card-water" },
-  { slug:"vida",number:"05",eyebrow:"tempo + filosofia",title:"Quanto cabe em uma vida?",description:"Transforme anos em semanas e semanas em escolhas. Uma maneira menos abstrata de pensar sobre tempo.",prompt:"veja o tempo",className:"card-clay" }
-];
+import { experiments } from "@/lib/experiments";
+import { ExperimentVisual, IdeaMap } from "@/components/experiment-visuals";
 
 export default function Home() {
-  return <>
-    <section className="hero">
-      <div className="hero-copy"><p className="overline">um pequeno laboratório de curiosidade</p><h1>Algumas ideias<br/>merecem ser <em>sentidas.</em></h1><p className="hero-lede">Não é um curso. Não é um feed. É um lugar para mexer em ideias até elas fazerem sentido.</p><a className="text-link" href="#experimentos">começar a explorar ↓</a></div>
-      <div className="hero-orbit" aria-hidden="true"><div className="orbit orbit-a"><span>mente</span></div><div className="orbit orbit-b"><span>natureza</span></div><div className="orbit orbit-c"><span>música</span></div><div className="seed">?</div></div>
-    </section>
-    <section className="manifesto-strip" aria-label="Manifesto curto"><p>rolar pode virar <strong>tempo</strong></p><i>·</i><p>clicar pode virar <strong>escolha</strong></p><i>·</i><p>ouvir pode virar <strong>entendimento</strong></p></section>
-    <section id="experimentos" className="experiments-section">
-      <div className="section-heading"><p>coleção 001</p><h2>Experimentos para gente curiosa.</h2></div>
-      <div className="experiment-grid">{experiments.map((exp,index)=><Link href={`/${exp.slug}`} className={`experiment-card ${exp.className} ${index===0?"feature-card":""}`} key={exp.slug}><div className="card-top"><span>{exp.number}</span><span>{exp.eyebrow}</span></div><div className="card-art" aria-hidden="true"><span/><span/><span/></div><div className="card-copy"><h3>{exp.title}</h3><p>{exp.description}</p><strong>{exp.prompt} →</strong></div></Link>)}</div>
-    </section>
-    <section className="closing-note"><p className="overline">por que isso existe?</p><blockquote>"A internet também pode ser um lugar que recompensa a curiosidade."</blockquote><p>ENTRE é uma coleção independente de experiências sobre o que existe ao nosso redor — e dentro da gente.</p><Link className="text-link" href="/sobre">ler o manifesto →</Link></section>
-  </>;
+  return (
+    <>
+      <section className="hero">
+        <div className="hero-copy">
+          <p className="overline">ENTRE / coleção 001</p>
+          <h1>Um lugar para<br/><em>explorar ideias.</em></h1>
+          <p className="hero-lede">Cinco experiências curtas sobre mente, natureza, música, conversa e tempo. Você aprende mexendo, ouvindo, escolhendo e observando.</p>
+          <div className="hero-actions"><a className="primary-link" href="#experimentos">escolher um experimento ↓</a><Link className="secondary-link" href="/sobre">entender o projeto</Link></div>
+          <div className="hero-facts"><span>5 experiências</span><span>3–8 min cada</span><span>sem login</span></div>
+        </div>
+        <IdeaMap />
+      </section>
+
+      <section className="how-section" aria-labelledby="como-funciona">
+        <p className="overline">como funciona</p>
+        <h2 id="como-funciona">Primeiro você experimenta.<br/>A explicação vem depois.</h2>
+        <div className="how-grid">
+          <article><span>01</span><h3>Escolha uma pergunta</h3><p>Não precisa seguir ordem. Entre pela ideia que mais puxar sua curiosidade.</p></article>
+          <article><span>02</span><h3>Faça alguma coisa</h3><p>Role, ouça, escolha, compare. A interface faz parte da ideia — não é só decoração.</p></article>
+          <article><span>03</span><h3>Leve outra pergunta</h3><p>O objetivo não é terminar sabendo tudo. É sair vendo o assunto de um jeito menos automático.</p></article>
+        </div>
+      </section>
+
+      <section id="experimentos" className="experiments-section">
+        <div className="collection-heading"><div><p className="overline">coleção 001</p><h2>Escolha por curiosidade.</h2></div><p>Não existe caminho certo. Cada experiência funciona sozinha.</p></div>
+        <div className="experiment-grid">
+          {experiments.map((exp) => (
+            <Link href={`/${exp.slug}`} className={`experiment-card card-${exp.tone}`} key={exp.slug} aria-label={`${exp.title}. ${exp.duration}. Abrir experimento.`}>
+              <div className="card-top"><span>{exp.number}</span><span>{exp.eyebrow}</span></div>
+              <div className="card-visual-wrap"><ExperimentVisual slug={exp.slug}/></div>
+              <div className="card-copy">
+                <p className="card-question">{exp.question}</p>
+                <h3>{exp.title}</h3>
+                <p className="card-description">{exp.description}</p>
+                <div className="card-bottom"><span>{exp.duration} · {exp.action}</span><strong>abrir →</strong></div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="closing-note">
+        <p className="overline">uma web que vale a pena visitar</p>
+        <blockquote>Menos coisa pedindo atenção.<br/>Mais coisa que recompensa atenção.</blockquote>
+        <p>ENTRE é um projeto independente e não comercial. Sem conta, ranking, sequência diária ou respostas armazenadas.</p>
+        <div><Link className="secondary-link" href="/sobre">ler o manifesto</Link><Link className="secondary-link" href="/fontes">fontes e créditos</Link></div>
+      </section>
+    </>
+  );
 }

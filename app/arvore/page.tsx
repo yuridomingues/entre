@@ -1,5 +1,1 @@
-import type { Metadata } from "next";
-import { ExperimentShell } from "@/components/experiment-shell";
-import { TreeTimeline } from "@/components/tree-timeline";
-export const metadata: Metadata = { title: "A árvore que viu tudo", description: "Uma viagem interativa por 526 anos de história na escala do tempo de uma árvore." };
-export default function Page(){return <ExperimentShell number="01" eyebrow="natureza + tempo" title="A árvore que viu tudo" intro="Imagine uma árvore que germinou em 1500 e continuou ali. Desça devagar: enquanto o nosso mundo corre, o tempo vegetal tem outro ritmo."><TreeTimeline/></ExperimentShell>}
+import type { Metadata } from "next";import { ExperimentShell } from "@/components/experiment-shell";import { TreeTimeline } from "@/components/tree-timeline";export const metadata:Metadata={title:"A árvore que viu tudo",description:"Atravesse 526 anos usando o tempo de uma árvore como régua."};export default function Page(){return <ExperimentShell slug="arvore" title="A árvore que viu tudo" intro="Role por 526 anos enquanto uma árvore cresce e o mundo humano muda ao redor dela. O objetivo é sentir escala antes de falar sobre ela."><TreeTimeline/></ExperimentShell>}
