@@ -1,11 +1,12 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { BrandLogo } from "@/components/brand-logo";
 
 export const metadata: Metadata = { title: "Fontes", description: "Referências usadas nas experiências do ENTRE." };
 
 export default function Sources() {
   return <main id="conteudo" className="info-page">
-    <header className="info-nav"><Link href="/" className="mini-brand">ENTRE</Link><Link href="/">← voltar</Link></header>
+    <header className="info-nav"><BrandLogo compact/><Link href="/">← voltar</Link></header>
     <article>
       <p className="info-kicker">fontes</p>
       <h1>De onde vieram <em>as ideias.</em></h1>

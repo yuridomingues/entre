@@ -1,0 +1,17 @@
+.brand-logo{display:inline-flex;align-items:center;width:170px;line-height:0}
+.brand-logo img{width:100%;height:auto;display:block}
+.brand-logo.compact{width:92px}
+.home-brand .brand-logo{width:154px}
+.home-footer .brand-logo{width:105px}
+.info-end .brand-logo{width:min(330px,75%);filter:invert(1)}
+.intro-actions{display:flex;justify-content:center;align-items:center;gap:12px;flex-wrap:wrap}
+.intro-actions>a,.surprise-button{font-weight:800;border:2px solid #111;border-radius:999px;padding:9px 13px;background:#fffdf8;color:#111;cursor:pointer;box-shadow:0 3px 0 #111}
+.intro-actions>a:hover,.surprise-button:hover{transform:translateY(-2px);box-shadow:0 5px 0 #111}
+.surprise-button{background:#c9b9f4}
+.experience-nav .brand-logo{pointer-events:auto;background:rgba(255,253,248,.94);border:2px solid #111;border-radius:999px;padding:8px 11px;box-shadow:0 3px 0 #111;width:104px}
+.info-nav .brand-logo{width:112px}
+.play-tile .tile-art{transition:transform .22s cubic-bezier(.2,.8,.2,1)}
+.play-tile:hover .tile-art{transform:scale(1.045) rotate(-1deg)}
+.play-tile:nth-child(even):hover .tile-art{transform:scale(1.045) rotate(1deg)}
+@media(max-width:600px){.home-brand .brand-logo{width:122px}.home-footer .brand-logo{width:94px}.experience-nav .brand-logo{width:92px;padding:7px 9px}.intro-actions{align-items:stretch}.intro-actions>a,.surprise-button{width:100%}}
+@media(prefers-reduced-motion:reduce){.play-tile:hover .tile-art,.play-tile:nth-child(even):hover .tile-art{transform:none}.intro-actions>a:hover,.surprise-button:hover{transform:none}}
