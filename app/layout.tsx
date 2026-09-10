@@ -1,14 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./experiences.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://entre-ideias.vercel.app"),
-  title: { default: "ENTRE — coisas para pensar com as mãos", template: "%s — ENTRE" },
+  title: { default: "ENTRE | coisas para pensar com as mãos", template: "%s | ENTRE" },
   description: "Experimentos interativos sobre mente, natureza, música, conversa e tempo.",
   authors: [{ name: "Yuri Domingues" }],
   creator: "Yuri Domingues",
   openGraph: {
-    title: "ENTRE — coisas para pensar com as mãos",
+    title: "ENTRE | coisas para pensar com as mãos",
     description: "Cinco experiências interativas. Sem conta, sem feed, só curiosidade.",
     type: "website",
     locale: "pt_BR"

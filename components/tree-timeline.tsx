@@ -1,32 +1,69 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-const events=[
- {year:1500,label:"uma semente encontra luz",text:"A árvore desta experiência é imaginária. Ela existe para servir de régua."},
- {year:1543,label:"um novo desenho do cosmos",text:"Copérnico publica De revolutionibus e ajuda a mudar a posição da Terra nos modelos astronômicos europeus."},
- {year:1687,label:"movimento ganha outra linguagem",text:"Newton publica os Principia e organiza movimento e gravitação numa estrutura matemática influente."},
- {year:1859,label:"a vida entra em outra escala",text:"Darwin publica A origem das espécies e apresenta a seleção natural como mecanismo de mudança em populações."},
- {year:1877,label:"o som pode voltar",text:"O fonógrafo torna possível registrar e reproduzir vibrações sonoras."},
- {year:1969,label:"máquinas começam a conversar em rede",text:"A ARPANET transmite suas primeiras mensagens e participa da história que levaria à internet moderna."},
- {year:1990,label:"a Web começa a tomar forma",text:"No CERN, Tim Berners-Lee implementa tecnologias fundamentais da World Wide Web."},
- {year:2026,label:"você chegou aqui",text:"526 anos depois. Para nós, gerações; para organismos longevos, uma escala biológica possível."}
+
+const moments = [
+  { year:1500, word:"SEMENTE", title:"uma semente começa", text:"Nada grandioso acontece para a árvore. Ela só começa." },
+  { year:1543, word:"CÉU", title:"o céu muda de lugar", text:"Copérnico publica um modelo que reorganiza a posição da Terra no cosmos." },
+  { year:1687, word:"ÓRBITA", title:"o movimento ganha regras", text:"Newton publica os Principia. A árvore continua crescendo." },
+  { year:1859, word:"VIDA", title:"a vida ganha outra história", text:"Darwin publica A origem das espécies. Já se passaram 359 anos." },
+  { year:1877, word:"SOM", title:"um som pode voltar", text:"O fonógrafo permite gravar e reproduzir som." },
+  { year:1969, word:"REDE", title:"máquinas começam a conversar", text:"A ARPANET transmite suas primeiras mensagens." },
+  { year:1990, word:"WEB", title:"páginas começam a se ligar", text:"A World Wide Web começa a tomar forma no CERN." },
+  { year:2026, word:"AGORA", title:"você chegou", text:"Cinco séculos caberam numa única vida vegetal imaginária." }
 ];
+
 export function TreeTimeline(){
- const ref=useRef<HTMLDivElement>(null);const [progress,setProgress]=useState(0);
- useEffect(()=>{const on=()=>{if(!ref.current)return;const r=ref.current.getBoundingClientRect();const total=ref.current.offsetHeight-innerHeight;setProgress(Math.max(0,Math.min(1,-r.top/Math.max(total,1))))};on();addEventListener("scroll",on,{passive:true});return()=>removeEventListener("scroll",on)},[]);
- const year=Math.round(1500+progress*526);
- return <div className="tree-world" ref={ref}>
-   <div className="tree-sticky">
-     <div className="tree-year"><small>ano</small><strong>{year}</strong><span>{Math.round(progress*100)}%</span></div>
-     <svg className="growing-tree" viewBox="0 0 500 620" aria-hidden="true" style={{transform:`scale(${.58+progress*.42})`,opacity:.72+progress*.28}}>
-       <g fill="none" stroke="currentColor" strokeWidth="18" strokeLinecap="round"><path d="M250 590c-7-118-2-215 15-318m-9 93-88-76m89 25 89-92m-93 175-131 15m137 43 120 33"/></g>
-       <g fill="currentColor"><circle cx="140" cy="230" r="78"/><circle cx="245" cy="165" r="96"/><circle cx="355" cy="230" r="84"/><circle cx="112" cy="340" r="65"/><circle cx="225" cy="315" r="92"/><circle cx="353" cy="332" r="91"/><circle cx="420" cy="385" r="55"/></g>
-     </svg>
-     <div className="tree-scroll">role para viajar <b>↓</b></div>
-   </div>
-   <div className="tree-events">{events.map((e,i)=><section key={e.year} style={{marginTop:i===0?"18vh":"42vh"}}><span>{e.year}</span><h2>{e.label}</h2><p>{e.text}</p></section>)}
-     <section className="tree-finale"><span>fim da rolagem</span><h2>História humana parece enorme até mudarmos a régua.</h2><p>Árvores podem registrar crescimento em seus anéis. A metáfora aqui serve para lembrar que “muito tempo” depende do organismo e da escala que escolhemos.</p>
-       <svg className="rings-final" viewBox="0 0 360 210" role="img" aria-label="Diagrama simples de anéis de crescimento"><g fill="none" stroke="currentColor" strokeWidth="2"><ellipse cx="180" cy="105" rx="155" ry="82"/><ellipse cx="180" cy="105" rx="128" ry="66"/><ellipse cx="180" cy="105" rx="99" ry="50"/><ellipse cx="180" cy="105" rx="70" ry="35"/><ellipse cx="180" cy="105" rx="40" ry="20"/></g></svg>
-     </section>
-   </div>
- </div>
+  const ref=useRef<HTMLDivElement>(null);
+  const [progress,setProgress]=useState(0);
+
+  useEffect(()=>{
+    const onScroll=()=>{
+      if(!ref.current)return;
+      const rect=ref.current.getBoundingClientRect();
+      const total=ref.current.offsetHeight-innerHeight;
+      setProgress(Math.max(0,Math.min(1,-rect.top/Math.max(total,1))));
+    };
+    onScroll();
+    addEventListener("scroll",onScroll,{passive:true});
+    return()=>removeEventListener("scroll",onScroll);
+  },[]);
+
+  const index=Math.min(moments.length-1,Math.floor(progress*moments.length));
+  const moment=moments[index];
+  const year=Math.round(1500+progress*526);
+
+  return <div className="tree-trip" ref={ref}>
+    <div className="tree-trip-sticky">
+      <div className="tree-ghost-word" aria-hidden="true">{moment.word}</div>
+      <div className="tree-time"><small>ano</small><strong>{year}</strong></div>
+
+      <svg className="tree-main" viewBox="0 0 520 640" aria-hidden="true" style={{transform:`translateX(-50%) scale(${.48+progress*.52})`}}>
+        <g fill="none" stroke="currentColor" strokeWidth="17" strokeLinecap="round">
+          <path d="M260 620c-8-136-2-247 16-360m-12 106-99-84m101 27 101-103m-105 194-145 20m151 39 132 42"/>
+        </g>
+        <g fill="currentColor">
+          <circle cx="143" cy="214" r="75"/><circle cx="249" cy="151" r="95"/><circle cx="365" cy="218" r="82"/>
+          <circle cx="110" cy="335" r="65"/><circle cx="225" cy="314" r="93"/><circle cx="357" cy="332" r="92"/><circle cx="426" cy="393" r="54"/>
+        </g>
+      </svg>
+
+      <div className="tree-moment" key={moment.year}>
+        <span>{moment.year}</span>
+        <h2>{moment.title}</h2>
+        <p>{moment.text}</p>
+      </div>
+
+      <div className="tree-ruler" aria-label="Linha do tempo">
+        {moments.map((item,i)=><i key={item.year} className={i<=index?"seen":""}><b>{item.year}</b></i>)}
+      </div>
+      <div className="tree-hint">continue rolando ↓</div>
+    </div>
+
+    <section className="tree-after">
+      <span>526 anos</span>
+      <h2>A parte estranha é que a árvore não viu uma linha do tempo.</h2>
+      <p>Ela só cresceu. Os eventos, as invenções e as datas são a nossa maneira de organizar o que aconteceu ao redor.</p>
+      <div className="tree-rings-simple" aria-hidden="true"><i/><i/><i/><i/><i/><i/></div>
+    </section>
+  </div>
 }

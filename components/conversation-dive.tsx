@@ -1,22 +1,91 @@
 "use client";
 import { useState } from "react";
-const levels=[
- {m:"0 m",name:"contato",q:["calor hoje, né?","como foi seu dia?"],idea:"Small talk pode sinalizar disponibilidade e abrir espaço para continuar — não precisa ser “profundo” para ter função."},
- {m:"20 m",name:"preferências",q:["que música você tem ouvido?","qual lugar você sempre gostaria de visitar de novo?"],idea:"Gostos são atalhos para histórias. Perguntas concretas costumam ser mais fáceis de responder do que perguntas enormes."},
- {m:"100 m",name:"histórias",q:["qual coisa você aprendeu tarde?","qual memória pequena ainda aparece do nada?"],idea:"Ao contar uma história, escolhemos começo, detalhes e significado. Narrar já é uma forma de organizar experiência."},
- {m:"300 m",name:"valores",q:["o que faz alguém ser uma boa pessoa?","o que você não gostaria de perder em si?"],idea:"Perguntas sobre valores revelam critérios que usamos para interpretar escolhas — mesmo quando duas pessoas chegam a respostas diferentes."},
- {m:"600 m",name:"sentido",q:["o que faz um dia valer a pena?","que pergunta você gostaria de saber responder melhor?"],idea:"Profundidade não exige confissão. Pode existir numa pergunta honesta e na disposição de escutar sem transformar tudo em conselho."}
-];
+
+type Door={label:string;question:string;next:string};
+type Node={reply:string;doors:Door[];ending?:string};
+
+const nodes:Record<string,Node>={
+  start:{
+    reply:"Foi corrido, mas no almoço encontrei uma música que eu não ouvia há anos.",
+    doors:[
+      {label:"corrido",question:"Corrido como?",next:"rush"},
+      {label:"música",question:"Que música?",next:"music"},
+      {label:"anos",question:"Há quanto tempo?",next:"years"}
+    ]
+  },
+  rush:{
+    reply:"Tive três coisas para resolver ao mesmo tempo. O curioso é que quase não lembro da manhã.",
+    doors:[
+      {label:"três coisas",question:"O que estava acontecendo?",next:"tasks"},
+      {label:"não lembro",question:"Como assim, não lembra?",next:"attention"}
+    ]
+  },
+  music:{
+    reply:"Era uma música que tocava muito em casa quando eu era pequeno. Bastou o começo para a sala antiga aparecer na cabeça.",
+    doors:[
+      {label:"em casa",question:"Você lembra da casa?",next:"home"},
+      {label:"aparecer",question:"Veio tudo de uma vez?",next:"memory"}
+    ]
+  },
+  years:{
+    reply:"Nem sei quantos. É estranho como algumas coisas somem por muito tempo e voltam com um detalhe só.",
+    doors:[
+      {label:"somem",question:"O que faz uma coisa sumir?",next:"memory"},
+      {label:"detalhe",question:"Qual detalhe voltou primeiro?",next:"detail"}
+    ]
+  },
+  tasks:{reply:"Nada dramático. Mensagem, prazo, ligação. Quando tudo compete ao mesmo tempo, o dia vira uma lista.",doors:[],ending:"Uma palavra levou a conversa para rotina e atenção."},
+  attention:{reply:"Lembro de pedaços, não da sequência. Parece que a manhã aconteceu sem eu estar olhando direito para ela.",doors:[],ending:"Uma palavra levou a conversa para memória e presença."},
+  home:{reply:"Lembro da luz da janela e de uma mesa que nem existe mais. A música puxou o resto.",doors:[],ending:"Uma palavra levou a conversa para lugares e lembranças."},
+  memory:{reply:"Primeiro veio uma sensação. Depois apareceram cenas. A ordem parece ter sido inventada depois.",doors:[],ending:"Uma palavra levou a conversa para o jeito como lembramos."},
+  detail:{reply:"O barulho do começo da música. Engraçado que o som veio antes da imagem.",doors:[],ending:"Uma palavra levou a conversa para um detalhe quase esquecido."}
+};
+
+type Turn={question:string;reply:string;label:string};
+
 export function ConversationDive(){
- const [level,setLevel]=useState(0),[chosen,setChosen]=useState<string[]>([]);
- const pick=(q:string)=>{setChosen(v=>[...v,q]);setLevel(l=>Math.min(levels.length-1,l+1))};
- const reset=()=>{setLevel(0);setChosen([])};
- return <div className="conversation-wrap">
-  <div className="instruction-banner"><span>como usar</span><p>Você <strong>não precisa responder</strong> às perguntas. Só escolha qual delas faria numa conversa.</p></div>
-  <div className="conversation-dive">
-   <div className="depth-meter" aria-label={`Camada ${level+1} de ${levels.length}`}><span style={{height:`${(level+1)/levels.length*100}%`}}/><b>{levels[level].m}</b></div>
-   <section className="conversation-stage"><p className="step-label">camada {level+1} de {levels.length} · {levels[level].name}</p><h2>Qual pergunta você faria?</h2><div className="question-pair">{levels[level].q.map(q=><button key={q} onClick={()=>pick(q)}>“{q}”<span>escolher →</span></button>)}</div><p className="concept-card">{levels[level].idea}</p>{level<levels.length-1?<small>Escolha uma para avançar. Não existe resposta certa.</small>:<div className="conversation-ending"><strong>Não existe “fundo”.</strong><p>Pessoas, contexto e confiança mudam. A mesma pergunta pode ser trivial em um momento e importante em outro.</p><button className="text-button" onClick={reset}>recomeçar a descida ↺</button></div>}</section>
-   <aside className="conversation-log"><span>perguntas escolhidas</span>{chosen.length===0?<p>Sua trilha aparece aqui.</p>:chosen.map((q,i)=><p key={i}><b>{i+1}</b>{q}</p>)}</aside>
+  const [nodeId,setNodeId]=useState("start");
+  const [turns,setTurns]=useState<Turn[]>([]);
+  const node=nodes[nodeId];
+
+  const follow=(door:Door)=>{
+    const next=nodes[door.next];
+    setTurns(items=>[...items,{question:door.question,reply:next.reply,label:door.label}]);
+    setNodeId(door.next);
+  };
+  const reset=()=>{setTurns([]);setNodeId("start")};
+
+  return <div className="conversation-game">
+    <div className="conversation-rule">
+      <span>uma regra</span>
+      <p>Você não responde nada. Só escolhe qual detalhe da fala seguir.</p>
+    </div>
+
+    <div className="chat-stage">
+      <div className="chat-thread">
+        <div className="bubble you">Como foi seu dia?</div>
+        <div className="bubble other">{nodes.start.reply}</div>
+
+        {turns.map((turn,i)=><div className="chat-turn" key={i}>
+          <div className="bubble you">{turn.question}</div>
+          <div className="bubble other">{turn.reply}</div>
+        </div>)}
+      </div>
+
+      {node.doors.length>0?<div className="conversation-doors">
+        <small>qual porta você abre?</small>
+        <div>{node.doors.map(door=><button key={door.label} onClick={()=>follow(door)}>{door.label}<span>→</span></button>)}</div>
+      </div>:<div className="conversation-result">
+        <span>{turns.map(turn=>turn.label).join(" → ")}</span>
+        <h2>{node.ending}</h2>
+        <p>A primeira frase era a mesma. A conversa mudou porque você escolheu o que merecia atenção.</p>
+        <button onClick={reset}>tentar outro caminho ↺</button>
+      </div>}
+    </div>
+
+    <div className="conversation-map" aria-label="Caminho escolhido">
+      <strong>como foi seu dia?</strong>
+      {turns.map((turn,i)=><span key={i}>→ {turn.label}</span>)}
+    </div>
   </div>
- </div>
 }
