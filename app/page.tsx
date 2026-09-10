@@ -13,7 +13,7 @@ export default function Home() {
 
     <section className="home-intro">
       <h1>Escolha uma ideia.<br/><span>Mexa nela.</span></h1>
-      <p>Experimentos curtos sobre mente, natureza, música, conversa e tempo. Nada para instalar. Nenhuma conta.</p>
+      <p>Oito experiências curtas sobre percepção, natureza, música, linguagem, tempo, escala e acaso.</p>
       <div className="intro-actions"><a href="#experimentos">ver experimentos ↓</a><SurpriseButton/></div>
     </section>
 
@@ -29,7 +29,7 @@ export default function Home() {
 
     <section className="home-note">
       <p>ENTRE não é um curso nem um feed.</p>
-      <h2>Cada página tenta transformar uma pergunta em uma experiência.</h2>
+      <h2>Cada página transforma uma pergunta em alguma coisa que você pode fazer.</h2>
       <div><Link href="/sobre">por que existe →</Link><Link href="/fontes">fontes e créditos →</Link></div>
     </section>
 

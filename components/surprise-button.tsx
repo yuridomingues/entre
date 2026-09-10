@@ -1,10 +1,10 @@
 "use client";
-const routes=["/arvore","/mente","/musica","/conversa","/vida"];
+import { experiments } from "@/lib/experiments";
 
 export function SurpriseButton(){
   const go=()=>{
-    const route=routes[Math.floor(Math.random()*routes.length)];
-    window.location.href=route;
+    const choices=experiments.map(item=>`/${item.slug}`);
+    window.location.href=choices[Math.floor(Math.random()*choices.length)];
   };
   return <button className="surprise-button" onClick={go}>me surpreenda ↗</button>;
 }

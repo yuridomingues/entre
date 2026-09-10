@@ -1,49 +1,68 @@
 export function ExperimentVisual({ slug, compact = false }: { slug: string; compact?: boolean }) {
   const cls = compact ? "tile-art compact" : "tile-art";
+
   if (slug === "arvore") return (
-    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Ilustração simples de uma árvore e seus anéis">
-      <g fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M204 233c-5-48-4-91 5-128m0 32-48-39m47 18 50-45m-51 79-71 1m72 18 66 12"/>
-        <path d="M182 235h57"/>
-      </g>
-      <g fill="currentColor">
-        <circle cx="146" cy="79" r="43"/><circle cx="206" cy="64" r="52"/><circle cx="272" cy="85" r="45"/>
-        <circle cx="116" cy="136" r="37"/><circle cx="181" cy="126" r="48"/><circle cx="249" cy="130" r="53"/><circle cx="311" cy="139" r="34"/>
-      </g>
-      <g fill="#fffdf8" opacity=".85"><circle cx="156" cy="93" r="6"/><circle cx="227" cy="45" r="5"/><circle cx="286" cy="116" r="6"/><circle cx="192" cy="144" r="4"/></g>
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Árvore">
+      <path d="M207 235c-4-52 0-91 8-128m-3 32-47-38m47 17 49-47m-51 82-73 4m75 14 70 18" fill="none" stroke="currentColor" strokeWidth="7" strokeLinecap="round"/>
+      <g fill="currentColor"><circle cx="142" cy="87" r="44"/><circle cx="205" cy="68" r="54"/><circle cx="270" cy="88" r="46"/><circle cx="121" cy="144" r="37"/><circle cx="189" cy="134" r="49"/><circle cx="254" cy="137" r="51"/><circle cx="308" cy="145" r="32"/></g>
+      <path d="M112 235h195" stroke="currentColor" strokeWidth="6" strokeLinecap="round"/>
     </svg>
   );
+
   if (slug === "mente") return (
-    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Olho geométrico e formas ambíguas">
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Olho">
       <path d="M45 130c45-72 105-93 165-93s120 21 165 93c-45 72-105 93-165 93S90 202 45 130Z" fill="none" stroke="currentColor" strokeWidth="5"/>
-      <circle cx="210" cy="130" r="58" fill="currentColor"/><circle cx="210" cy="130" r="25" fill="#fffdf8"/>
-      <circle cx="192" cy="112" r="7" fill="#fffdf8"/>
-      <g fill="none" stroke="currentColor" strokeWidth="3" opacity=".5"><path d="M45 64h64M311 196h64M72 210l44-34M304 85l44-35"/></g>
+      <circle cx="210" cy="130" r="58" fill="currentColor"/><circle cx="210" cy="130" r="25" fill="#fffdf8"/><circle cx="192" cy="112" r="7" fill="#fffdf8"/>
     </svg>
   );
+
   if (slug === "musica") return (
-    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Forma de onda sonora desenhada">
-      <g fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 131h52l12-31 20 68 18-119 21 162 22-129 21 83 21-47 20 27 20-15 22-71 20 140 21-97 21 56 20-27h65"/>
-      </g>
-      <g fill="currentColor"><circle cx="84" cy="44" r="8"/><circle cx="330" cy="55" r="6"/><circle cx="357" cy="192" r="9"/></g>
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Forma de onda">
+      <path d="M22 131h52l12-31 20 68 18-119 21 162 22-129 21 83 21-47 20 27 20-15 22-71 20 140 21-97 21 56 20-27h65" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
+
   if (slug === "conversa") return (
-    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Balões de conversa descendo em camadas">
-      <g fill="none" stroke="currentColor" strokeWidth="5" strokeLinejoin="round">
-        <path d="M42 35h205v75H118l-39 30 9-30H42Z"/>
-        <path d="M166 116h212v78H251l-42 32 11-32h-54Z"/>
-      </g>
-      <g fill="currentColor"><circle cx="89" cy="73" r="7"/><circle cx="119" cy="73" r="7"/><circle cx="149" cy="73" r="7"/></g>
-      <path d="M215 151h115M215 174h79" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Balões de conversa">
+      <path d="M42 35h205v75H118l-39 30 9-30H42ZM166 116h212v78H251l-42 32 11-32h-54Z" fill="none" stroke="currentColor" strokeWidth="5" strokeLinejoin="round"/>
+      <path d="M82 73h92M215 151h115M215 174h79" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>
     </svg>
   );
+
+  if (slug === "vida") return (
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Grade de semanas">
+      {Array.from({length:70}).map((_,i)=><circle key={i} cx={48+(i%14)*25} cy={54+Math.floor(i/14)*38} r="7" fill={i<44?"currentColor":"none"} stroke="currentColor" strokeWidth="2"/>)}
+    </svg>
+  );
+
+  if (slug === "escala") return (
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Círculos em diferentes escalas">
+      <circle cx="210" cy="130" r="92" fill="none" stroke="currentColor" strokeWidth="5"/>
+      <circle cx="210" cy="130" r="52" fill="none" stroke="currentColor" strokeWidth="5"/>
+      <circle cx="210" cy="130" r="22" fill="currentColor"/>
+      <circle cx="210" cy="130" r="5" fill="#fffdf8"/>
+      <path d="M40 224h340M40 216v16M210 216v16M380 216v16" stroke="currentColor" strokeWidth="4"/>
+    </svg>
+  );
+
+  if (slug === "acaso") return (
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Pontos formando uma distribuição">
+      {Array.from({length:45}).map((_,i)=>{
+        const col=i%9; const row=Math.floor(i/9); const height=Math.abs(col-4);
+        const x=75+col*34; const y=210-row*28-height*5;
+        return <circle key={i} cx={x} cy={y} r="8" fill="currentColor"/>;
+      })}
+      <path d="M48 226h324" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>
+    </svg>
+  );
+
   return (
-    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Grade de semanas preenchidas">
-      <g>
-        {Array.from({length:70}).map((_,i)=><circle key={i} cx={48+(i%14)*25} cy={54+Math.floor(i/14)*38} r="7" fill={i<44?"currentColor":"none"} stroke="currentColor" strokeWidth="2"/>)}
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Cidade sob um céu estrelado">
+      <g fill="currentColor">
+        <path d="M40 213V132h62v81M92 213V92h72v121M151 213v-58h71v58M208 213V112h75v101M272 213V72h72v141M335 213v-91h45v91"/>
+        <circle cx="75" cy="52" r="5"/><circle cx="135" cy="39" r="4"/><circle cx="206" cy="54" r="6"/><circle cx="253" cy="30" r="4"/><circle cx="330" cy="44" r="5"/>
       </g>
+      <path d="M32 214h356" stroke="currentColor" strokeWidth="6"/>
     </svg>
   );
 }

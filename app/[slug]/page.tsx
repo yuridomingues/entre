@@ -6,32 +6,35 @@ import { MindLab } from "@/components/mind-lab";
 import { MusicLab } from "@/components/music-lab";
 import { ConversationDive } from "@/components/conversation-dive";
 import { LifeWeeks } from "@/components/life-weeks";
+import { ScaleExplorer } from "@/components/scale-explorer";
+import { RandomWalk } from "@/components/random-walk";
+import { NightSky } from "@/components/night-sky";
 import { getExperiment, experiments } from "@/lib/experiments";
 
 const intros: Record<string,string> = {
-  arvore:"Imagine uma árvore que começou a crescer em 1500. Agora atravesse tudo o que aconteceu ao redor dela sem tirar os olhos do mesmo organismo.",
-  mente:"Três imagens. Três perguntas simples. Em todas elas, o contexto consegue mudar o que parece óbvio.",
-  musica:"Ligue o áudio, desligue camadas e compare formas de onda. O som muda na hora conforme você mexe.",
+  arvore:"Imagine uma árvore que começou a crescer em 1500. Continue rolando e use o mesmo organismo como régua enquanto cinco séculos passam.",
+  mente:"Três imagens. Três perguntas simples. Em todas elas, o contexto muda o que parece óbvio.",
+  musica:"Ligue o áudio, desligue camadas e compare formas. O som muda na hora conforme você mexe.",
   conversa:"Uma pessoa diz uma única frase. Você escolhe qual palavra seguir e descobre para onde a conversa vai.",
-  vida:"Anos são grandes demais para a intuição. Troque a unidade por semanas e veja a escala mudar sem transformar o tempo numa meta."
+  vida:"Anos são grandes demais para a intuição. Troque a unidade por semanas e veja a escala mudar sem transformar o tempo numa meta.",
+  escala:"Comece em um milímetro e aumente a régua até chegar ao planeta inteiro. A cada passo, a referência anterior encolhe.",
+  acaso:"Todos os pontos começam juntos. Depois, cada um escolhe A ou B repetidas vezes. Veja o desenho que aparece.",
+  noite:"A cidade está acesa. Diminua a luz e observe o que começa a aparecer acima dos prédios."
 };
 
 const components: Record<string, React.ReactNode> = {
-  arvore:<TreeTimeline/>, mente:<MindLab/>, musica:<MusicLab/>, conversa:<ConversationDive/>, vida:<LifeWeeks/>
+  arvore:<TreeTimeline/>, mente:<MindLab/>, musica:<MusicLab/>, conversa:<ConversationDive/>, vida:<LifeWeeks/>,
+  escala:<ScaleExplorer/>, acaso:<RandomWalk/>, noite:<NightSky/>
 };
 
 export function generateStaticParams(){return experiments.map(({slug})=>({slug}))}
 
 export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{
-  const {slug}=await params;
-  const exp=getExperiment(slug);
-  if(!exp)return {};
+  const {slug}=await params; const exp=getExperiment(slug); if(!exp)return {};
   return {title:exp.title,description:exp.description};
 }
 
 export default async function Page({params}:{params:Promise<{slug:string}>}){
-  const {slug}=await params;
-  const exp=getExperiment(slug);
-  if(!exp)notFound();
+  const {slug}=await params; const exp=getExperiment(slug); if(!exp)notFound();
   return <ExperimentShell slug={slug} title={exp.title} intro={intros[slug]}>{components[slug]}</ExperimentShell>
 }
