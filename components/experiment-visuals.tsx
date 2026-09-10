@@ -1,51 +1,49 @@
-export function ExperimentVisual({ slug }: { slug: string }) {
+export function ExperimentVisual({ slug, compact = false }: { slug: string; compact?: boolean }) {
+  const cls = compact ? "tile-art compact" : "tile-art";
   if (slug === "arvore") return (
-    <svg className="experiment-visual" viewBox="0 0 320 200" role="img" aria-label="Anéis de crescimento de uma árvore">
-      <g fill="none" stroke="currentColor" strokeWidth="2">
-        <ellipse cx="160" cy="100" rx="126" ry="72"/><ellipse cx="160" cy="100" rx="104" ry="59"/>
-        <ellipse cx="160" cy="100" rx="80" ry="45"/><ellipse cx="160" cy="100" rx="57" ry="31"/>
-        <ellipse cx="160" cy="100" rx="31" ry="17"/><path d="M160 100 272 68M160 100 73 148M160 100 147 30"/>
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Ilustração simples de uma árvore e seus anéis">
+      <g fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M204 233c-5-48-4-91 5-128m0 32-48-39m47 18 50-45m-51 79-71 1m72 18 66 12"/>
+        <path d="M182 235h57"/>
       </g>
-      <circle cx="160" cy="100" r="4" fill="currentColor"/>
+      <g fill="currentColor">
+        <circle cx="146" cy="79" r="43"/><circle cx="206" cy="64" r="52"/><circle cx="272" cy="85" r="45"/>
+        <circle cx="116" cy="136" r="37"/><circle cx="181" cy="126" r="48"/><circle cx="249" cy="130" r="53"/><circle cx="311" cy="139" r="34"/>
+      </g>
+      <g fill="#fffdf8" opacity=".85"><circle cx="156" cy="93" r="6"/><circle cx="227" cy="45" r="5"/><circle cx="286" cy="116" r="6"/><circle cx="192" cy="144" r="4"/></g>
     </svg>
   );
   if (slug === "mente") return (
-    <svg className="experiment-visual" viewBox="0 0 320 200" role="img" aria-label="Duas formas que mudam conforme o ponto de vista">
-      <g fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-        <path d="M58 47c40 16 48 48 49 58-1 12-10 40-49 52M262 47c-40 16-48 48-49 58 1 12 10 40 49 52"/>
-        <path d="M122 54c21 8 28 25 28 38 0 13-8 23-8 34 0 13 8 21 18 28 10-7 18-15 18-28 0-11-8-21-8-34 0-13 7-30 28-38"/>
-      </g>
-      <circle cx="160" cy="101" r="8" fill="currentColor"/>
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Olho geométrico e formas ambíguas">
+      <path d="M45 130c45-72 105-93 165-93s120 21 165 93c-45 72-105 93-165 93S90 202 45 130Z" fill="none" stroke="currentColor" strokeWidth="5"/>
+      <circle cx="210" cy="130" r="58" fill="currentColor"/><circle cx="210" cy="130" r="25" fill="#fffdf8"/>
+      <circle cx="192" cy="112" r="7" fill="#fffdf8"/>
+      <g fill="none" stroke="currentColor" strokeWidth="3" opacity=".5"><path d="M45 64h64M311 196h64M72 210l44-34M304 85l44-35"/></g>
     </svg>
   );
   if (slug === "musica") return (
-    <svg className="experiment-visual" viewBox="0 0 320 200" role="img" aria-label="Forma de onda sonora">
-      <path d="M20 100h38l10-26 18 66 19-99 20 123 20-91 20 55 19-27 18 8 20-44 18 70 18-35h42" fill="none" stroke="currentColor" strokeWidth="3" strokeLinejoin="round"/>
-      <path d="M20 166h280M20 34h280" fill="none" stroke="currentColor" strokeWidth="1" opacity=".25"/>
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Forma de onda sonora desenhada">
+      <g fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 131h52l12-31 20 68 18-119 21 162 22-129 21 83 21-47 20 27 20-15 22-71 20 140 21-97 21 56 20-27h65"/>
+      </g>
+      <g fill="currentColor"><circle cx="84" cy="44" r="8"/><circle cx="330" cy="55" r="6"/><circle cx="357" cy="192" r="9"/></g>
     </svg>
   );
   if (slug === "conversa") return (
-    <svg className="experiment-visual" viewBox="0 0 320 200" role="img" aria-label="Duas caixas de conversa">
-      <path d="M36 38h158v78H96l-35 28 8-28H36zM132 92h152v73H214l-31 23 7-23h-58z" fill="none" stroke="currentColor" strokeWidth="3" strokeLinejoin="round"/>
-      <circle cx="76" cy="77" r="5" fill="currentColor"/><circle cx="102" cy="77" r="5" fill="currentColor"/><circle cx="128" cy="77" r="5" fill="currentColor"/>
-      <path d="M170 126h76M170 143h52" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Balões de conversa descendo em camadas">
+      <g fill="none" stroke="currentColor" strokeWidth="5" strokeLinejoin="round">
+        <path d="M42 35h205v75H118l-39 30 9-30H42Z"/>
+        <path d="M166 116h212v78H251l-42 32 11-32h-54Z"/>
+      </g>
+      <g fill="currentColor"><circle cx="89" cy="73" r="7"/><circle cx="119" cy="73" r="7"/><circle cx="149" cy="73" r="7"/></g>
+      <path d="M215 151h115M215 174h79" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>
     </svg>
   );
   return (
-    <svg className="experiment-visual" viewBox="0 0 320 200" role="img" aria-label="Semanas organizadas em uma grade">
-      {Array.from({length:48}).map((_,i)=><circle key={i} cx={42+(i%12)*21.5} cy={55+Math.floor(i/12)*30} r="5" fill={i<31?"currentColor":"none"} stroke="currentColor" strokeWidth="1.5"/>)}
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Grade de semanas preenchidas">
+      <g>
+        {Array.from({length:70}).map((_,i)=><circle key={i} cx={48+(i%14)*25} cy={54+Math.floor(i/14)*38} r="7" fill={i<44?"currentColor":"none"} stroke="currentColor" strokeWidth="2"/>)}
+      </g>
     </svg>
-  );
-}
-
-export function IdeaMap() {
-  return (
-    <div className="idea-map" aria-label="Mapa dos temas do ENTRE">
-      <div className="idea-map-center"><span>uma ideia</span><strong>?</strong></div>
-      <span className="idea-node node-1">mente</span><span className="idea-node node-2">natureza</span>
-      <span className="idea-node node-3">música</span><span className="idea-node node-4">linguagem</span>
-      <span className="idea-node node-5">tempo</span>
-      <svg viewBox="0 0 420 420" aria-hidden="true"><g fill="none" stroke="currentColor" opacity=".22"><path d="M210 210 104 82M210 210 318 88M210 210 336 264M210 210 92 288M210 210 212 354"/><circle cx="210" cy="210" r="142"/><circle cx="210" cy="210" r="92"/></g></svg>
-    </div>
   );
 }
