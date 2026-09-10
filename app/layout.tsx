@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import Link from "next/link";
 import "./globals.css";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://entre-ideias.vercel.app"),
@@ -18,18 +17,20 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
 };
-
 export const viewport: Viewport = { themeColor: "#f0eadf", colorScheme: "light" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html lang="pt-BR">
-      <body>
-        <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
-        <SiteHeader />
-        <main id="conteudo">{children}</main>
-        <SiteFooter />
-      </body>
-    </html>
-  );
+  return <html lang="pt-BR"><body>
+    <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <header className="site-header">
+      <Link className="wordmark" href="/" aria-label="ENTRE, início">ENTRE<span>.</span></Link>
+      <nav aria-label="Navegação principal"><Link href="/#experimentos">experimentos</Link><Link href="/sobre">sobre</Link></nav>
+    </header>
+    <main id="conteudo">{children}</main>
+    <footer className="site-footer">
+      <div><strong>ENTRE.</strong><p>Um lugar para explorar ideias.</p></div>
+      <div className="footer-links"><Link href="/sobre">manifesto</Link><a href="https://github.com/yuridomingues" target="_blank" rel="noreferrer">código & autor ↗</a></div>
+      <p className="fine-print">Feito por Yuri Domingues. Sem anúncios, cadastro ou rastreamento pessoal.</p>
+    </footer>
+  </body></html>;
 }
