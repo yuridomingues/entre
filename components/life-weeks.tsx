@@ -1,0 +1,8 @@
+"use client";
+import { useMemo, useState } from "react";
+export function LifeWeeks(){const [years,setYears]=useState(10);const weeks=years*52;const dots=useMemo(()=>Array.from({length:520},(_,i)=>i),[]);return <div className="life-weeks">
+ <section className="year-control"><p className="overline">uma década em semanas</p><h2><strong>{years}</strong> {years===1?"ano":"anos"} ≈ {weeks.toLocaleString("pt-BR")} semanas</h2><input aria-label="Quantidade de anos" type="range" min="1" max="10" value={years} onChange={e=>setYears(Number(e.target.value))}/><div className="range-labels"><span>1 ano</span><span>10 anos</span></div></section>
+ <div className="weeks-grid" aria-label={`${weeks} semanas representadas visualmente`}>{dots.map(i=><i key={i} className={i<weeks?"filled":""}/>)}</div>
+ <section className="time-prompts"><article><span>52</span><h3>semanas mudam o jeito que um ano parece.</h3><p>Uma unidade menor deixa recorrência e hábito mais visíveis sem transformar o tempo numa corrida.</p></article><article><span>≈ 1/3</span><h3>de cada dia costuma ser sono.</h3><p>Tempo vivido não é sinônimo de tempo produtivo. Descanso, espera e repetição também fazem parte de uma vida.</p></article><article><span>agora</span><h3>é a única unidade que realmente sentimos.</h3><p>Calendários medem duração; experiência dá textura. Uma semana memorável e uma semana rotineira têm o mesmo tamanho no gráfico.</p></article></section>
+ <blockquote className="life-quote">A pergunta não é “como preencher todos os pontos?”. É: <strong>que tipo de coisa merece virar tempo?</strong></blockquote>
+ </div>}
