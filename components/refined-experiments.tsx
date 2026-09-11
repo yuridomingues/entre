@@ -157,7 +157,7 @@ function memoryPositions(seed:number){
   return cells.slice(0,4);
 }
 function MemoryIcon({kind,className=""}:{kind:MemoryKind;className?:string}){
-  return <svg className={"memory-svg "+className} viewBox="0 0 64 64" aria-hidden="true">
+  return <svg className={"memory-svg memory-"+kind+" "+className} viewBox="0 0 64 64" aria-hidden="true">
     {kind==="book"&&<><rect x="12" y="8" width="40" height="48" rx="3"/><path d="M23 8v48M29 21h16M29 29h14"/></>}
     {kind==="mug"&&<><path d="M14 14h34v34c0 6-5 10-10 10H24c-6 0-10-4-10-10Z"/><path d="M48 22h5c8 0 8 18 0 18h-5"/></>}
     {kind==="plant"&&<><path d="M22 39h22l-3 19H25Z"/><path d="M33 40V16M33 25c-12 0-16-8-16-13 10-1 16 4 16 13ZM34 31c11 0 16-8 16-14-10-1-16 5-16 14Z"/></>}
