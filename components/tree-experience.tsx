@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 const moments=[
   {year:1500,label:"semente",title:"começa pequena",text:"Uma semente encontra espaço, água e luz. O resto ainda é possibilidade."},
@@ -12,9 +12,25 @@ const moments=[
   {year:2026,label:"agora",title:"você chegou",text:"A árvore atravessou tudo isso sem saber o nome de nenhum desses acontecimentos."}
 ];
 
-const leaves=[
-  [177,150,18],[218,112,23],[265,124,20],[312,153,22],[142,202,20],[203,190,25],[266,188,27],[330,208,22],
-  [112,254,18],[170,250,24],[234,242,27],[299,254,25],[363,268,18],[146,306,20],[213,304,26],[286,316,24],[338,326,18]
+const positions=moments.map(m=>(m.year-1500)/526);
+const leafClusters=[
+  {x:137,y:190,rx:52,ry:37,rot:-9,color:"#8fc979"},
+  {x:193,y:139,rx:58,ry:43,rot:7,color:"#7fbd6e"},
+  {x:259,y:130,rx:61,ry:43,rot:-5,color:"#9bd481"},
+  {x:326,y:171,rx:55,ry:38,rot:12,color:"#78b765"},
+  {x:113,y:252,rx:48,ry:34,rot:8,color:"#9bd481"},
+  {x:181,y:245,rx:57,ry:39,rot:-6,color:"#6eaa5e"},
+  {x:253,y:232,rx:65,ry:44,rot:5,color:"#88c471"},
+  {x:329,y:250,rx:54,ry:37,rot:-10,color:"#91ce78"},
+  {x:151,y:306,rx:47,ry:31,rot:-5,color:"#78b765"},
+  {x:224,y:302,rx:61,ry:38,rot:7,color:"#90cc76"},
+  {x:300,y:312,rx:54,ry:34,rot:-8,color:"#77b564"}
+];
+
+const leafSpecks=[
+  [112,181,-16],[145,153,11],[176,119,-7],[213,98,9],[252,104,-12],[289,118,6],[334,151,-8],
+  [95,226,10],[134,242,-11],[179,215,8],[222,205,-13],[266,202,7],[309,219,-10],[351,236,12],
+  [127,285,-7],[166,318,9],[211,280,-11],[255,287,8],[294,292,-8],[330,300,10]
 ];
 
 export function TreeExperience(){
@@ -34,77 +50,122 @@ export function TreeExperience(){
     return()=>{removeEventListener("scroll",update);removeEventListener("resize",update)};
   },[]);
 
-  const index=Math.min(moments.length-1,Math.floor(progress*moments.length));
+  let index=0;
+  positions.forEach((p,i)=>{if(progress>=p)index=i});
   const item=moments[index];
   const year=Math.round(1500+526*progress);
   const age=year-1500;
-  const draw=Math.min(1,.1+progress*1.08);
-  const crown=Math.max(0,Math.min(1,(progress-.06)/.45));
-  const trunkWidth=9+progress*13;
-  const sky="hsl("+(96+progress*10)+" "+(36+progress*8)+"% "+(88-progress*8)+"%)";
 
-  return <div className="tree-story" ref={ref}>
+  // A árvore amadurece antes da linha do tempo acabar.
+  // Depois disso, quem continua mudando principalmente é o mundo ao redor dela.
+  const maturity=Math.max(0,Math.min(1,progress/.34));
+  const draw=.08+maturity*.92;
+  const crown=Math.max(0,Math.min(1,(maturity-.14)/.7));
+  const trunkWidth=7+maturity*18;
+  const rootDraw=Math.max(0,Math.min(1,maturity*1.8));
+  const skyLight=91-progress*8;
+  const sky=`hsl(${97+progress*8} ${35+progress*7}% ${skyLight}%)`;
+  const canopyScale=.68+crown*.32;
+  const rings=Math.max(0,Math.min(1,(progress-.16)/.45));
+
+  return <div className="tree-story tree-story-illustrated" ref={ref}>
     <div className="tree-story-stage" style={{background:sky}}>
       <div className="tree-year-watermark" aria-hidden="true">{year}</div>
-      <div className="tree-time-key" style={{opacity:Math.max(.18,1-progress*2.6)}}>
+      <div className="tree-time-key" style={{opacity:Math.max(.22,1-progress*2.4)}}>
         <strong>1500 → 2026</strong>
-        <span>role para atravessar 526 anos</span>
+        <span>uma vida usada como régua para 526 anos</span>
       </div>
 
       <aside className="tree-rail">
         <div className="tree-clock">
           <small>linha do tempo · ano</small>
           <strong>{year}</strong>
-          <span>{age===0?"começo":age+" anos depois"}</span>
+          <span>{age===0?"o começo":age+" anos depois"}</span>
         </div>
         <div className="tree-rail-line">
           <i className="tree-rail-fill" style={{height:(progress*100)+"%"}}/>
-          {moments.map((moment,i)=><button
-            key={moment.year}
-            className={i===index?"active":i<index?"passed":""}
-            style={{top:((i/(moments.length-1))*100)+"%"}}
-            aria-label={moment.year+", "+moment.label}
-            onClick={()=>{
-              const el=ref.current;
-              if(!el)return;
-              const target=el.offsetTop+((i/(moments.length-1))*Math.max(1,el.offsetHeight-window.innerHeight));
-              window.scrollTo({top:target,behavior:"smooth"});
-            }}
-          ><b/><span>{moment.year}</span></button>)}
+          {moments.map((moment,i)=>{
+            const pos=positions[i]*100;
+            const style={top:pos+"%","--pos":pos+"%"} as CSSProperties;
+            return <button
+              key={moment.year}
+              className={i===index?"active":i<index?"passed":""}
+              style={style}
+              aria-label={moment.year+", "+moment.label}
+              onClick={()=>{
+                const el=ref.current;if(!el)return;
+                const total=Math.max(1,el.offsetHeight-window.innerHeight);
+                window.scrollTo({top:el.offsetTop+positions[i]*total,behavior:"smooth"});
+              }}
+            ><b/><span>{moment.year}</span></button>;
+          })}
         </div>
       </aside>
 
       <div className="tree-canvas" aria-hidden="true">
-        <div className="tree-sun" style={{transform:"translate("+(progress*34-17)+"vw,"+(Math.sin(progress*Math.PI)*-18)+"px)"}}/>
-        <svg viewBox="0 0 480 620" className="tree-drawing">
-          <path className="tree-ground back" d="M32 574c94 7 174-4 263 2 57 4 103 0 153-3"/>
-          <path className="tree-ground" d="M27 568c98 4 178-3 268 1 57 2 105 0 158-4"/>
+        <div className="tree-sun" style={{transform:`translate(${progress*32-16}vw,${Math.sin(progress*Math.PI)*-18}px)`}}/>
+        <svg viewBox="0 0 480 620" className="tree-drawing tree-drawing-editorial">
+          <defs>
+            <filter id="tree-soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="4" stdDeviation="2.4" floodColor="#183414" floodOpacity=".13"/>
+            </filter>
+          </defs>
 
-          <g className="tree-branches" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw,strokeWidth:trunkWidth}} d="M241 569c-7-101-6-196 3-287 3-34 9-70 16-103"/>
+          <path className="tree-hill far" d="M5 574c70-52 149-50 213-20 72 34 151 27 257-21v87H5Z"/>
+          <path className="tree-hill near" d="M0 590c103-25 197-13 283 2 77 13 135 10 197-4v32H0Z"/>
+          <path className="tree-ground back" d="M28 576c89 6 174-3 270 2 65 4 111 0 156-4"/>
+          <path className="tree-ground" d="M24 568c99 4 180-3 273 1 61 2 109 0 160-4"/>
+
+          <g className="tree-roots" fill="none" strokeLinecap="round" strokeLinejoin="round">
+            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-rootDraw}} d="M239 557c-31 8-60 17-90 37"/>
+            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-rootDraw}} d="M245 558c31 6 62 18 93 37"/>
+            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-rootDraw}} d="M240 560c-8 13-14 25-17 38"/>
+          </g>
+
+          <g className="tree-trunk-fill" filter="url(#tree-soft-shadow)">
+            <path d="M225 568c5-74 3-143 9-204 4-46 9-87 17-125 4-20 8-39 14-59 8 28 9 58 7 89-2 34-6 68-6 101 0 58 8 123 17 198Z" fill="#a8754f" opacity={maturity}/>
+            <path d="M245 568c-2-95-2-185 4-272 4-53 10-93 17-116" fill="none" stroke="#704833" strokeWidth="4" strokeLinecap="round" opacity={maturity*.8}/>
+          </g>
+
+          <g className="tree-branches" fill="none" stroke="#6f4934" strokeLinecap="round" strokeLinejoin="round">
+            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw,strokeWidth:trunkWidth}} d="M242 569c-7-102-5-197 3-287 4-39 11-74 20-109"/>
             <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M245 395c-27-42-62-77-104-104"/>
             <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M249 357c36-49 76-89 119-120"/>
             <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M247 438c-49-24-96-34-143-31"/>
             <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M245 466c48-7 91 2 132 28"/>
             <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M207 343c-5-42 3-79 24-112"/>
             <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M300 314c9-33 25-59 49-79"/>
+            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M170 407c-19-26-42-45-71-57"/>
+            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M316 443c27-21 52-31 78-32"/>
           </g>
 
-          <g className="tree-branch-echo" fill="none" stroke="currentColor" strokeLinecap="round" opacity=".18">
-            <path d="M246 569c-8-98-5-192 5-286 4-36 10-70 17-101"/>
-            <path d="M249 397c-28-41-63-75-106-100"/>
-            <path d="M253 358c35-47 75-86 116-116"/>
+          <g className="tree-branch-echo" fill="none" stroke="#c18c65" strokeLinecap="round" opacity={maturity*.32}>
+            <path d="M249 566c-4-93-2-187 7-279 4-40 10-75 17-105"/>
+            <path d="M250 399c-27-40-62-73-104-98"/>
+            <path d="M255 361c35-46 74-84 114-113"/>
           </g>
 
-          <g className="tree-leaves" style={{opacity:crown}}>
-            {leaves.map(([cx,cy,r],i)=>{
-              const local=Math.max(0,Math.min(1,(crown*1.4)-(i%5)*.08));
-              return <ellipse key={i} cx={cx} cy={cy} rx={r*(.75+local*.35)} ry={r*(.55+local*.3)} transform={"rotate("+((i%2?1:-1)*(8+i%4*5))+" "+cx+" "+cy+")"} opacity={local}/>;
-            })}
+          <g className="tree-canopy" style={{opacity:crown,transform:`scale(${canopyScale})`,transformOrigin:"240px 250px"}}>
+            {leafClusters.map((l,i)=><ellipse key={i} cx={l.x} cy={l.y} rx={l.rx} ry={l.ry} transform={`rotate(${l.rot} ${l.x} ${l.y})`} fill={l.color} stroke="#315c2a" strokeWidth="3"/>)}
+            {leafSpecks.map(([x,y,rot],i)=><path key={i} d={`M${x-8} ${y}q8-11 17 0-8 10-17 0Z`} transform={`rotate(${rot} ${x} ${y})`} fill={i%3===0?"#b8df94":"#6fa95d"} stroke="#315c2a" strokeWidth="1.6"/>)}
           </g>
 
-          <g className="tree-ring-marks" opacity={Math.min(1,progress*2)}>
-            <path d="M214 552c18-5 37-5 55 0M216 536c17-5 34-5 51 0M219 520c15-4 30-4 45 0"/>
+          <g className="tree-ring-marks" opacity={rings}>
+            <ellipse cx="248" cy="548" rx="24" ry="7"/>
+            <ellipse cx="248" cy="548" rx="18" ry="5"/>
+            <ellipse cx="248" cy="548" rx="11" ry="3"/>
+          </g>
+
+          <g className="tree-life-details" opacity={Math.max(0,(progress-.38)*1.8)}>
+            <path d="M83 548q13-17 26 0" fill="none" stroke="#315c2a" strokeWidth="3"/>
+            <path d="M367 542q13-16 25 0" fill="none" stroke="#315c2a" strokeWidth="3"/>
+            <circle cx="96" cy="546" r="4" fill="#f0cf68" stroke="#315c2a" strokeWidth="1.5"/>
+            <circle cx="379" cy="541" r="4" fill="#ef8b77" stroke="#315c2a" strokeWidth="1.5"/>
+          </g>
+
+          <g className="tree-birds" opacity={Math.max(0,(progress-.62)*2.5)} fill="none" stroke="#315c2a" strokeWidth="3" strokeLinecap="round">
+            <path d="M354 92q9-9 18 0 9-9 18 0"/>
+            <path d="M385 117q7-7 14 0 7-7 14 0"/>
           </g>
         </svg>
       </div>
