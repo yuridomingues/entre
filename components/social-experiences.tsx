@@ -171,6 +171,7 @@ export function CooperationGame(){
   const [complete,setComplete]=useState<{you:number;them:number;opponent:number}[]>([]);
   const round=history.length;
   const finished=round>=5;
+  const lastRound=history[history.length-1]??null;
 
   const choose=(move:Move)=>{
     if(finished)return;
@@ -223,6 +224,25 @@ export function CooperationGame(){
         <span>os dois dividem <b>+3 / +3</b></span>
         <span>você guarda sozinho <b>+5 / 0</b></span>
         <span>os dois guardam <b>+1 / +1</b></span>
+      </div>
+
+      <div className="cooperate-scene">
+        <div className="cooperate-person you">
+          <div className="cooperate-head"><i/><b/></div>
+          <div className="cooperate-body"/>
+          <span>você</span>
+          <em className={lastRound?lastRound.you:"waiting"}>{lastRound?(lastRound.you==="share"?"abriu a mão":"guardou"):"?"}</em>
+        </div>
+        <div className="cooperate-table">
+          <div className="token-pile">{Array.from({length:6}).map((_,i)=><i key={i}/>)}</div>
+          <span>fichas em jogo</span>
+        </div>
+        <div className={"cooperate-person other opponent-"+opponent}>
+          <div className="cooperate-head"><i/><b/></div>
+          <div className="cooperate-body"/>
+          <span>{opponents[opponent].name}</span>
+          <em className={lastRound?lastRound.them:"waiting"}>{lastRound?(lastRound.them==="share"?"abriu a mão":"guardou"):"?"}</em>
+        </div>
       </div>
 
       <div className="round-track">
