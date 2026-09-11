@@ -138,7 +138,7 @@ export function ChangeBlindness(){
     <div className="instruction-banner"><span>uma coisa muda</span><p>As duas cenas alternam. Toque no objeto que muda.</p></div>
     <section className="lab-card tone-card-lilac">
       <header className="lab-head"><div><span>mudança</span><h2>Você percebe quando acontece?</h2></div><strong>{attempts} tentativas</strong></header>
-      <div className={"flicker-scene "+(variant?"variant":"")}>
+      <div className={"flicker-scene "+(running?"running ":"")+(variant?"variant":"")}>
         <div className="window"/><div className="plant"><i/><i/><i/></div><div className="clock"/><div className="books"><i/><i/><i/></div><div className="lamp"/><div className="table"/>
         {!running&&!found&&<div className="flicker-overlay"><button onClick={()=>setRunning(true)}>começar →</button></div>}
       </div>
