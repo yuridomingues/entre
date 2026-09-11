@@ -7,7 +7,7 @@ export type Experiment = {
   question: string;
   duration: string;
   action: string;
-  tone: "moss" | "violet" | "sun" | "water" | "clay" | "lime" | "pink" | "night";
+  tone: "moss" | "violet" | "sun" | "water" | "clay" | "lime" | "pink" | "night" | "mint" | "sand";
 };
 
 export const experiments: Experiment[] = [
@@ -18,7 +18,9 @@ export const experiments: Experiment[] = [
   { slug:"vida", number:"05", eyebrow:"tempo", title:"Quanto cabe em uma vida?", description:"Troque anos por semanas para enxergar o tempo em outra escala.", question:"Que tipo de coisa merece virar tempo?", duration:"3 min", action:"visualização", tone:"clay" },
   { slug:"escala", number:"06", eyebrow:"escala", title:"Do grão ao planeta", description:"Compare cada objeto com o anterior usando a mesma régua.", question:"Quando uma coisa deixa de parecer grande?", duration:"3 min", action:"comparação", tone:"lime" },
   { slug:"acaso", number:"07", eyebrow:"acaso", title:"Onde o acaso vai parar?", description:"Solte dezenas de pontos e deixe cada um escolher um lado várias vezes.", question:"Aleatório significa espalhado por igual?", duration:"2 min", action:"simulação", tone:"pink" },
-  { slug:"noite", number:"08", eyebrow:"céu", title:"Apague a cidade", description:"Diminua as luzes e veja o céu ganhar coisas que já estavam lá.", question:"Quantas estrelas a luz esconde?", duration:"2 min", action:"controle de luz", tone:"night" }
+  { slug:"noite", number:"08", eyebrow:"céu", title:"Apague a cidade", description:"Diminua as luzes e veja o céu ganhar coisas que já estavam lá.", question:"Quantas estrelas a luz esconde?", duration:"2 min", action:"controle de luz", tone:"night" },
+  { slug:"rede", number:"09", eyebrow:"sociedade + redes", title:"Como uma ideia se espalha?", description:"Escolha onde começa e quais condições fazem uma ideia atravessar uma rede.", question:"Uma ideia depende só dela mesma?", duration:"3 min", action:"rede", tone:"mint" },
+  { slug:"centro", number:"10", eyebrow:"justiça + distância", title:"Onde está o centro?", description:"Coloque um ponto e veja como diferentes definições de melhor mudam o resultado.", question:"Centro para quem?", duration:"4 min", action:"critério", tone:"sand" }
 ];
 
 export function getExperiment(slug: string) {

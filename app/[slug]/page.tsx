@@ -4,6 +4,7 @@ import { ExperimentShell } from "@/components/experiment-shell";
 import { MindLab, MusicLab, ConversationDive, LifeWeeks, RandomWalk, NightSky } from "@/components/interactive-experiences";
 import { TreeExperience } from "@/components/tree-experience";
 import { ScaleExplorer } from "@/components/scale-visual-experience";
+import { IdeaSpread, WhereIsCenter } from "@/components/social-experiences";
 import { getExperiment, experiments } from "@/lib/experiments";
 
 const intros: Record<string,string> = {
@@ -14,12 +15,14 @@ const intros: Record<string,string> = {
   vida:"Troque anos por semanas e veja o tempo mudar de forma.",
   escala:"Cada etapa coloca duas referências na mesma régua. Compare antes de olhar o número.",
   acaso:"Todos começam juntos. Depois, cada ponto escolhe um lado várias vezes.",
-  noite:"A cidade está acesa. Apague-a devagar."
+  noite:"A cidade está acesa. Apague-a devagar.",
+  rede:"Escolha onde uma ideia começa. Depois mude a regra e veja até onde ela consegue ir.",
+  centro:"Escolha primeiro. Depois descubra como três regras diferentes movem o melhor ponto."
 };
 
 const components: Record<string, React.ReactNode> = {
   arvore:<TreeExperience/>, mente:<MindLab/>, musica:<MusicLab/>, conversa:<ConversationDive/>, vida:<LifeWeeks/>,
-  escala:<ScaleExplorer/>, acaso:<RandomWalk/>, noite:<NightSky/>
+  escala:<ScaleExplorer/>, acaso:<RandomWalk/>, noite:<NightSky/>, rede:<IdeaSpread/>, centro:<WhereIsCenter/>
 };
 
 export function generateStaticParams(){return experiments.map(({slug})=>({slug}))}

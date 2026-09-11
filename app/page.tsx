@@ -13,7 +13,7 @@ export default function Home() {
 
     <section className="home-intro">
       <h1>Escolha uma ideia.<br/><span>Mexa nela.</span></h1>
-      <p>Oito experiências curtas sobre percepção, natureza, música, linguagem, tempo, escala e acaso.</p>
+      <p>Dez experiências curtas sobre percepção, natureza, música, linguagem, tempo, escala, acaso e vida coletiva.</p>
       <div className="intro-actions"><a href="#experimentos">ver experimentos ↓</a><SurpriseButton/></div>
     </section>
 

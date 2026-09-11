@@ -73,7 +73,7 @@ export function ExperimentVisual({ slug, compact = false }: { slug: string; comp
     </svg>
   );
 
-  return (
+  if (slug === "noite") return (
     <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Cidade sob um céu estrelado">
       <g fill="currentColor">
         <path d="M40 213V132h62v81M92 213V92h72v121M151 213v-58h71v58M208 213V112h75v101M272 213V72h72v141M335 213v-91h45v91"/>
@@ -82,4 +82,29 @@ export function ExperimentVisual({ slug, compact = false }: { slug: string; comp
       <path d="M32 214h356" stroke="currentColor" strokeWidth="6"/>
     </svg>
   );
+
+  if (slug === "rede") return (
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Rede de pontos conectados">
+      <g fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" opacity=".8">
+        <path d="M55 75 126 49 180 92 116 137 60 177 142 210 206 166 264 193 316 150 368 188M180 92l26 74M126 49l-10 88M206 166l58 27M264 193l52-43M316 150l25-73M341 77l-76 14M265 91l-59 75"/>
+      </g>
+      <g fill="#fffdf8" stroke="currentColor" strokeWidth="4">
+        {[ [55,75],[126,49],[180,92],[116,137],[60,177],[142,210],[206,166],[264,193],[316,150],[368,188],[341,77],[265,91] ].map(([x,y],i)=><circle key={i} cx={x} cy={y} r="13"/>)}
+      </g>
+      <circle cx="126" cy="49" r="8" fill="currentColor"/><circle cx="116" cy="137" r="8" fill="currentColor"/><circle cx="180" cy="92" r="8" fill="currentColor"/>
+    </svg>
+  );
+
+  if (slug === "centro") return (
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Pontos em um mapa e dois centros possíveis">
+      <g fill="currentColor">
+        {[ [62,82],[119,55],[151,122],[86,174],[180,194],[212,82],[238,145],[292,204],[346,64],[371,170] ].map(([x,y],i)=><circle key={i} cx={x} cy={y} r="8"/>)}
+      </g>
+      <circle cx="205" cy="137" r="28" fill="none" stroke="currentColor" strokeWidth="4" strokeDasharray="8 7"/>
+      <path d="M184 137h42M205 116v42" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>
+      <circle cx="267" cy="135" r="15" fill="#fffdf8" stroke="currentColor" strokeWidth="4"/>
+    </svg>
+  );
+
+  return null;
 }

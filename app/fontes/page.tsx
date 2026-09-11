@@ -20,6 +20,8 @@ export default function Sources() {
         <section><span>06</span><div><h2>Do grão ao planeta</h2><p>Os tamanhos são aproximados e servem para comparar ordens de grandeza.</p></div></section>
         <section><span>07</span><div><h2>Onde o acaso vai parar?</h2><p>Cada passo escolhe entre dois lados com a mesma chance. Repetir a experiência produz desenhos diferentes.</p></div></section>
         <section><span>08</span><div><h2>Apague a cidade</h2><p>A experiência simplifica um efeito real: luz artificial no céu reduz o contraste e dificulta enxergar estrelas mais fracas.</p></div></section>
+        <section><span>09</span><div><h2>Como uma ideia se espalha?</h2><p>A rede usa um modelo simplificado de limiar: um ponto entra quando um número mínimo de vizinhos já entrou. Redes humanas reais têm muito mais fatores do que isso.</p></div></section>
+        <section><span>10</span><div><h2>Onde está o centro?</h2><p>A experiência compara objetivos geométricos diferentes: reduzir a distância média, reduzir a pior distância e colocar mais casas dentro de um mesmo raio.</p></div></section>
       </div>
     </article>
   </main>;
