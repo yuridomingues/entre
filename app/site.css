@@ -503,3 +503,22 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
   .survivor-options{grid-template-columns:1fr}.time-void{height:300px}.time-result{grid-template-columns:1fr}.time-result strong{grid-row:auto}.stroop-stage>strong{font-size:64px}.people-room{grid-template-columns:repeat(8,1fr);padding:10px}.projection-readout{grid-template-columns:1fr auto}.mercator-stage{height:330px}
   .earth-depth{min-height:5000px}.depth-scale-note{top:10px;width:72vw}.depth-meter{left:12px;top:12%;bottom:12%}.depth-meter>strong{font-size:36px}.earth-cutaway{width:80vw;top:39%}.depth-note{left:12px;right:12px;top:auto;bottom:45px;transform:none;width:auto;background:rgba(255,253,248,.86);border:2px solid #111;border-left:5px solid #111;padding:10px}.depth-note p{font-size:14px;margin:5px 0}.depth-progress{left:12px;right:12px;bottom:18px}.earth-finale{padding:70px 16px}.earth-finale h2{font-size:42px}
 }
+
+
+/* cegueira à mudança: breve interrupção entre cenas */
+.flicker-scene.running:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:8;
+  background:#fffdf8;
+  pointer-events:none;
+  animation:flicker-blank .52s steps(1,end) infinite;
+}
+@keyframes flicker-blank{
+  0%,70%,100%{opacity:0}
+  71%,88%{opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+  .flicker-scene.running:after{animation-duration:1.04s}
+}
