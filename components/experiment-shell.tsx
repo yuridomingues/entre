@@ -13,28 +13,19 @@ const hints: Record<string,string> = {
   escala:"avance pelas comparações",
   acaso:"solte os pontos",
   noite:"diminua a luz",
-  rede:"mude os começos e a ponte",
+  rede:"escolha começos, espalhe e corte a ponte",
   cooperar:"escolha sem saber a resposta do outro",
   memoria:"olhe, esconda, reconstrua",
   mudanca:"mude o começo e deixe acontecer",
-  centro:"coloque antes de calcular",
   atencao:"conte uma coisa só",
-  evidencia:"puxe pistas e mova sua certeza",
-  aleatorio:"esquerda ou direita, trinta vezes",
-  teseu:"troque até sua resposta mudar",
+  aleatorio:"toque nos lados ou use as setas",
+  teseu:"toque nas peças e marque seu limite",
   perguntas:"escolha perguntas que eliminem mais",
-  cegueira:"encontre o detalhe que muda",
-  monte:"marque onde a palavra muda",
-  media:"abra o total em grupos",
-  portas:"escolha, receba uma pista, escolha de novo",
-  maioria:"rode as três disputas",
   regra:"teste a hipótese, inclusive contra ela",
-  sobreviventes:"olhe também para onde não há marcas",
   minuto:"pare quando sentir que chegou",
   stroop:"responda à tinta, não à palavra",
-  aniversario:"faça um palpite antes de revelar",
   mapa:"arraste a latitude",
-  profundidade:"role até o centro"
+  profundidade:"toque no corte ou arraste a profundidade"
 };
 
 export function ExperimentShell({ slug, title, intro, children }: { slug: string; title: string; intro: string; children: ReactNode }) {
