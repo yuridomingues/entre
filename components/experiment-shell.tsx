@@ -4,6 +4,17 @@ import { experiments, getExperiment } from "@/lib/experiments";
 import { ExperimentVisual } from "@/components/experiment-visuals";
 import { BrandLogo } from "@/components/brand-logo";
 
+const hints: Record<string,string> = {
+  arvore:"role para atravessar o tempo",
+  mente:"responda antes de revelar",
+  musica:"ouça e desligue camadas",
+  conversa:"escolha o detalhe que seguiria",
+  vida:"arraste a escala",
+  escala:"avance pelas comparações",
+  acaso:"solte os pontos",
+  noite:"diminua a luz"
+};
+
 export function ExperimentShell({ slug, title, intro, children }: { slug: string; title: string; intro: string; children: ReactNode }) {
   const exp = getExperiment(slug)!;
   const index = experiments.findIndex((item) => item.slug === slug);
@@ -21,7 +32,7 @@ export function ExperimentShell({ slug, title, intro, children }: { slug: string
         <p className="cover-question">{exp.question}</p>
         <h1>{title}</h1>
         <p className="cover-intro">{intro}</p>
-        <div className="cover-actions"><a href="#experiencia" className="cover-start">começar ↓</a><span>{exp.action} · nada é salvo</span></div>
+        <div className="cover-actions"><a href="#experiencia" className="cover-start">começar ↓</a><span>{hints[slug]}</span></div>
       </div>
       <div className="cover-art"><ExperimentVisual slug={slug}/></div>
     </section>

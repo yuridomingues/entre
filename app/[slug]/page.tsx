@@ -7,14 +7,14 @@ import { ScaleExplorer } from "@/components/scale-visual-experience";
 import { getExperiment, experiments } from "@/lib/experiments";
 
 const intros: Record<string,string> = {
-  arvore:"Imagine uma árvore começando em 1500. Role pelo tempo e observe a mesma vida atravessar cinco séculos de história.",
-  mente:"Três imagens. Três perguntas simples. Em todas elas, o contexto muda o que parece óbvio.",
-  musica:"Ligue o áudio, desligue camadas e compare formas. O som muda na hora conforme você mexe.",
-  conversa:"Uma pessoa diz uma única frase. Você escolhe qual palavra seguir e descobre para onde a conversa vai.",
-  vida:"Anos são grandes demais para a intuição. Troque a unidade por semanas e veja a escala mudar sem transformar o tempo numa meta.",
-  escala:"Volte para a comparação direta. Cada etapa coloca dois objetos na mesma régua e preserva a proporção entre eles.",
-  acaso:"Todos os pontos começam juntos. Depois, cada um escolhe A ou B repetidas vezes. Veja o desenho que aparece.",
-  noite:"A cidade está acesa. Diminua a luz e observe o que começa a aparecer acima dos prédios."
+  arvore:"Uma mesma árvore. 526 anos. Role.",
+  mente:"Três imagens. Responda antes de revelar.",
+  musica:"Ouça tudo. Depois tire uma camada.",
+  conversa:"Uma frase. Você escolhe o detalhe que a conversa segue.",
+  vida:"Troque anos por semanas e veja o tempo mudar de forma.",
+  escala:"Cada etapa coloca duas referências na mesma régua. Compare antes de olhar o número.",
+  acaso:"Todos começam juntos. Depois, cada ponto escolhe um lado várias vezes.",
+  noite:"A cidade está acesa. Apague-a devagar."
 };
 
 const components: Record<string, React.ReactNode> = {
