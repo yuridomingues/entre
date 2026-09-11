@@ -13,21 +13,9 @@ const moments=[
 ];
 
 const leaves=[
-  [183,196,-18],[204,170,12],[230,151,-9],[258,159,16],[286,178,-11],[309,207,20],
-  [155,228,12],[187,232,-15],[223,214,8],[262,220,-17],[296,242,10],[329,254,-12],
-  [137,267,-18],[174,278,13],[211,263,-8],[251,274,18],[291,286,-15],[320,304,9],
-  [163,316,14],[205,306,-12],[245,320,10],[280,330,-17]
+  [177,150,18],[218,112,23],[265,124,20],[312,153,22],[142,202,20],[203,190,25],[266,188,27],[330,208,22],
+  [112,254,18],[170,250,24],[234,242,27],[299,254,25],[363,268,18],[146,306,20],[213,304,26],[286,316,24],[338,326,18]
 ];
-
-function phase(progress:number,start:number,end:number){
-  if(progress<=start)return 0;
-  if(progress>=end)return 1;
-  return (progress-start)/(end-start);
-}
-
-function drawStyle(p:number){
-  return {strokeDasharray:1,strokeDashoffset:1-p};
-}
 
 export function TreeExperience(){
   const ref=useRef<HTMLDivElement>(null);
@@ -50,28 +38,12 @@ export function TreeExperience(){
   const item=moments[index];
   const year=Math.round(1500+526*progress);
   const age=year-1500;
+  const draw=Math.min(1,.1+progress*1.08);
+  const crown=Math.max(0,Math.min(1,(progress-.06)/.45));
+  const trunkWidth=9+progress*13;
+  const sky="hsl("+(96+progress*10)+" "+(36+progress*8)+"% "+(88-progress*8)+"%)";
 
-  const seedP=phase(progress,0,.035);
-  const rootP=phase(progress,.015,.11);
-  const sproutP=phase(progress,.055,.17);
-  const trunkP=phase(progress,.12,.42);
-  const branchP=phase(progress,.32,.64);
-  const twigP=phase(progress,.53,.78);
-  const leafP=phase(progress,.68,.93);
-  const ageP=phase(progress,.8,1);
-
-  const growthLabel=
-    progress<.04?"semente":
-    progress<.12?"criando raízes":
-    progress<.20?"primeiro broto":
-    progress<.43?"crescendo":
-    progress<.66?"abrindo galhos":
-    progress<.82?"ramificando":
-    progress<.94?"ganhando folhas":"árvore adulta";
-
-  const sky="hsl("+(99+progress*7)+" "+(34+progress*5)+"% "+(91-progress*8)+"%)";
-
-  return <div className="tree-story tree-story-v4" ref={ref}>
+  return <div className="tree-story" ref={ref}>
     <div className="tree-story-stage" style={{background:sky}}>
       <div className="tree-year-watermark" aria-hidden="true">{year}</div>
 
@@ -98,83 +70,39 @@ export function TreeExperience(){
         </div>
       </aside>
 
-      <div className="tree-organism" aria-hidden="true">
-        <div className="tree-sun-v4" style={{transform:"translate("+(progress*26-13)+"vw,"+(Math.sin(progress*Math.PI)*-14)+"px)"}}/>
-        <svg viewBox="0 0 480 620" className="tree-sketch">
-          <defs>
-            <filter id="roughTree" x="-5%" y="-5%" width="110%" height="110%">
-              <feTurbulence type="fractalNoise" baseFrequency=".012 .045" numOctaves="1" seed="17"/>
-              <feDisplacementMap in="SourceGraphic" scale=".8"/>
-            </filter>
-          </defs>
+      <div className="tree-canvas" aria-hidden="true">
+        <div className="tree-sun" style={{transform:"translate("+(progress*34-17)+"vw,"+(Math.sin(progress*Math.PI)*-18)+"px)"}}/>
+        <svg viewBox="0 0 480 620" className="tree-drawing">
+          <path className="tree-ground back" d="M32 574c94 7 174-4 263 2 57 4 103 0 153-3"/>
+          <path className="tree-ground" d="M27 568c98 4 178-3 268 1 57 2 105 0 158-4"/>
 
-          <g className="tree-paper-ground">
-            <path d="M31 500c85 4 153-3 228 0 72 3 132 0 190-4"/>
-            <path className="echo" d="M34 504c82-1 154 3 226 1 72-2 128 2 186-1"/>
+          <g className="tree-branches" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw,strokeWidth:trunkWidth}} d="M241 569c-7-101-6-196 3-287 3-34 9-70 16-103"/>
+            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M245 395c-27-42-62-77-104-104"/>
+            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M249 357c36-49 76-89 119-120"/>
+            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M247 438c-49-24-96-34-143-31"/>
+            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M245 466c48-7 91 2 132 28"/>
+            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M207 343c-5-42 3-79 24-112"/>
+            <path pathLength="1" style={{strokeDasharray:1,strokeDashoffset:1-draw}} d="M300 314c9-33 25-59 49-79"/>
           </g>
 
-          <g className="tree-seed" style={{opacity:seedP}}>
-            <ellipse cx="240" cy="494" rx="10" ry="7" transform="rotate(-18 240 494)"/>
-            <path d="M233 493c5-4 10-6 15-5"/>
+          <g className="tree-branch-echo" fill="none" stroke="currentColor" strokeLinecap="round" opacity=".18">
+            <path d="M246 569c-8-98-5-192 5-286 4-36 10-70 17-101"/>
+            <path d="M249 397c-28-41-63-75-106-100"/>
+            <path d="M253 358c35-47 75-86 116-116"/>
           </g>
 
-          <g className="tree-roots" filter="url(#roughTree)">
-            <path pathLength="1" style={drawStyle(rootP)} d="M240 498c-4 21-12 39-28 55-12 12-26 20-43 26"/>
-            <path pathLength="1" style={drawStyle(phase(progress,.035,.12))} d="M241 500c7 19 17 36 31 49 15 14 31 23 50 29"/>
-            <path pathLength="1" style={drawStyle(phase(progress,.055,.13))} d="M225 532c-8 11-18 18-31 22M272 545c11 7 21 11 33 13"/>
-          </g>
-
-          <g className="tree-sprout" filter="url(#roughTree)">
-            <path pathLength="1" style={drawStyle(sproutP)} d="M240 497c1-20 0-40 5-59 4-16 9-28 16-40"/>
-            <path pathLength="1" style={drawStyle(phase(progress,.09,.18))} d="M252 416c-13-5-24-12-33-23"/>
-            <path pathLength="1" style={drawStyle(phase(progress,.1,.19))} d="M253 421c11-8 20-17 26-29"/>
-            <path className="small-leaf" style={{opacity:phase(progress,.1,.19)}} d="M216 390c8-5 15-5 21 0-7 5-14 6-21 0ZM278 389c-7-5-14-4-20 1 7 5 13 5 20-1Z"/>
-          </g>
-
-          <g className="tree-trunk-main" filter="url(#roughTree)">
-            <path pathLength="1" style={{...drawStyle(trunkP),strokeWidth:4+ageP*2.5}} d="M240 499c-1-58 1-110 7-158 6-47 15-91 28-131"/>
-            <path className="echo" pathLength="1" style={drawStyle(trunkP)} d="M245 500c-1-58 1-110 8-158 6-46 15-89 28-128"/>
-          </g>
-
-          <g className="tree-branches-v4" filter="url(#roughTree)">
-            <path pathLength="1" style={drawStyle(branchP)} d="M252 391c-23-29-51-52-84-69"/>
-            <path pathLength="1" style={drawStyle(phase(progress,.36,.65))} d="M258 350c29-35 61-63 98-82"/>
-            <path pathLength="1" style={drawStyle(phase(progress,.4,.67))} d="M249 428c-35-17-70-24-106-21"/>
-            <path pathLength="1" style={drawStyle(phase(progress,.43,.7))} d="M248 448c37-5 73 3 108 24"/>
-            <path pathLength="1" style={drawStyle(phase(progress,.47,.72))} d="M226 364c-4-29 1-55 16-79"/>
-            <path pathLength="1" style={drawStyle(phase(progress,.49,.73))} d="M302 317c8-22 20-40 38-54"/>
-          </g>
-
-          <g className="tree-twigs" filter="url(#roughTree)">
-            <path pathLength="1" style={drawStyle(twigP)} d="M190 337c-22-7-41-7-58 0M186 333c-8-18-19-31-34-40"/>
-            <path pathLength="1" style={drawStyle(phase(progress,.56,.79))} d="M328 290c18-13 37-20 57-20M332 286c5-17 15-31 29-42"/>
-            <path pathLength="1" style={drawStyle(phase(progress,.59,.8))} d="M171 407c-22-6-42-6-61 0M314 453c18 4 36 12 52 24"/>
-            <path pathLength="1" style={drawStyle(phase(progress,.61,.82))} d="M236 301c-17-13-31-29-41-48M338 477c6-18 15-32 28-43"/>
-          </g>
-
-          <g className="tree-leaves-v4" style={{opacity:leafP}}>
-            {leaves.map(([cx,cy,rot],i)=>{
-              const local=Math.max(0,Math.min(1,leafP*1.35-(i%6)*.07));
-              const rx=7+(i%3)*1.5;
-              const ry=3.8+(i%2);
-              return <ellipse
-                key={i}
-                cx={cx}
-                cy={cy}
-                rx={rx}
-                ry={ry}
-                transform={"rotate("+rot+" "+cx+" "+cy+")"}
-                opacity={local}
-              />;
+          <g className="tree-leaves" style={{opacity:crown}}>
+            {leaves.map(([cx,cy,r],i)=>{
+              const local=Math.max(0,Math.min(1,(crown*1.4)-(i%5)*.08));
+              return <ellipse key={i} cx={cx} cy={cy} rx={r*(.75+local*.35)} ry={r*(.55+local*.3)} transform={"rotate("+((i%2?1:-1)*(8+i%4*5))+" "+cx+" "+cy+")"} opacity={local}/>;
             })}
           </g>
 
-          <g className="tree-age-lines" style={{opacity:ageP}}>
-            <path d="M229 481c8-3 16-3 24 0M230 466c7-3 15-3 22 0M232 451c6-2 12-2 18 0"/>
-            <path d="M258 370c4-9 8-17 13-24M216 390c-5-7-10-13-15-18"/>
+          <g className="tree-ring-marks" opacity={Math.min(1,progress*2)}>
+            <path d="M214 552c18-5 37-5 55 0M216 536c17-5 34-5 51 0M219 520c15-4 30-4 45 0"/>
           </g>
         </svg>
-        <div className="tree-growth-state"><i/><span>{growthLabel}</span></div>
       </div>
 
       <article className="tree-note" key={item.year}>
