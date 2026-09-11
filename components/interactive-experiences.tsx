@@ -127,6 +127,7 @@ const initialLayers:Record<Layer,boolean>={pulse:true,bass:true,harmony:true,spa
 export function MusicLab(){
   const ctx=useRef<AudioContext|null>(null);
   const timer=useRef<ReturnType<typeof setInterval>|null>(null);
+  const stepRef=useRef(0);
   const [playing,setPlaying]=useState(false);
   const [layers,setLayers]=useState(initialLayers);
   const [wave,setWave]=useState<OscillatorType>("sine");
@@ -137,21 +138,72 @@ export function MusicLab(){
   useEffect(()=>{waveRef.current=wave},[wave]);
   useEffect(()=>()=>{if(timer.current)clearInterval(timer.current);ctx.current?.close()},[]);
 
-  const stop=()=>{if(timer.current)clearInterval(timer.current);timer.current=null;setPlaying(false)};
+  const stop=()=>{
+    if(timer.current)clearInterval(timer.current);
+    timer.current=null;
+    stepRef.current=0;
+    setPlaying(false);
+  };
+
   const tone=(freq:number,dur=.16,vol=.035,type:OscillatorType=waveRef.current)=>{
     if(!ctx.current)return;
     const c=ctx.current,o=c.createOscillator(),g=c.createGain();
-    o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(vol,c.currentTime);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+dur);
-    o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+dur);
+    o.type=type;
+    o.frequency.value=freq;
+    g.gain.setValueAtTime(vol,c.currentTime);
+    g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+dur);
+    o.connect(g).connect(c.destination);
+    o.start();
+    o.stop(c.currentTime+dur);
   };
+
   const tick=()=>{
     const l=layersRef.current;
-    if(l.pulse)tone(110,.08,.018,"sine");
-    if(l.bass)tone(146.83,.32,.028,"triangle");
-    if(l.harmony){tone(293.66,.45,.018);tone(369.99,.45,.014);tone(440,.45,.012)}
-    if(l.spark)tone([587.33,659.25,739.99,880][Math.floor(Math.random()*4)],.12,.012,waveRef.current);
+    const step=stepRef.current%8;
+
+    if(l.pulse&&step%2===0){
+      const accent=step===0;
+      tone(accent?920:760,.045,accent?.026:.017,"sine");
+    }
+
+    if(l.bass){
+      const bassPattern:[number,number][]=[
+        [0,65.41],
+        [3,82.41],
+        [4,73.42],
+        [6,98.00]
+      ];
+      const note=bassPattern.find(([at])=>at===step);
+      if(note)tone(note[1],.28,.034,"triangle");
+    }
+
+    if(l.harmony&&step%4===0){
+      const chord=step===0
+        ? [261.63,329.63,392.00]
+        : [220.00,261.63,329.63];
+      chord.forEach((freq,i)=>tone(freq,.78,.012-i*.0015,"sine"));
+    }
+
+    if(l.spark){
+      const melody:[number|null,number|null,number|null,number|null,number|null,number|null,number|null,number|null]=[
+        523.25,null,659.25,587.33,null,659.25,783.99,659.25
+      ];
+      const note=melody[step];
+      if(note)tone(note,.14,.014,waveRef.current);
+    }
+
+    stepRef.current=(step+1)%8;
   };
-  const start=async()=>{ctx.current??=new AudioContext();await ctx.current.resume();tick();timer.current=setInterval(tick,620);setPlaying(true)};
+
+  const start=async()=>{
+    ctx.current??=new AudioContext();
+    await ctx.current.resume();
+    stepRef.current=0;
+    tick();
+    timer.current=setInterval(tick,310);
+    setPlaying(true);
+  };
+
   const toggle=(k:Layer)=>setLayers(v=>({...v,[k]:!v[k]}));
 
   return <div className="music-lab">
@@ -162,10 +214,10 @@ export function MusicLab(){
       <div className="equalizer" aria-hidden="true">{Array.from({length:20}).map((_,i)=><i key={i} style={{height:playing?`${25+(i*37)%72}%`:"8%"}}/>)}</div>
     </section>
     <section className="mixer"><p className="step-label">parte 1 · camadas</p><h2>Uma música pode parecer uma coisa só.</h2><p>Desligue uma parte por vez e ouça o espaço que ela ocupava.</p>
-      {([["pulse","pulso","marca a repetição"],["bass","baixo","dá uma referência grave"],["harmony","harmonia","empilha notas"],["spark","melodia","desenha movimento"]] as [Layer,string,string][]).map(([k,n,d])=><button key={k} onClick={()=>toggle(k)} className={layers[k]?"track on":"track"} aria-pressed={layers[k]}><span>{layers[k]?"ligada":"desligada"}</span><strong>{n}</strong><small>{d}</small></button>)}
+      {([["pulse","pulso","marca o tempo"],["bass","baixo","cria um padrão grave"],["harmony","harmonia","muda o chão das notas"],["spark","melodia","desenha movimento"]] as [Layer,string,string][]).map(([k,n,d])=><button key={k} onClick={()=>toggle(k)} className={layers[k]?"track on":"track"} aria-pressed={layers[k]}><span>{layers[k]?"ligada":"desligada"}</span><strong>{n}</strong><small>{d}</small></button>)}
     </section>
     <section className="wave-lab"><div><p className="step-label">parte 2 · timbre</p><h2>A mesma nota pode ter texturas diferentes.</h2><p>Escolha uma forma e toque a mesma nota. A altura continua igual, mas a textura muda.</p></div><div className="wave-controls"><label htmlFor="wave">forma do som</label><select id="wave" value={wave} onChange={e=>setWave(e.target.value as OscillatorType)}><option value="sine">senoidal, mais pura</option><option value="triangle">triangular, mais macia</option><option value="square">quadrada, mais áspera</option><option value="sawtooth">serrilhada, mais brilhante</option></select><button className="pill-button" onClick={async()=>{ctx.current??=new AudioContext();await ctx.current.resume();tone(440,.8,.05,wave)}}>ouvir a mesma nota</button></div></section>
-    <aside className="source-note">Todo o som é criado na hora. Nenhuma gravação é usada.</aside>
+    <aside className="source-note music-source-note">Todo o som é criado na hora. Nenhuma gravação é usada.</aside>
   </div>;
 }
 
