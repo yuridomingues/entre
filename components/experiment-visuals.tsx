@@ -2,10 +2,22 @@ export function ExperimentVisual({ slug, compact = false }: { slug: string; comp
   const cls = compact ? "tile-art compact" : "tile-art";
 
   if (slug === "arvore") return (
-    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Árvore">
-      <path d="M207 235c-4-52 0-91 8-128m-3 32-47-38m47 17 49-47m-51 82-73 4m75 14 70 18" fill="none" stroke="currentColor" strokeWidth="7" strokeLinecap="round"/>
-      <g fill="currentColor"><circle cx="142" cy="87" r="44"/><circle cx="205" cy="68" r="54"/><circle cx="270" cy="88" r="46"/><circle cx="121" cy="144" r="37"/><circle cx="189" cy="134" r="49"/><circle cx="254" cy="137" r="51"/><circle cx="308" cy="145" r="32"/></g>
-      <path d="M112 235h195" stroke="currentColor" strokeWidth="6" strokeLinecap="round"/>
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Árvore desenhada à mão">
+      <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M210 231c-5-49-4-95 1-138 3-24 7-45 12-65" strokeWidth="8"/>
+        <path d="M212 140c-27-34-58-58-92-72M214 116c31-38 64-67 101-86M211 170c-40-17-77-23-113-19M211 184c38-5 73 3 106 25" strokeWidth="6"/>
+        <path d="M216 231c-5-48-2-94 4-136 4-24 8-45 13-64" strokeWidth="2" opacity=".25"/>
+        <path d="M66 232c83 4 163-2 284 0" strokeWidth="5"/>
+      </g>
+      <g fill="currentColor" opacity=".82">
+        <ellipse cx="114" cy="65" rx="25" ry="17" transform="rotate(-16 114 65)"/>
+        <ellipse cx="159" cy="84" rx="30" ry="20" transform="rotate(11 159 84)"/>
+        <ellipse cx="226" cy="54" rx="35" ry="23" transform="rotate(-8 226 54)"/>
+        <ellipse cx="294" cy="67" rx="29" ry="19" transform="rotate(14 294 67)"/>
+        <ellipse cx="335" cy="112" rx="24" ry="17" transform="rotate(-12 335 112)"/>
+        <ellipse cx="137" cy="132" rx="28" ry="19" transform="rotate(7 137 132)"/>
+        <ellipse cx="271" cy="127" rx="32" ry="21" transform="rotate(-9 271 127)"/>
+      </g>
     </svg>
   );
 

@@ -1,0 +1,41 @@
+/* A árvore que viu tudo, interface v3 */
+.tree-story{min-height:5100px;background:#b9d59f}
+.tree-story-stage{position:sticky;top:0;height:100svh;min-height:600px;overflow:hidden;color:#183414;transition:background .18s linear}
+.tree-year-watermark{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);font-size:clamp(180px,32vw,520px);font-weight:900;letter-spacing:-.095em;line-height:.72;color:rgba(255,255,255,.24);pointer-events:none;user-select:none}
+.tree-rail{position:absolute;z-index:8;left:clamp(20px,4vw,58px);top:82px;bottom:72px;width:128px;display:flex;flex-direction:column;gap:28px}
+.tree-clock{display:flex;flex-direction:column}.tree-clock small{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.12em}.tree-clock strong{font-size:clamp(42px,5.8vw,76px);line-height:.84;letter-spacing:-.065em}.tree-clock span{font-family:var(--serif);font-size:13px;margin-top:7px}
+.tree-rail-line{position:relative;width:2px;flex:1;margin-left:5px;background:rgba(24,52,20,.2)}
+.tree-rail-fill{position:absolute;left:0;top:0;width:2px;background:#183414}
+.tree-rail-line button{position:absolute;left:0;transform:translate(-5px,-50%);border:0;background:transparent;padding:0;display:flex;align-items:center;gap:9px;color:rgba(24,52,20,.48);cursor:pointer}
+.tree-rail-line button b{width:12px;height:12px;border:2px solid #183414;border-radius:50%;background:#dbe7c7;transition:transform .2s ease,background .2s ease}
+.tree-rail-line button span{font-size:8px;font-weight:900}.tree-rail-line button.passed b,.tree-rail-line button.active b{background:#183414}.tree-rail-line button.active{color:#183414}.tree-rail-line button.active b{transform:scale(1.35)}
+.tree-canvas{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:min(62vw,720px);height:92%;display:flex;align-items:flex-end;justify-content:center}
+.tree-drawing{height:100%;width:auto;max-width:100%;overflow:visible;color:#214d1b}
+.tree-branches path{transition:stroke-dashoffset .15s linear,stroke-width .15s linear;stroke-width:13}.tree-branches path:not(:first-child){stroke-width:9}
+.tree-branch-echo{stroke-width:4}.tree-leaves{fill:#5c8e49;transition:opacity .15s linear}.tree-ring-marks{fill:none;stroke:#f0d19a;stroke-width:3;stroke-linecap:round}
+.tree-ground{fill:none;stroke:#183414;stroke-width:5;stroke-linecap:round}.tree-ground.back{stroke-width:2;opacity:.24}
+.tree-sun{position:absolute;z-index:-1;top:12%;left:48%;width:clamp(70px,9vw,118px);aspect-ratio:1;border:3px solid #183414;border-radius:50%;background:#ffe084;transition:transform .15s linear}
+.tree-note{position:absolute;z-index:8;right:clamp(22px,5vw,72px);top:50%;transform:translateY(-50%);width:min(350px,29vw);padding:4px 0 4px 22px;border-left:4px solid #183414;animation:tree-note-in .28s ease}
+.tree-note span{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.11em}.tree-note h2{font-family:var(--serif);font-size:clamp(34px,4.2vw,57px);font-weight:400;line-height:.95;letter-spacing:-.045em;margin:9px 0 12px}.tree-note p{font-size:15px;line-height:1.5;margin:0;max-width:320px;color:#31512d}
+@keyframes tree-note-in{from{opacity:0;transform:translate(10px,-50%)}to{opacity:1;transform:translate(0,-50%)}}
+.tree-bottom{position:absolute;z-index:9;left:clamp(20px,4vw,58px);right:clamp(20px,4vw,58px);bottom:22px;display:grid;grid-template-columns:38px 1fr 105px;gap:10px;align-items:center}
+.tree-bottom>span,.tree-bottom>small{font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.09em}.tree-bottom>small{text-align:right}.tree-bottom>div{height:4px;background:rgba(24,52,20,.18);overflow:hidden;border-radius:99px}.tree-bottom i{display:block;height:100%;background:#183414}
+.tree-finale{min-height:92svh;background:#151b13;color:#f5f1e8;display:grid;grid-template-columns:minmax(280px,.85fr) 1.15fr;align-items:center;gap:clamp(40px,8vw,110px);padding:clamp(70px,9vw,120px) clamp(20px,7vw,100px)}
+.tree-rings{position:relative;aspect-ratio:1;max-width:520px;width:100%;margin:auto}.tree-rings:before{content:"";position:absolute;inset:2%;border:3px solid #f5f1e8;border-radius:47% 53% 48% 52%/52% 46% 54% 48%}
+.tree-rings i{position:absolute;border:2px solid rgba(245,241,232,.68);border-radius:48% 52% 46% 54%/53% 45% 55% 47%}.tree-rings i:nth-child(2n){transform:rotate(-3deg)}.tree-rings i:nth-child(3n){transform:rotate(4deg)}
+.tree-rings span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--serif);font-size:clamp(34px,5vw,64px)}
+.tree-finale small{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.11em}.tree-finale h2{font-family:var(--serif);font-size:clamp(44px,6vw,80px);font-weight:400;line-height:.98;letter-spacing:-.045em;margin:12px 0 20px}.tree-finale p{font-size:18px;line-height:1.55;color:#c8cec5;max-width:620px}
+@media(max-width:900px){.tree-canvas{width:min(70vw,650px);left:46%}.tree-note{right:20px;width:31vw}.tree-finale{grid-template-columns:1fr}.tree-rings{width:min(72vw,430px)}}
+@media(max-width:640px){
+  .tree-story{min-height:4400px}.tree-story-stage{min-height:560px}.tree-year-watermark{font-size:clamp(118px,38vw,170px);top:25%}
+  .tree-rail{left:12px;right:12px;top:62px;bottom:auto;width:auto;height:62px;display:block}.tree-clock strong{font-size:52px}.tree-clock span{font-size:11px}.tree-clock small{font-size:8px}
+  .tree-rail-line{position:absolute;left:0;right:0;top:72px;width:auto;height:2px;margin:0;background:rgba(24,52,20,.2)}.tree-rail-fill{display:none}
+  .tree-rail-line button{top:0!important;transform:translate(-50%,-5px);display:block}.tree-rail-line button:nth-child(2){left:0%}.tree-rail-line button:nth-child(3){left:14.28%}.tree-rail-line button:nth-child(4){left:28.56%}.tree-rail-line button:nth-child(5){left:42.84%}.tree-rail-line button:nth-child(6){left:57.12%}.tree-rail-line button:nth-child(7){left:71.4%}.tree-rail-line button:nth-child(8){left:85.68%}.tree-rail-line button:nth-child(9){left:100%}.tree-rail-line button span{display:none}
+  .tree-canvas{left:50%;bottom:108px;width:min(94vw,470px);height:68%}.tree-sun{top:18%;left:58%;width:62px}
+  .tree-note{left:12px;right:12px;top:auto;bottom:43px;transform:none;width:auto;padding:9px 10px 9px 14px;background:rgba(245,241,232,.9);border-left:3px solid #183414;backdrop-filter:blur(5px)}
+  .tree-note span{font-size:7px}.tree-note h2{font-size:29px;margin:5px 0 6px}.tree-note p{font-size:12px;line-height:1.35}
+  @keyframes tree-note-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .tree-bottom{left:12px;right:12px;bottom:12px;grid-template-columns:28px 1fr 82px}.tree-bottom>span,.tree-bottom>small{font-size:7px}
+  .tree-finale{min-height:auto;padding:68px 16px 78px;gap:45px}.tree-rings{width:min(82vw,360px)}.tree-finale h2{font-size:42px}.tree-finale p{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){.tree-note{animation:none}.tree-branches path,.tree-leaves,.tree-sun{transition:none}}

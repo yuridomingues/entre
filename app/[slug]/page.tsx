@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ExperimentShell } from "@/components/experiment-shell";
-import { TreeTimeline, MindLab, MusicLab, ConversationDive, LifeWeeks, RandomWalk, NightSky } from "@/components/interactive-experiences";
+import { MindLab, MusicLab, ConversationDive, LifeWeeks, RandomWalk, NightSky } from "@/components/interactive-experiences";
+import { TreeExperience } from "@/components/tree-experience";
 import { ScaleExplorer } from "@/components/scale-visual-experience";
 import { getExperiment, experiments } from "@/lib/experiments";
 
 const intros: Record<string,string> = {
-  arvore:"Imagine uma árvore que começou a crescer em 1500. Continue rolando e use o mesmo organismo como régua enquanto cinco séculos passam.",
+  arvore:"Imagine uma árvore começando em 1500. Role pelo tempo e observe a mesma vida atravessar cinco séculos de história.",
   mente:"Três imagens. Três perguntas simples. Em todas elas, o contexto muda o que parece óbvio.",
   musica:"Ligue o áudio, desligue camadas e compare formas. O som muda na hora conforme você mexe.",
   conversa:"Uma pessoa diz uma única frase. Você escolhe qual palavra seguir e descobre para onde a conversa vai.",
@@ -17,7 +18,7 @@ const intros: Record<string,string> = {
 };
 
 const components: Record<string, React.ReactNode> = {
-  arvore:<TreeTimeline/>, mente:<MindLab/>, musica:<MusicLab/>, conversa:<ConversationDive/>, vida:<LifeWeeks/>,
+  arvore:<TreeExperience/>, mente:<MindLab/>, musica:<MusicLab/>, conversa:<ConversationDive/>, vida:<LifeWeeks/>,
   escala:<ScaleExplorer/>, acaso:<RandomWalk/>, noite:<NightSky/>
 };
 
