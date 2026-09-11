@@ -35,6 +35,19 @@ function Lines({kind}:{kind:Kind}){
   return <><path d="M100 8c52 0 91 40 91 92 0 51-40 91-91 91S9 151 9 100 49 8 100 8Z" {...line}/><path d="M39 67c19-20 44-25 62-13 3 7 6 15 8 22 9 3 18 5 26 8l5 24-18 16-5 34-28-6-13-31-26-11-12-25M132 37c19 4 36 15 47 30-7 5-14 9-20 13l-22-11M141 132c18 3 32 11 42 24" {...line} strokeWidth="2.2"/></>;
 }
 
+
+function Paint({kind}:{kind:Kind}){
+  if(kind==="grain")return <ellipse cx="50" cy="51" rx="30" ry="21" transform="rotate(-9 50 51)" fill="#f1cd65" opacity=".95"/>;
+  if(kind==="coin")return <circle cx="50" cy="50" r="42" fill="#f1cd65"/>;
+  if(kind==="phone")return <path d="M12 5c10-2 36-2 46 0 3 24 3 86 0 109-11 2-35 2-46 0-3-25-3-84 0-109Z" fill="#7ab9da"/>;
+  if(kind==="person")return <><circle cx="45" cy="20" r="14" fill="#fffaf0"/><path d="M31 39c8-6 20-6 28 0l7 65H25Z" fill="#8466d7"/></>;
+  if(kind==="bus")return <path d="M24 6c18-3 64-3 82 0 6 34 7 121 1 154-18 4-64 4-84 0-6-34-5-121 1-154Z" fill="#ef8a70"/>;
+  if(kind==="building")return <path d="M20 5c18-2 50-2 69 0 2 53 2 158 0 210-18 2-51 2-69 0-2-51-2-157 0-210Z" fill="#fffaf0"/>;
+  if(kind==="tree")return <><path d="M56 254c3-59 5-114 4-168h9c-2 54 1 109 5 168Z" fill="#bd8156"/><path d="M66 5C56 25 46 44 37 61l16-1c-9 16-18 30-26 44h21c-10 17-19 32-28 47h25c-11 18-21 35-31 51h102c-10-17-21-34-31-51h25c-9-16-18-31-28-47h21c-8-15-17-29-26-44h16C84 43 75 24 66 5Z" fill="#8ecb78"/></>;
+  if(kind==="mountain")return <><path d="M7 173 76 81l28 31 45-77 105 138Z" fill="#8ecb78"/><path d="m104 112 45-77 34 46-23-10-17 20-20-16-20 18Z" fill="#fffaf0"/></>;
+  return <><circle cx="100" cy="100" r="91" fill="#7ab9da"/><path d="M39 67c19-20 44-25 62-13l8 22 26 8 5 24-18 16-5 34-28-6-13-31-26-11-12-25M132 37c19 4 36 15 47 30l-20 13-22-11M141 132c18 3 32 11 42 24" fill="#8ecb78"/></>;
+}
+
 function Doodle({kind}:{kind:Kind}){
   const viewBox=kind==="phone"?"0 0 70 120":kind==="person"?"0 0 90 180":kind==="bus"?"0 0 130 180":kind==="building"?"0 0 110 220":kind==="tree"?"0 0 130 260":kind==="mountain"?"0 0 260 180":kind==="earth"?"0 0 200 200":"0 0 100 100";
   return <svg viewBox={viewBox} aria-hidden="true" className="doodle-svg">
@@ -44,6 +57,7 @@ function Doodle({kind}:{kind:Kind}){
         <feDisplacementMap in="SourceGraphic" scale="1.2"/>
       </filter>
     </defs>
+    <g className="doodle-paint"><Paint kind={kind}/></g>
     <g className="doodle-echo" transform="translate(1.2 -0.7)"><Lines kind={kind}/></g>
     <g filter={`url(#rough-${kind})`}><Lines kind={kind}/></g>
   </svg>;
