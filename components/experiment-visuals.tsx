@@ -36,16 +36,17 @@ export function ExperimentVisual({ slug, compact = false }: { slug: string; comp
   );
 
   if (slug === "escala") return (
-    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Objetos em diferentes escalas">
-      <circle cx="67" cy="184" r="8" fill="currentColor"/>
-      <rect x="100" y="136" width="42" height="82" rx="8" fill="none" stroke="currentColor" strokeWidth="5"/>
-      <circle cx="194" cy="105" r="18" fill="currentColor"/>
-      <path d="M171 135h46l10 77h-25v-48h-16v48h-25Z" fill="currentColor"/>
-      <rect x="243" y="151" width="78" height="48" rx="8" fill="none" stroke="currentColor" strokeWidth="5"/>
-      <circle cx="259" cy="203" r="10" fill="currentColor"/><circle cx="304" cy="203" r="10" fill="currentColor"/>
-      <path d="M335 210 367 129l31 81Z" fill="none" stroke="currentColor" strokeWidth="5" strokeLinejoin="round"/>
-      <circle cx="365" cy="63" r="36" fill="none" stroke="currentColor" strokeWidth="5"/>
-      <path d="M45 222h336" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Rabiscos de objetos em diferentes escalas">
+      <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M53 216c78 2 151-2 224 1 42 2 81 0 112-2" strokeWidth="5"/>
+        <path d="M55 220c80-1 150 3 222 0 43-2 79 1 109 1" strokeWidth="2" opacity=".28"/>
+        <circle cx="82" cy="193" r="9" strokeWidth="4"/>
+        <path d="M141 133c9-2 31-2 40 0 2 20 2 62 0 82-9 2-31 2-40 0-2-20-2-62 0-82Z" strokeWidth="4"/>
+        <circle cx="236" cy="119" r="16" strokeWidth="4"/>
+        <path d="M236 136v79M214 158l22-18 24 18M236 177l-17 38M236 177l20 38" strokeWidth="4"/>
+        <path d="M300 112c13-3 43-3 57 0 4 22 4 80 0 102-13 3-43 3-57 0-4-22-4-80 0-102Z" strokeWidth="4"/>
+        <path d="M309 133h39v42h-39M328 133v42" strokeWidth="2.5"/>
+      </g>
     </svg>
   );
 
