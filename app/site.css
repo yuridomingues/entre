@@ -669,3 +669,78 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
   .play-tile .tile-visual:before{width:90%;height:68%}
   .compact-tile .tile-art.compact{width:min(100%,220px)}
 }
+
+
+/* árvore: ilustração editorial dentro da própria dinâmica */
+.tree-story-illustrated .tree-canvas{
+  width:min(66vw,760px);
+  height:94%;
+}
+.tree-story-illustrated .tree-drawing-editorial{
+  filter:drop-shadow(0 7px 0 rgba(24,52,20,.06));
+}
+.tree-story-illustrated .tree-hill{
+  stroke:#315c2a;
+  stroke-width:3;
+}
+.tree-story-illustrated .tree-hill.far{fill:#c9ddb0;opacity:.72}
+.tree-story-illustrated .tree-hill.near{fill:#a7ca86}
+.tree-story-illustrated .tree-roots{
+  stroke:#795039;
+  stroke-width:7;
+}
+.tree-story-illustrated .tree-branches path:not(:first-child){stroke-width:8}
+.tree-story-illustrated .tree-canopy ellipse,
+.tree-story-illustrated .tree-canopy path{
+  vector-effect:non-scaling-stroke;
+}
+.tree-story-illustrated .tree-canopy{
+  transition:opacity .15s linear,transform .15s linear;
+}
+.tree-story-illustrated .tree-time-key{
+  box-shadow:3px 3px 0 rgba(24,52,20,.12);
+}
+.tree-story-illustrated .tree-note{
+  background:rgba(255,250,240,.72);
+  border:2px solid rgba(24,52,20,.18);
+  border-left:5px solid #183414;
+  border-radius:0 14px 14px 0;
+  padding:15px 16px 15px 20px;
+  backdrop-filter:blur(7px);
+}
+.tree-story-illustrated .tree-note p{color:#284c25}
+.tree-story-illustrated .tree-rail-line button{
+  transition:color .18s ease,transform .18s ease;
+}
+.tree-story-illustrated .tree-rail-line button.active{
+  transform:translate(-5px,-50%) scale(1.03);
+}
+.tree-story-illustrated .tree-ring-marks{
+  stroke:#f1d19b;
+  stroke-width:2.5;
+  fill:none;
+}
+.tree-story-illustrated .tree-life-details,
+.tree-story-illustrated .tree-birds{
+  transition:opacity .2s linear;
+}
+
+@media(max-width:900px){
+  .tree-story-illustrated .tree-canvas{width:min(74vw,690px);left:47%}
+}
+@media(max-width:640px){
+  .tree-story-illustrated .tree-canvas{left:50%;bottom:110px;width:min(96vw,500px);height:67%}
+  .tree-story-illustrated .tree-note{
+    background:rgba(255,250,240,.94);
+    border-radius:10px;
+    border:2px solid #183414;
+    border-left-width:4px;
+  }
+  .tree-story-illustrated .tree-rail-line button{
+    top:0!important;
+    left:var(--pos)!important;
+  }
+  .tree-story-illustrated .tree-rail-line button.active{
+    transform:translate(-50%,-5px) scale(1.05);
+  }
+}
