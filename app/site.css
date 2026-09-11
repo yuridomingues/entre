@@ -592,3 +592,80 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
   .theseus-decision{grid-template-columns:1fr}.theseus-decision button{width:100%}.two-ships{grid-template-columns:1fr}
   .depth-interactive-grid{grid-template-columns:1fr}.depth-milestones{grid-template-columns:repeat(2,1fr)}
 }
+
+
+/* editorial illustration system */
+.tile-visual,.cover-art{position:relative;isolation:isolate}
+.play-tile .tile-visual:before,.cover-art:before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:84%;
+  height:72%;
+  border-radius:48% 52% 46% 54% / 54% 43% 57% 46%;
+  background:rgba(255,250,240,.5);
+  border:2px solid rgba(23,23,20,.08);
+  transform:rotate(-2deg);
+}
+.cover-art:before{width:78%;height:68%;background:rgba(255,250,240,.36)}
+.editorial-art{
+  overflow:visible;
+  filter:drop-shadow(0 2px 0 rgba(23,23,20,.08));
+  transform-origin:center;
+  transition:transform .22s ease,filter .22s ease;
+}
+.play-tile:hover .editorial-art{transform:translateY(-3px) rotate(-.6deg) scale(1.018);filter:drop-shadow(0 5px 0 rgba(23,23,20,.09))}
+.cover-art .editorial-art{filter:drop-shadow(0 4px 0 rgba(23,23,20,.08))}
+.cover-art:hover .editorial-art{transform:rotate(.35deg) scale(1.008)}
+.editorial-art .ev-rough{vector-effect:non-scaling-stroke}
+
+/* keep compact cards illustrated, not icon-sized */
+.compact-tile .tile-visual{min-height:175px}
+.compact-tile .tile-art.compact{width:min(100%,250px)}
+.next-tile .editorial-art{width:150px}
+
+/* scale illustrations now behave like objects, not wireframes */
+.doodle-paint{opacity:.96}
+.doodle-svg{overflow:visible}
+.doodle-object .doodle-svg{filter:drop-shadow(0 2px 0 rgba(17,17,17,.06))}
+.doodle-echo{opacity:.16}
+.doodle-paper{background:
+  radial-gradient(circle at 20% 12%,rgba(142,203,120,.08),transparent 27%),
+  radial-gradient(circle at 84% 22%,rgba(132,102,215,.08),transparent 23%),
+  #fffdf8}
+
+/* memory objects use one small editorial palette */
+.memory-svg{fill:none}
+.memory-book rect:first-child{fill:#8466d7}
+.memory-mug path:first-child{fill:#f1cd65}
+.memory-plant path:first-child{fill:#ef8a70}
+.memory-plant path:not(:first-child){fill:#8ecb78}
+.memory-clock circle{fill:#7ab9da}
+.memory-svg.guess{filter:drop-shadow(0 2px 0 rgba(132,102,215,.14))}
+.memory-slot.occupied{background:rgba(132,102,215,.045)}
+
+/* subtle crafted-paper feel inside the key visual experiments */
+.refined-network-board,
+.refined-memory-room,
+.theseus-ship,
+.depth-description,
+.depth-slider{
+  background-color:#fffaf0;
+}
+.refined-network-board{
+  background-image:
+    radial-gradient(circle at 13% 18%,rgba(132,102,215,.06),transparent 20%),
+    radial-gradient(circle at 86% 74%,rgba(142,203,120,.08),transparent 24%);
+}
+.network-person{filter:drop-shadow(0 2px 0 rgba(17,17,17,.08))}
+.refined-network-nodes g.just-lit .network-person{transform:scale(1.08);transform-box:fill-box;transform-origin:center}
+.theseus-ship-svg{filter:drop-shadow(0 3px 0 rgba(17,17,17,.08))}
+.ship-part{transition:fill .2s ease,transform .16s ease}
+.ship-part:hover{transform:translateY(-2px);transform-box:fill-box;transform-origin:center}
+.depth-map{box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
+.depth-probe{filter:drop-shadow(0 0 7px rgba(255,250,240,.8))}
+
+@media(max-width:640px){
+  .play-tile .tile-visual:before{width:90%;height:68%}
+  .compact-tile .tile-art.compact{width:min(100%,220px)}
+}
