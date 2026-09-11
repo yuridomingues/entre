@@ -69,21 +69,35 @@ export function MindLab(){
   const [context,setContext]=useState(100);
   const next=()=>{setAnswer(null);setContext(100);setStep(v=>Math.min(2,v+1))};
   const restart=()=>{setAnswer(null);setContext(100);setStep(0)};
-  const smallScale=1+(100-context)*.0071;
-  const bigScale=1-(100-context)*.00293;
+
+  const smallR=26-context*.12;
+  const bigR=26+context*.12;
+  const smallOrbit=84-context*.10;
+  const bigOrbit=84+context*.12;
+  const contextLabel=context<20?"quase neutro":context<65?"contexto médio":"contexto forte";
+  const ring=(cx:number,r:number,orbit:number)=>Array.from({length:8},(_,i)=>{
+    const angle=(Math.PI*2*i)/8-Math.PI/2;
+    return <circle key={i} cx={cx+Math.cos(angle)*orbit} cy={140+Math.sin(angle)*orbit} r={r}/>;
+  });
 
   return <div className="illusion-room">
     <div className="illusion-top"><span>{step+1} de 3</span><div>{mindSlides.map((_,i)=><i key={i} className={i<=step?"on":""}/>)}</div><strong>{mindSlides[step].label}</strong></div>
     <section className="illusion-card">
-      <p>{step===0&&answer?"agora mexa no contexto":"responda antes de revelar"}</p>
+      <p>{step===0&&answer?"agora retire o contexto aos poucos":"responda antes de revelar"}</p>
       <h2>{mindSlides[step].question}</h2>
 
-      {step===0&&<div className={`ebbinghaus ${answer?"revealed":""}`}>
-        <div className="illusion-option"><span>A</span><div className="cluster cluster-small">{Array.from({length:8}).map((_,i)=><i key={i} style={{scale:String(smallScale)}}/>)}<b/></div></div>
-        <div className="illusion-option"><span>B</span><div className="cluster cluster-big">{Array.from({length:6}).map((_,i)=><i key={i} style={{scale:String(bigScale)}}/>)}<b/></div></div>
+      {step===0&&<div className={"ebbinghaus-svg-wrap "+(answer?"revealed":"")}>
+        <svg className="ebbinghaus-svg" viewBox="0 0 700 280" role="img" aria-label="Dois círculos centrais iguais cercados por círculos de tamanhos diferentes">
+          {answer&&<line className="eb-guide" x1="90" y1="140" x2="610" y2="140"/>}
+          <g className="eb-surround a">{ring(205,smallR,smallOrbit)}</g>
+          <g className="eb-surround b">{ring(495,bigR,bigOrbit)}</g>
+          <circle className="eb-center" cx="205" cy="140" r="31"/>
+          <circle className="eb-center" cx="495" cy="140" r="31"/>
+          <text x="205" y="268">A</text><text x="495" y="268">B</text>
+        </svg>
       </div>}
 
-      {step===1&&<div className={`muller ${answer?"revealed":""}`}>
+      {step===1&&<div className={"muller "+(answer?"revealed":"")}>
         <svg viewBox="0 0 720 260" role="img" aria-label="Linhas A e B">
           <text x="76" y="92" fontSize="28" fontWeight="900" fill="currentColor">A</text>
           <text x="76" y="194" fontSize="28" fontWeight="900" fill="currentColor">B</text>
@@ -95,7 +109,7 @@ export function MindLab(){
         </svg>
       </div>}
 
-      {step===2&&<div className={`contrast ${answer?"revealed":""}`}>
+      {step===2&&<div className={"contrast "+(answer?"revealed":"")}>
         <div className="contrast-half light"><span>A</span><b/></div>
         <div className="contrast-half dark"><span>B</span><b/></div>
         {answer&&<em>mesmo cinza</em>}
@@ -105,11 +119,11 @@ export function MindLab(){
       :<div className="illusion-reveal">
         <strong>{answer==="same"?"Você desconfiou certo.":"A e B são iguais."}</strong>
         {step===0&&<>
-          <p>Os centros não mudaram. Só o contexto ao redor.</p>
+          <p>Os centros ficam exatamente iguais o tempo todo. O que muda é só aquilo que os cerca.</p>
           <div className="illusion-context">
-            <label htmlFor="context-range">força do contexto <b>{context}%</b></label>
+            <label htmlFor="context-range"><span>força do contexto</span><b>{contextLabel}</b></label>
             <input id="context-range" type="range" min="0" max="100" value={context} onChange={e=>setContext(Number(e.target.value))}/>
-            <div><span>quase neutro</span><span>contraste forte</span></div>
+            <div><span>mesmo entorno</span><span>contraste forte</span></div>
           </div>
         </>}
         {step===1&&<p>As pontas mudam a impressão de comprimento. As linhas A e B começam e terminam exatamente no mesmo lugar.</p>}

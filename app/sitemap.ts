@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
-const slugs=["arvore","mente","musica","conversa","vida","escala","acaso","noite","sobre","fontes"];
+import { experiments } from "@/lib/experiments";
 export default function sitemap():MetadataRoute.Sitemap{
   const base="https://entre-ideias.vercel.app";
-  return [{url:base,priority:1},...slugs.map(slug=>({url:`${base}/${slug}`,priority:slug==="sobre"||slug==="fontes"?.5:.8}))];
+  const pages=[...experiments.map(exp=>exp.slug),"sobre","fontes"];
+  return [{url:base,priority:1},...pages.map(slug=>({url:base+"/"+slug,priority:slug==="sobre"||slug==="fontes"?.5:.8}))];
 }

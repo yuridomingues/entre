@@ -4,10 +4,10 @@ import "./site.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://entre-ideias.vercel.app"),
   title: { default: "ENTRE | coisas para pensar com as mãos", template: "%s | ENTRE" },
-  description: "Experimentos interativos sobre percepção, natureza, música, linguagem, tempo, escala e acaso.",
+  description: "Experimentos interativos para mexer em ideias sobre percepção, tempo, linguagem, sistemas e vida coletiva.",
   authors: [{ name: "Yuri Domingues" }],
   creator: "Yuri Domingues",
-  openGraph: { title: "ENTRE | coisas para pensar com as mãos", description: "Oito experiências curtas para mexer em ideias.", type: "website", locale: "pt_BR" },
+  openGraph: { title: "ENTRE | coisas para pensar com as mãos", description: "Experimentos curtos para mexer em ideias.", type: "website", locale: "pt_BR" },
   twitter: { card: "summary_large_image" }
 };
 
