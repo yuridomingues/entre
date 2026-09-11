@@ -1,127 +1,141 @@
 "use client";
 import { useState } from "react";
 
-const steps=[
-  {name:"grão de areia",size:"1 mm",previous:"",ratio:"",note:"Começamos com algo que quase some entre os dedos.",next:"aumentar 5×"},
-  {name:"formiga",size:"5 mm",previous:"grão",ratio:"≈ 5×",note:"Uma formiga pequena já mede vários grãos de areia.",next:"aumentar 5×"},
-  {name:"moeda",size:"2,5 cm",previous:"formiga",ratio:"≈ 5×",note:"Agora a formiga cabe várias vezes no diâmetro de uma moeda.",next:"aumentar 7×"},
-  {name:"mão",size:"18 cm",previous:"moeda",ratio:"≈ 7×",note:"A moeda vira um detalhe na palma da mão.",next:"aumentar 9×"},
-  {name:"pessoa",size:"1,7 m",previous:"mão",ratio:"≈ 9×",note:"A mão que parecia enorme volta a ser apenas uma parte do corpo.",next:"aumentar 7×"},
-  {name:"ônibus",size:"12 m",previous:"pessoa",ratio:"≈ 7×",note:"Ao lado de um ônibus, uma pessoa já parece pequena.",next:"aumentar 7×"},
-  {name:"sequoia",size:"80 m",previous:"ônibus",ratio:"≈ 7×",note:"Um ônibus inteiro cabe várias vezes na altura de uma sequoia gigante.",next:"aumentar 111×"},
-  {name:"Everest",size:"8,8 km",previous:"sequoia",ratio:"≈ 111×",note:"A árvore que dominava a cena quase desaparece diante da montanha.",next:"aumentar 1.440×"},
-  {name:"Terra",size:"12.742 km",previous:"Everest",ratio:"≈ 1.440×",note:"Na escala do planeta, o Everest vira uma pequena irregularidade na superfície.",next:""}
+type Kind="grain"|"coin"|"phone"|"person"|"bus"|"building"|"tree"|"mountain"|"earth";
+
+type Step={
+  kind:Kind;
+  name:string;
+  size:string;
+  ratio:string;
+  ratioNumber:string;
+  note:string;
+};
+
+const steps:Step[]=[
+  {kind:"grain",name:"grão de areia",size:"1 mm",ratio:"começo",ratioNumber:"1",note:"Um milímetro já é pequeno o bastante para quase sumir na ponta do dedo."},
+  {kind:"coin",name:"moeda",size:"2,5 cm",ratio:"25 grãos",ratioNumber:"25×",note:"O grão vira um ponto minúsculo quando a referência passa a ser uma moeda."},
+  {kind:"phone",name:"celular",size:"15 cm",ratio:"6 moedas",ratioNumber:"6×",note:"Uma moeda ainda é fácil de enxergar. Agora ela cabe várias vezes num objeto que seguramos todo dia."},
+  {kind:"person",name:"pessoa",size:"1,7 m",ratio:"11 celulares",ratioNumber:"11×",note:"O celular que ocupava a cena vira só uma pequena parte da altura de uma pessoa."},
+  {kind:"bus",name:"ônibus",size:"12 m",ratio:"7 pessoas",ratioNumber:"7×",note:"Ao lado de um ônibus, a pessoa deixa de dominar a comparação."},
+  {kind:"building",name:"prédio",size:"30 m",ratio:"2,5 ônibus",ratioNumber:"2,5×",note:"Um prédio de dez andares já muda a sensação de escala sem sair do cotidiano."},
+  {kind:"tree",name:"sequoia",size:"80 m",ratio:"2,7 prédios",ratioNumber:"2,7×",note:"Uma sequoia gigante pode passar da altura de muitos prédios."},
+  {kind:"mountain",name:"Everest",size:"8,8 km",ratio:"110 sequoias",ratioNumber:"110×",note:"A árvore que parecia enorme quase desaparece quando a referência vira uma montanha."},
+  {kind:"earth",name:"Terra",size:"12.742 km",ratio:"1.448 Everests",ratioNumber:"1.448×",note:"Na escala do planeta, até a maior montanha parece uma pequena irregularidade na superfície."}
 ];
 
-function ScaleScene({index}:{index:number}){
-  if(index===0)return <svg viewBox="0 0 800 460" role="img" aria-label="Um grão de areia sobre a ponta de um dedo">
-    <path d="M80 430C170 310 270 245 370 250c105 5 180 72 350 180Z" fill="#f3ad91" stroke="currentColor" strokeWidth="6"/>
-    <circle cx="390" cy="245" r="7" fill="currentColor"/>
-    <path d="M390 185v38" stroke="currentColor" strokeWidth="3"/><text x="390" y="165" textAnchor="middle" fontSize="24" fontWeight="900">1 mm</text>
+function Pictogram({kind,className=""}:{kind:Kind;className?:string}){
+  const common={className:`scale-pictogram ${className}`,viewBox:"0 0 160 160",role:"img" as const};
+
+  if(kind==="grain")return <svg {...common} aria-label="Grão de areia">
+    <circle cx="80" cy="84" r="12" fill="#111"/>
+    <path d="M24 132h112M40 123v18M60 126v12M80 121v20M100 126v12M120 123v18" stroke="#111" strokeWidth="4" strokeLinecap="round"/>
+    <text x="80" y="154" textAnchor="middle" fontSize="13" fontWeight="900">1 mm</text>
   </svg>;
 
-  if(index===1)return <svg viewBox="0 0 800 460" role="img" aria-label="Uma formiga comparada a um grão de areia">
-    <circle cx="160" cy="310" r="6" fill="currentColor"/><text x="160" y="350" textAnchor="middle" fontSize="20" fontWeight="900">grão</text>
-    <g transform="translate(365 180)" fill="currentColor" stroke="currentColor" strokeWidth="5" strokeLinecap="round">
-      <ellipse cx="0" cy="80" rx="32" ry="26"/><ellipse cx="64" cy="80" rx="42" ry="30"/><circle cx="-54" cy="80" r="24"/>
-      <path d="M-10 58-58 18M5 54 12 5M12 104-45 142M58 50 108 10M65 110 118 145M88 82l62 0M-75 62l-38-34M-75 94l-42 28"/>
-    </g>
-    <path d="M155 285C245 238 315 220 365 220" fill="none" stroke="currentColor" strokeWidth="3" strokeDasharray="8 8"/>
+  if(kind==="coin")return <svg {...common} aria-label="Moeda">
+    <circle cx="80" cy="80" r="55" fill="#ffd45b" stroke="#111" strokeWidth="7"/>
+    <circle cx="80" cy="80" r="41" fill="none" stroke="#111" strokeWidth="4"/>
+    <circle cx="80" cy="80" r="7" fill="#111"/>
   </svg>;
 
-  if(index===2)return <svg viewBox="0 0 800 460" role="img" aria-label="Uma formiga sobre uma moeda">
-    <circle cx="400" cy="235" r="168" fill="#ffd45b" stroke="currentColor" strokeWidth="7"/>
-    <circle cx="400" cy="235" r="132" fill="none" stroke="currentColor" strokeWidth="4"/>
-    <text x="400" y="275" textAnchor="middle" fontSize="118" fontWeight="900">1</text>
-    <g transform="translate(302 172) scale(.35)" fill="currentColor" stroke="currentColor" strokeWidth="8" strokeLinecap="round">
-      <ellipse cx="0" cy="80" rx="32" ry="26"/><ellipse cx="64" cy="80" rx="42" ry="30"/><circle cx="-54" cy="80" r="24"/>
-      <path d="M-10 58-58 18M5 54 12 5M12 104-45 142M58 50 108 10M65 110 118 145M88 82l62 0"/>
-    </g>
-    <text x="270" y="142" fontSize="20" fontWeight="900">formiga</text>
+  if(kind==="phone")return <svg {...common} aria-label="Celular">
+    <rect x="48" y="15" width="64" height="130" rx="13" fill="#fffdf8" stroke="#111" strokeWidth="7"/>
+    <rect x="56" y="28" width="48" height="91" rx="5" fill="#9edcea" stroke="#111" strokeWidth="4"/>
+    <circle cx="80" cy="133" r="5" fill="#111"/>
   </svg>;
 
-  if(index===3)return <svg viewBox="0 0 800 460" role="img" aria-label="Uma moeda na palma de uma mão">
-    <path d="M294 411c-32-88-40-151-21-188 14-27 38-15 50 5l-9-126c-2-32 40-36 45-4l13 103 5-142c1-32 44-32 45 2l8 139 17-117c5-31 47-25 43 8l-11 130 28-80c11-31 51-17 42 14l-37 147c-14 60-63 109-132 109Z" fill="#f3ad91" stroke="currentColor" strokeWidth="7" strokeLinejoin="round"/>
-    <circle cx="395" cy="294" r="48" fill="#ffd45b" stroke="currentColor" strokeWidth="6"/>
-    <text x="395" y="302" textAnchor="middle" fontSize="28" fontWeight="900">moeda</text>
+  if(kind==="person")return <svg {...common} aria-label="Pessoa">
+    <circle cx="80" cy="31" r="20" fill="#111"/>
+    <path d="M53 61c8-10 46-10 54 0l12 48-20 5-7-30v62H68V96l-9 50H35l17-75-20 28-16-13Z" fill="#111"/>
   </svg>;
 
-  if(index===4)return <svg viewBox="0 0 800 460" role="img" aria-label="Uma pessoa com a mão destacada">
-    <circle cx="410" cy="92" r="48" fill="currentColor"/>
-    <path d="M330 178c20-35 140-35 160 0l30 120-55 8-18-87v197h-72V270l-24 146h-73l35-205-58 91-49-33 96-91Z" fill="currentColor"/>
-    <circle cx="312" cy="208" r="17" fill="#f3ad91" stroke="#fffdf8" strokeWidth="4"/>
-    <path d="M280 205h-80" stroke="currentColor" strokeWidth="3"/><text x="188" y="211" textAnchor="end" fontSize="20" fontWeight="900">mão</text>
+  if(kind==="bus")return <svg {...common} aria-label="Ônibus">
+    <rect x="12" y="43" width="136" height="78" rx="15" fill="#ffd45b" stroke="#111" strokeWidth="6"/>
+    <rect x="24" y="54" width="84" height="34" rx="4" fill="#fffdf8" stroke="#111" strokeWidth="4"/>
+    <rect x="115" y="54" width="22" height="34" rx="4" fill="#fffdf8" stroke="#111" strokeWidth="4"/>
+    <circle cx="42" cy="122" r="15" fill="#111"/><circle cx="120" cy="122" r="15" fill="#111"/>
+    <circle cx="42" cy="122" r="6" fill="#fffdf8"/><circle cx="120" cy="122" r="6" fill="#fffdf8"/>
   </svg>;
 
-  if(index===5)return <svg viewBox="0 0 800 460" role="img" aria-label="Uma pessoa ao lado de um ônibus">
-    <rect x="165" y="145" width="510" height="220" rx="38" fill="#ffd45b" stroke="currentColor" strokeWidth="7"/>
-    <path d="M205 185h300v95H205zM530 185h105v95H530z" fill="#fffdf8" stroke="currentColor" strokeWidth="5"/>
-    <circle cx="270" cy="365" r="42" fill="currentColor"/><circle cx="570" cy="365" r="42" fill="currentColor"/>
-    <g transform="translate(68 228) scale(.52)" fill="currentColor"><circle cx="70" cy="35" r="28"/><path d="M35 82h70l15 120H88v115H52V202H20Z"/></g>
-    <text x="70" y="420" fontSize="18" fontWeight="900">pessoa</text>
+  if(kind==="building")return <svg {...common} aria-label="Prédio">
+    <rect x="38" y="19" width="84" height="127" rx="4" fill="#c9b9f4" stroke="#111" strokeWidth="7"/>
+    {[0,1,2,3].map(row=>[0,1,2].map(col=><rect key={`${row}-${col}`} x={52+col*22} y={34+row*23} width="11" height="12" fill="#fffdf8" stroke="#111" strokeWidth="2"/>))}
+    <rect x="69" y="124" width="22" height="22" fill="#111"/>
   </svg>;
 
-  if(index===6)return <svg viewBox="0 0 800 460" role="img" aria-label="Um ônibus ao lado de uma sequoia">
-    <path d="M470 432c-12-139-7-228 16-328l58 2c22 107 28 196 13 326Z" fill="#7b4d32" stroke="currentColor" strokeWidth="6"/>
-    <g fill="#28501e" stroke="currentColor" strokeWidth="5">
-      <circle cx="515" cy="92" r="82"/><circle cx="438" cy="142" r="71"/><circle cx="592" cy="151" r="75"/><circle cx="488" cy="196" r="84"/><circle cx="568" cy="211" r="76"/>
-    </g>
-    <g transform="translate(70 324) scale(.36)">
-      <rect x="0" y="0" width="510" height="220" rx="38" fill="#ffd45b" stroke="currentColor" strokeWidth="12"/>
-      <circle cx="105" cy="220" r="42" fill="currentColor"/><circle cx="405" cy="220" r="42" fill="currentColor"/>
-    </g>
-    <text x="72" y="300" fontSize="18" fontWeight="900">ônibus</text>
+  if(kind==="tree")return <svg {...common} aria-label="Sequoia">
+    <path d="M68 146 75 58h18l7 88Z" fill="#7b4d32" stroke="#111" strokeWidth="5"/>
+    <path d="M80 11 42 69h23L31 104h35l-24 30h76l-24-30h35L95 69h23Z" fill="#6b9850" stroke="#111" strokeWidth="5" strokeLinejoin="round"/>
   </svg>;
 
-  if(index===7)return <svg viewBox="0 0 800 460" role="img" aria-label="Uma sequoia diante do Everest">
-    <path d="M30 420 310 105l88 92 105-150 267 373Z" fill="#d9e7ef" stroke="currentColor" strokeWidth="7" strokeLinejoin="round"/>
-    <path d="m310 105 88 92 105-150 90 126-55-26-35 38-48-29-57 41-52-35Z" fill="#fffdf8"/>
-    <g transform="translate(86 360) scale(.19)">
-      <path d="M120 300 145 40h54l25 260Z" fill="#7b4d32" stroke="currentColor" strokeWidth="14"/>
-      <circle cx="170" cy="40" r="85" fill="#28501e"/><circle cx="110" cy="110" r="65" fill="#28501e"/><circle cx="225" cy="110" r="65" fill="#28501e"/>
-    </g>
-    <text x="48" y="406" fontSize="18" fontWeight="900">sequoia</text>
+  if(kind==="mountain")return <svg {...common} aria-label="Everest">
+    <path d="M7 137 61 52l20 28 22-47 50 104Z" fill="#9aa9b7" stroke="#111" strokeWidth="6" strokeLinejoin="round"/>
+    <path d="m61 52 20 28 22-47 18 37-17-7-12 15-12-11-12 13Z" fill="#fffdf8" stroke="#111" strokeWidth="3" strokeLinejoin="round"/>
   </svg>;
 
-  return <svg viewBox="0 0 800 460" role="img" aria-label="O Everest comparado ao planeta Terra">
-    <circle cx="425" cy="230" r="192" fill="#7f84d8" stroke="currentColor" strokeWidth="7"/>
-    <path d="M250 178c66-66 118-47 158-7 45 45 93 27 142-16 34 61 56 126 48 194-80 58-262 71-352-4-19-64-8-117 54-167Z" fill="#9edc9a" stroke="currentColor" strokeWidth="5"/>
-    <path d="M595 109l18 18-12 20" fill="none" stroke="#fffdf8" strokeWidth="4"/>
-    <circle cx="602" cy="120" r="7" fill="#fffdf8"/>
-    <path d="M604 115 663 78" stroke="#fffdf8" strokeWidth="3"/>
-    <text x="674" y="80" fontSize="20" fontWeight="900" fill="#fffdf8">Everest</text>
+  return <svg {...common} aria-label="Planeta Terra">
+    <circle cx="80" cy="80" r="62" fill="#7f84d8" stroke="#111" strokeWidth="7"/>
+    <path d="M37 54c12-15 30-22 42-14l6 17 18 5 5 18-14 13-2 25-20-4-9-23-20-8-8-17Z" fill="#82b864" stroke="#111" strokeWidth="3"/>
+    <path d="M102 31c13 3 24 11 31 22l-14 9-13-8Z" fill="#82b864" stroke="#111" strokeWidth="3"/>
   </svg>;
 }
 
 export function ScaleExplorer(){
   const [index,setIndex]=useState(0);
-  const item=steps[index];
-  const previous=steps[Math.max(0,index-1)];
+  const current=steps[index];
+  const previous=index>0?steps[index-1]:null;
 
-  return <div className="scale-v3">
-    <section className="scale-v3-stage">
-      <header>
-        <div><span>{String(index+1).padStart(2,"0")} / {String(steps.length).padStart(2,"0")}</span><h2>{item.name}</h2><strong>{item.size}</strong></div>
-        {index>0&&<div className="scale-ratio"><small>comparado com {previous.name}</small><b>{item.ratio}</b></div>}
-      </header>
+  return <div className="scale-clean">
+    <section className="scale-clean-stage">
+      <div className="scale-clean-top">
+        <div>
+          <span>{String(index+1).padStart(2,"0")} / {String(steps.length).padStart(2,"0")}</span>
+          <h2>{current.name}</h2>
+          <strong>{current.size}</strong>
+        </div>
+        {previous&&<div className="scale-clean-ratio"><small>em relação a {previous.name}</small><b>{current.ratioNumber}</b></div>}
+      </div>
 
-      <div className="scale-scene"><ScaleScene index={index}/></div>
-      <p className="scale-note">{item.note}</p>
+      <div className={previous?"scale-comparison":"scale-comparison first"}>
+        {previous&&<div className="scale-specimen previous">
+          <small>antes</small>
+          <Pictogram kind={previous.kind}/>
+          <strong>{previous.name}</strong>
+          <span>{previous.size}</span>
+        </div>}
 
-      <div className="scale-v3-actions">
+        {previous&&<div className="scale-equation" aria-label={current.ratio}><span>×</span><strong>{current.ratioNumber.replace("×","")}</strong></div>}
+
+        <div className="scale-specimen current">
+          <small>{previous?"agora":"começo"}</small>
+          <Pictogram kind={current.kind}/>
+          <strong>{current.name}</strong>
+          <span>{current.size}</span>
+        </div>
+      </div>
+
+      <p className="scale-clean-note">{current.note}</p>
+
+      <div className="scale-clean-actions">
         <button onClick={()=>setIndex(v=>Math.max(0,v-1))} disabled={index===0}>← voltar</button>
-        {index<steps.length-1?<button className="scale-next" onClick={()=>setIndex(v=>Math.min(steps.length-1,v+1))}>{item.next} →</button>:<button className="scale-next" onClick={()=>setIndex(0)}>começar de novo ↺</button>}
+        {index<steps.length-1
+          ?<button className="primary" onClick={()=>setIndex(v=>Math.min(steps.length-1,v+1))}>próxima escala →</button>
+          :<button className="primary" onClick={()=>setIndex(0)}>começar de novo ↺</button>}
       </div>
     </section>
 
-    <div className="scale-v3-track">
-      {steps.map((step,i)=><button key={step.name} className={i===index?"active":i<index?"seen":""} onClick={()=>setIndex(i)} aria-label={`Ir para ${step.name}`}><i/><span>{step.name}</span></button>)}
-    </div>
+    <nav className="scale-clean-nav" aria-label="Escalas">
+      {steps.map((step,i)=><button key={step.kind} onClick={()=>setIndex(i)} className={i===index?"active":i<index?"seen":""}>
+        <Pictogram kind={step.kind}/>
+        <span>{step.name}</span>
+      </button>)}
+    </nav>
 
-    <section className="scale-v3-ending">
+    <section className="scale-clean-ending">
       <span>1 mm → 12.742 km</span>
-      <h2>O segredo não é aumentar o círculo. É não perder a referência.</h2>
-      <p>Quando conseguimos manter uma coisa conhecida dentro da próxima escala, números enormes começam a ganhar forma.</p>
+      <h2>A comparação fica mais fácil quando a referência não desaparece.</h2>
+      <p>Cada passo mantém o objeto anterior ao lado do próximo. Assim, a mudança de escala deixa de ser só um número.</p>
     </section>
   </div>;
 }

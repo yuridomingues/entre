@@ -36,13 +36,16 @@ export function ExperimentVisual({ slug, compact = false }: { slug: string; comp
   );
 
   if (slug === "escala") return (
-    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Pessoa, árvore, montanha e planeta em escalas diferentes">
-      <circle cx="332" cy="72" r="48" fill="none" stroke="currentColor" strokeWidth="5"/>
-      <path d="M183 219 267 95l84 124Z" fill="none" stroke="currentColor" strokeWidth="5" strokeLinejoin="round"/>
-      <path d="M125 219c-4-47-1-82 7-116m-3 35-33-28m34 12 31-32" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round"/>
-      <circle cx="132" cy="85" r="31" fill="currentColor"/>
-      <circle cx="72" cy="170" r="14" fill="currentColor"/><path d="M72 185v34M54 198h36M72 219l-14 25M72 219l14 25" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>
-      <path d="M42 232h336" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Objetos em diferentes escalas">
+      <circle cx="67" cy="184" r="8" fill="currentColor"/>
+      <rect x="100" y="136" width="42" height="82" rx="8" fill="none" stroke="currentColor" strokeWidth="5"/>
+      <circle cx="194" cy="105" r="18" fill="currentColor"/>
+      <path d="M171 135h46l10 77h-25v-48h-16v48h-25Z" fill="currentColor"/>
+      <rect x="243" y="151" width="78" height="48" rx="8" fill="none" stroke="currentColor" strokeWidth="5"/>
+      <circle cx="259" cy="203" r="10" fill="currentColor"/><circle cx="304" cy="203" r="10" fill="currentColor"/>
+      <path d="M335 210 367 129l31 81Z" fill="none" stroke="currentColor" strokeWidth="5" strokeLinejoin="round"/>
+      <circle cx="365" cy="63" r="36" fill="none" stroke="currentColor" strokeWidth="5"/>
+      <path d="M45 222h336" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>
     </svg>
   );
 
