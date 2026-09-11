@@ -1,14 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ExperimentShell } from "@/components/experiment-shell";
-import { TreeTimeline } from "@/components/tree-timeline";
-import { MindLab } from "@/components/mind-lab";
-import { MusicLab } from "@/components/music-lab";
-import { ConversationDive } from "@/components/conversation-dive";
-import { LifeWeeks } from "@/components/life-weeks";
-import { ScaleExplorer } from "@/components/scale-explorer";
-import { RandomWalk } from "@/components/random-walk";
-import { NightSky } from "@/components/night-sky";
+import { TreeTimeline, MindLab, MusicLab, ConversationDive, LifeWeeks, ScaleExplorer, RandomWalk, NightSky } from "@/components/interactive-experiences";
 import { getExperiment, experiments } from "@/lib/experiments";
 
 const intros: Record<string,string> = {
