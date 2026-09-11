@@ -12,9 +12,7 @@ const hints: Record<string,string> = {
   vida:"arraste a escala",
   escala:"avance pelas comparações",
   acaso:"solte os pontos",
-  noite:"diminua a luz",
-  rede:"escolha sementes e mude a regra",
-  centro:"coloque um ponto antes de ver a resposta"
+  noite:"diminua a luz"
 };
 
 export function ExperimentShell({ slug, title, intro, children }: { slug: string; title: string; intro: string; children: ReactNode }) {
