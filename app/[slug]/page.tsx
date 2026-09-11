@@ -11,7 +11,7 @@ const intros: Record<string,string> = {
   musica:"Ligue o áudio, desligue camadas e compare formas. O som muda na hora conforme você mexe.",
   conversa:"Uma pessoa diz uma única frase. Você escolhe qual palavra seguir e descobre para onde a conversa vai.",
   vida:"Anos são grandes demais para a intuição. Troque a unidade por semanas e veja a escala mudar sem transformar o tempo numa meta.",
-  escala:"Comece em um milímetro. A cada passo a câmera abre, o objeto anterior encolhe na mesma cena e uma nova escala ocupa a tela.",
+  escala:"Volte para a comparação direta. Cada etapa coloca dois objetos na mesma régua e preserva a proporção entre eles.",
   acaso:"Todos os pontos começam juntos. Depois, cada um escolhe A ou B repetidas vezes. Veja o desenho que aparece.",
   noite:"A cidade está acesa. Diminua a luz e observe o que começa a aparecer acima dos prédios."
 };

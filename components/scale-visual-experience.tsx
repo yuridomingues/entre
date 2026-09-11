@@ -1,142 +1,157 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
-type Kind="grain"|"rice"|"coin"|"phone"|"person"|"bus"|"building"|"tree"|"eiffel"|"tower"|"mountain"|"earth";
+type Kind="grain"|"coin"|"phone"|"person"|"bus"|"building"|"tree"|"mountain"|"earth";
 
-type ScaleItem={
+type Item={
   kind:Kind;
   name:string;
   size:string;
   meters:number;
+  measure:string;
 };
 
-const items:ScaleItem[]=[
-  {kind:"grain",name:"grão de areia",size:"1 mm",meters:.001},
-  {kind:"rice",name:"grão de arroz",size:"7 mm",meters:.007},
-  {kind:"coin",name:"moeda",size:"2,5 cm",meters:.025},
-  {kind:"phone",name:"celular",size:"15 cm",meters:.15},
-  {kind:"person",name:"pessoa",size:"1,7 m",meters:1.7},
-  {kind:"bus",name:"ônibus",size:"12 m",meters:12},
-  {kind:"building",name:"prédio",size:"30 m",meters:30},
-  {kind:"tree",name:"sequoia",size:"80 m",meters:80},
-  {kind:"eiffel",name:"Torre Eiffel",size:"330 m",meters:330},
-  {kind:"tower",name:"Burj Khalifa",size:"828 m",meters:828},
-  {kind:"mountain",name:"Everest",size:"8,8 km",meters:8849},
-  {kind:"earth",name:"Terra",size:"12.742 km",meters:12742000}
+const items:Item[]=[
+  {kind:"grain",name:"grão de areia",size:"1 mm",meters:.001,measure:"diâmetro"},
+  {kind:"coin",name:"moeda",size:"2,5 cm",meters:.025,measure:"diâmetro"},
+  {kind:"phone",name:"celular",size:"15 cm",meters:.15,measure:"altura"},
+  {kind:"person",name:"pessoa",size:"1,7 m",meters:1.7,measure:"altura"},
+  {kind:"bus",name:"ônibus",size:"3,2 m",meters:3.2,measure:"altura"},
+  {kind:"building",name:"prédio",size:"30 m",meters:30,measure:"altura"},
+  {kind:"tree",name:"sequoia",size:"80 m",meters:80,measure:"altura"},
+  {kind:"mountain",name:"Everest",size:"8,8 km",meters:8849,measure:"altura"},
+  {kind:"earth",name:"Terra",size:"12.742 km",meters:12742000,measure:"diâmetro"}
 ];
 
-const fmtRatio=(value:number)=>{
-  if(value>=1000)return Math.round(value).toLocaleString("pt-BR");
-  if(value>=10)return value.toFixed(1).replace(".",",");
-  return value.toFixed(1).replace(".",",");
+const fmt=(n:number)=>{
+  if(n>=1000)return Math.round(n).toLocaleString("pt-BR");
+  if(n>=10)return n.toFixed(1).replace(".",",");
+  return n.toFixed(1).replace(".",",");
 };
 
-function Shape({kind}:{kind:Kind}){
-  if(kind==="grain")return <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="11" fill="currentColor"/></svg>;
-  if(kind==="rice")return <svg viewBox="0 0 100 100" aria-hidden="true"><ellipse cx="50" cy="50" rx="38" ry="15" fill="currentColor" transform="rotate(-18 50 50)"/></svg>;
-  if(kind==="coin")return <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="42" fill="currentColor"/><circle cx="50" cy="50" r="31" fill="none" stroke="#fffdf8" strokeWidth="5"/></svg>;
-  if(kind==="phone")return <svg viewBox="0 0 100 100" aria-hidden="true"><rect x="27" y="7" width="46" height="86" rx="10" fill="currentColor"/><rect x="34" y="17" width="32" height="57" rx="3" fill="#fffdf8"/><circle cx="50" cy="83" r="4" fill="#fffdf8"/></svg>;
-  if(kind==="person")return <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="17" r="12" fill="currentColor"/><path d="M35 34h30l9 27-12 4-5-17v45H43V58l-6 35H23l10-44-13 17-10-8Z" fill="currentColor"/></svg>;
-  if(kind==="bus")return <svg viewBox="0 0 100 100" aria-hidden="true"><rect x="5" y="30" width="90" height="46" rx="10" fill="currentColor"/><rect x="14" y="38" width="56" height="19" rx="2" fill="#fffdf8"/><rect x="75" y="38" width="12" height="19" rx="2" fill="#fffdf8"/><circle cx="26" cy="78" r="10" fill="currentColor" stroke="#fffdf8" strokeWidth="4"/><circle cx="76" cy="78" r="10" fill="currentColor" stroke="#fffdf8" strokeWidth="4"/></svg>;
-  if(kind==="building")return <svg viewBox="0 0 100 100" aria-hidden="true"><rect x="24" y="5" width="52" height="90" rx="3" fill="currentColor"/>{[0,1,2,3].map(r=>[0,1,2].map(c=><rect key={`${r}-${c}`} x={33+c*14} y={18+r*16} width="7" height="8" fill="#fffdf8"/>))}<rect x="43" y="78" width="14" height="17" fill="#fffdf8"/></svg>;
-  if(kind==="tree")return <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M43 97 48 44h7l5 53Z" fill="currentColor"/><path d="M52 2 28 43h15L21 66h19L25 85h54L63 66h18L59 43h15Z" fill="currentColor"/></svg>;
-  if(kind==="eiffel")return <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M49 3h2l8 36 26 56H64L55 71H45l-9 24H15l26-56Zm-5 48-7 18h26l-7-18Z" fill="currentColor"/></svg>;
-  if(kind==="tower")return <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M48 2h4l3 18 7 9-4 8 10 57H32l10-57-4-8 7-9Z" fill="currentColor"/><path d="M38 51h24M35 69h30" stroke="#fffdf8" strokeWidth="3"/></svg>;
-  if(kind==="mountain")return <svg viewBox="0 0 100 100" aria-hidden="true"><path d="M1 91 37 35l13 16 16-28 33 68Z" fill="currentColor"/><path d="m37 35 13 16 16-28 12 24-11-5-8 9-8-7-8 8Z" fill="#fffdf8"/></svg>;
-  return <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="47" fill="currentColor"/><path d="M18 34c10-12 22-15 31-8l4 13 13 4 3 13-10 8-2 19-15-3-7-17-14-6-6-12Zm52-12c10 2 18 8 23 16l-10 7-10-6Z" fill="#fffdf8"/></svg>;
+function Icon({kind}:{kind:Kind}){
+  if(kind==="grain")return <svg viewBox="0 0 120 120" aria-hidden="true">
+    <circle cx="60" cy="60" r="16" fill="currentColor"/>
+  </svg>;
+
+  if(kind==="coin")return <svg viewBox="0 0 120 120" aria-hidden="true">
+    <circle cx="60" cy="60" r="46" fill="#ffd45b" stroke="currentColor" strokeWidth="7"/>
+    <circle cx="60" cy="60" r="34" fill="none" stroke="currentColor" strokeWidth="4"/>
+    <circle cx="60" cy="60" r="4" fill="currentColor"/>
+  </svg>;
+
+  if(kind==="phone")return <svg viewBox="0 0 120 120" aria-hidden="true">
+    <rect x="35" y="8" width="50" height="104" rx="11" fill="#fffdf8" stroke="currentColor" strokeWidth="7"/>
+    <rect x="42" y="20" width="36" height="68" rx="4" fill="#9edcea" stroke="currentColor" strokeWidth="4"/>
+    <circle cx="60" cy="100" r="4" fill="currentColor"/>
+  </svg>;
+
+  if(kind==="person")return <svg viewBox="0 0 120 120" aria-hidden="true">
+    <circle cx="60" cy="19" r="13" fill="currentColor"/>
+    <path d="M44 39h32l9 28-12 4-6-20v61H53V72l-8 40H31l11-52-17 21-10-9 27-33Z" fill="currentColor"/>
+  </svg>;
+
+  if(kind==="bus")return <svg viewBox="0 0 120 120" aria-hidden="true">
+    <rect x="6" y="40" width="108" height="48" rx="10" fill="#ffd45b" stroke="currentColor" strokeWidth="6"/>
+    <rect x="16" y="49" width="67" height="22" rx="3" fill="#fffdf8" stroke="currentColor" strokeWidth="3"/>
+    <rect x="89" y="49" width="14" height="22" rx="3" fill="#fffdf8" stroke="currentColor" strokeWidth="3"/>
+    <circle cx="30" cy="91" r="11" fill="currentColor"/><circle cx="90" cy="91" r="11" fill="currentColor"/>
+    <circle cx="30" cy="91" r="4" fill="#fffdf8"/><circle cx="90" cy="91" r="4" fill="#fffdf8"/>
+  </svg>;
+
+  if(kind==="building")return <svg viewBox="0 0 120 120" aria-hidden="true">
+    <rect x="31" y="5" width="58" height="110" rx="3" fill="#c9b9f4" stroke="currentColor" strokeWidth="6"/>
+    {[0,1,2,3].map(r=>[0,1,2].map(c=><rect key={`${r}-${c}`} x={41+c*16} y={19+r*20} width="8" height="10" fill="#fffdf8"/>))}
+    <rect x="51" y="94" width="18" height="21" fill="currentColor"/>
+  </svg>;
+
+  if(kind==="tree")return <svg viewBox="0 0 120 120" aria-hidden="true">
+    <path d="M51 115 56 52h10l5 63Z" fill="#7b4d32" stroke="currentColor" strokeWidth="5"/>
+    <path d="M61 4 32 46h17L25 70h22L29 94h64L75 70h21L72 46h17Z" fill="#6b9850" stroke="currentColor" strokeWidth="5" strokeLinejoin="round"/>
+  </svg>;
+
+  if(kind==="mountain")return <svg viewBox="0 0 120 120" aria-hidden="true">
+    <path d="M3 111 44 46l15 19 20-36 38 82Z" fill="#9aa9b7" stroke="currentColor" strokeWidth="6" strokeLinejoin="round"/>
+    <path d="m44 46 15 19 20-36 14 29-13-6-10 12-10-9-10 10Z" fill="#fffdf8"/>
+  </svg>;
+
+  return <svg viewBox="0 0 120 120" aria-hidden="true">
+    <circle cx="60" cy="60" r="54" fill="#7f84d8" stroke="currentColor" strokeWidth="6"/>
+    <path d="M25 42c11-14 26-18 37-10l5 15 15 5 3 15-11 10-3 21-17-4-8-19-16-7-7-14Zm56-14c12 2 21 9 27 18l-12 8-12-7Z" fill="#82b864" stroke="currentColor" strokeWidth="3"/>
+  </svg>;
 }
 
 export function ScaleExplorer(){
-  const [index,setIndex]=useState(0);
-  const touchStart=useRef<number|null>(null);
+  const [index,setIndex]=useState(1);
   const current=items[index];
-  const previous=index>0?items[index-1]:null;
-  const ratio=previous?current.meters/previous.meters:1;
+  const previous=items[index-1];
+  const ratio=current.meters/previous.meters;
+  const previousPct=Math.max(.35,100/ratio);
+  const tooSmall=previousPct<6;
 
-  const next=()=>setIndex(v=>Math.min(items.length-1,v+1));
-  const back=()=>setIndex(v=>Math.max(0,v-1));
-
-  useEffect(()=>{
-    const onKey=(event:KeyboardEvent)=>{
-      if(event.key==="ArrowRight")next();
-      if(event.key==="ArrowLeft")back();
-    };
-    addEventListener("keydown",onKey);
-    return()=>removeEventListener("keydown",onKey);
-  },[]);
-
-  return <div className="scale-life">
-    <section
-      className="scale-life-camera"
-      onTouchStart={e=>{touchStart.current=e.touches[0]?.clientX??null}}
-      onTouchEnd={e=>{
-        if(touchStart.current===null)return;
-        const end=e.changedTouches[0]?.clientX??touchStart.current;
-        const delta=end-touchStart.current;
-        if(delta<-45)next();
-        if(delta>45)back();
-        touchStart.current=null;
-      }}
-    >
-      <div className="scale-life-head">
-        <span>{String(index+1).padStart(2,"0")} / {String(items.length).padStart(2,"0")}</span>
-        <div><h2>{current.name}</h2><strong>{current.size}</strong></div>
-      </div>
-
-      <div className="scale-life-world" aria-live="polite">
-        <div className="scale-life-baseline"/>
-
-        {items.map((item,i)=>{
-          const distance=i-index;
-          const extent=distance===0?68:distance===-1?Math.max(.15,68*(item.meters/current.meters)):68;
-          const state=distance===0?"current":distance===-1?"previous":distance>0?"future":"past";
-          return <div
-            key={item.kind}
-            className={`scale-life-object ${state}`}
-            style={{height:`${extent}%`}}
-            aria-hidden={distance!==0&&distance!==-1}
-          >
-            <Shape kind={item.kind}/>
-          </div>;
-        })}
-
-        {previous&&<div className="scale-life-prev-label">
-          <i/>
-          <div><small>era isto</small><strong>{previous.name}</strong><span>{previous.size}</span></div>
-        </div>}
-
-        <div className="scale-life-current-label">
-          <small>agora</small><strong>{current.name}</strong><span>{current.size}</span>
-        </div>
-
-        {previous&&<div className="scale-life-ratio">
-          <small>o próximo é</small>
-          <b>{fmtRatio(ratio)}×</b>
-          <span>maior nesta medida</span>
-        </div>}
-      </div>
-
-      <div className="scale-life-controls">
-        <button onClick={back} disabled={index===0} aria-label="Escala anterior">←</button>
+  return <div className="scale-pair">
+    <section className="scale-pair-card">
+      <header className="scale-pair-head">
         <div>
-          <span>{index===0?"comece aqui":index===items.length-1?"do menor ao planeta":"continue abrindo a escala"}</span>
-          <div className="scale-life-progress"><i style={{width:`${((index+1)/items.length)*100}%`}}/></div>
+          <span>{String(index+1).padStart(2,"0")} / {String(items.length).padStart(2,"0")}</span>
+          <h2>{current.name}</h2>
+          <strong>{current.size}</strong>
         </div>
-        <button onClick={index===items.length-1?()=>setIndex(0):next} aria-label={index===items.length-1?"Recomeçar":"Próxima escala"}>{index===items.length-1?"↺":"→"}</button>
+        <div className="scale-pair-ratio">
+          <small>comparado com {previous.name}</small>
+          <b>{fmt(ratio)}×</b>
+        </div>
+      </header>
+
+      <div className="scale-ruler">
+        <div className="scale-ruler-line"><span>100%</span><span>75%</span><span>50%</span><span>25%</span><span>0</span></div>
+
+        <div className="scale-object previous" style={{height:`${previousPct}%`}}>
+          <Icon kind={previous.kind}/>
+          <i className="measure-line"/>
+        </div>
+
+        <div className="scale-object current">
+          <Icon kind={current.kind}/>
+          <i className="measure-line"/>
+        </div>
+
+        <div className="scale-label previous-label">
+          <strong>{previous.name}</strong><span>{previous.size}</span>
+        </div>
+        <div className="scale-label current-label">
+          <strong>{current.name}</strong><span>{current.size}</span>
+        </div>
+
+        {tooSmall&&<aside className="scale-inset">
+          <small>zoom de referência</small>
+          <Icon kind={previous.kind}/>
+          <strong>{previous.name}</strong>
+          <span>na régua real ele está marcado no chão</span>
+        </aside>}
       </div>
-      <p className="scale-life-swipe">use as setas ou deslize</p>
+
+      <div className="scale-pair-caption">
+        <span>{current.measure}</span>
+        <p>Na mesma régua, {previous.name} ocupa cerca de <strong>{previousPct<1?"menos de 1":fmt(previousPct)}%</strong> da medida de {current.name}.</p>
+      </div>
+
+      <div className="scale-pair-actions">
+        <button onClick={()=>setIndex(v=>Math.max(1,v-1))} disabled={index===1}>← anterior</button>
+        <button className="primary" onClick={()=>setIndex(v=>v===items.length-1?1:v+1)}>{index===items.length-1?"recomeçar ↺":"próxima comparação →"}</button>
+      </div>
     </section>
 
-    <nav className="scale-life-index" aria-label="Objetos da escala">
-      {items.map((item,i)=><button key={item.kind} onClick={()=>setIndex(i)} className={i===index?"active":""}>
-        <span>{String(i+1).padStart(2,"0")}</span><strong>{item.name}</strong><small>{item.size}</small>
+    <nav className="scale-pair-nav" aria-label="Comparações">
+      {items.slice(1).map((item,i)=><button key={item.kind} className={index===i+1?"active":""} onClick={()=>setIndex(i+1)}>
+        <span>{String(i+2).padStart(2,"0")}</span>
+        <strong>{item.name}</strong>
       </button>)}
     </nav>
 
-    <section className="scale-life-ending">
-      <span>1 mm até 12.742 km</span>
-      <h2>A mesma tela muda de régua doze vezes.</h2>
-      <p>O objeto anterior não é redesenhado para parecer menor. Ele realmente encolhe na proporção da próxima medida.</p>
+    <section className="scale-pair-end">
+      <span>mesma régua, referências diferentes</span>
+      <h2>Quando a proporção está certa, o desenho quase não precisa explicar nada.</h2>
     </section>
   </div>;
 }
