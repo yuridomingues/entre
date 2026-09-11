@@ -36,12 +36,13 @@ export function ExperimentVisual({ slug, compact = false }: { slug: string; comp
   );
 
   if (slug === "escala") return (
-    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Círculos em diferentes escalas">
-      <circle cx="210" cy="130" r="92" fill="none" stroke="currentColor" strokeWidth="5"/>
-      <circle cx="210" cy="130" r="52" fill="none" stroke="currentColor" strokeWidth="5"/>
-      <circle cx="210" cy="130" r="22" fill="currentColor"/>
-      <circle cx="210" cy="130" r="5" fill="#fffdf8"/>
-      <path d="M40 224h340M40 216v16M210 216v16M380 216v16" stroke="currentColor" strokeWidth="4"/>
+    <svg className={cls} viewBox="0 0 420 260" role="img" aria-label="Pessoa, árvore, montanha e planeta em escalas diferentes">
+      <circle cx="332" cy="72" r="48" fill="none" stroke="currentColor" strokeWidth="5"/>
+      <path d="M183 219 267 95l84 124Z" fill="none" stroke="currentColor" strokeWidth="5" strokeLinejoin="round"/>
+      <path d="M125 219c-4-47-1-82 7-116m-3 35-33-28m34 12 31-32" fill="none" stroke="currentColor" strokeWidth="6" strokeLinecap="round"/>
+      <circle cx="132" cy="85" r="31" fill="currentColor"/>
+      <circle cx="72" cy="170" r="14" fill="currentColor"/><path d="M72 185v34M54 198h36M72 219l-14 25M72 219l14 25" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>
+      <path d="M42 232h336" stroke="currentColor" strokeWidth="5" strokeLinecap="round"/>
     </svg>
   );
 

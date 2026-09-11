@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./experiences.css";
 import "./brand.css";
-import "./release.css";
+import "./release.css";\nimport "./scale-v3.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://entre-ideias.vercel.app"),
