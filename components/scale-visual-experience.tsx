@@ -31,52 +31,56 @@ const fmt=(n:number)=>{
 
 function Icon({kind}:{kind:Kind}){
   if(kind==="grain")return <svg viewBox="0 0 120 120" aria-hidden="true">
-    <circle cx="60" cy="60" r="16" fill="currentColor"/>
+    <circle cx="60" cy="60" r="54" fill="currentColor"/>
   </svg>;
 
   if(kind==="coin")return <svg viewBox="0 0 120 120" aria-hidden="true">
-    <circle cx="60" cy="60" r="46" fill="#ffd45b" stroke="currentColor" strokeWidth="7"/>
-    <circle cx="60" cy="60" r="34" fill="none" stroke="currentColor" strokeWidth="4"/>
-    <circle cx="60" cy="60" r="4" fill="currentColor"/>
+    <circle cx="60" cy="60" r="54" fill="#ffd45b" stroke="currentColor" strokeWidth="7"/>
+    <circle cx="60" cy="60" r="40" fill="none" stroke="currentColor" strokeWidth="4"/>
+    <circle cx="60" cy="60" r="5" fill="currentColor"/>
   </svg>;
 
   if(kind==="phone")return <svg viewBox="0 0 120 120" aria-hidden="true">
-    <rect x="35" y="8" width="50" height="104" rx="11" fill="#fffdf8" stroke="currentColor" strokeWidth="7"/>
-    <rect x="42" y="20" width="36" height="68" rx="4" fill="#9edcea" stroke="currentColor" strokeWidth="4"/>
-    <circle cx="60" cy="100" r="4" fill="currentColor"/>
+    <rect x="34" y="3" width="52" height="114" rx="11" fill="#fffdf8" stroke="currentColor" strokeWidth="7"/>
+    <rect x="41" y="16" width="38" height="76" rx="4" fill="#9edcea" stroke="currentColor" strokeWidth="4"/>
+    <circle cx="60" cy="105" r="4" fill="currentColor"/>
   </svg>;
 
   if(kind==="person")return <svg viewBox="0 0 120 120" aria-hidden="true">
-    <circle cx="60" cy="19" r="13" fill="currentColor"/>
-    <path d="M44 39h32l9 28-12 4-6-20v61H53V72l-8 40H31l11-52-17 21-10-9 27-33Z" fill="currentColor"/>
+    <circle cx="60" cy="16" r="14" fill="currentColor"/>
+    <path d="M43 36h34l10 29-13 4-7-20v68H52V73l-8 44H29l12-56-18 22-11-9 29-37Z" fill="currentColor"/>
   </svg>;
 
   if(kind==="bus")return <svg viewBox="0 0 120 120" aria-hidden="true">
-    <rect x="6" y="40" width="108" height="48" rx="10" fill="#ffd45b" stroke="currentColor" strokeWidth="6"/>
-    <rect x="16" y="49" width="67" height="22" rx="3" fill="#fffdf8" stroke="currentColor" strokeWidth="3"/>
-    <rect x="89" y="49" width="14" height="22" rx="3" fill="#fffdf8" stroke="currentColor" strokeWidth="3"/>
-    <circle cx="30" cy="91" r="11" fill="currentColor"/><circle cx="90" cy="91" r="11" fill="currentColor"/>
-    <circle cx="30" cy="91" r="4" fill="#fffdf8"/><circle cx="90" cy="91" r="4" fill="#fffdf8"/>
+    <rect x="24" y="3" width="72" height="108" rx="16" fill="#ffd45b" stroke="currentColor" strokeWidth="7"/>
+    <rect x="35" y="14" width="50" height="11" rx="3" fill="currentColor"/>
+    <rect x="34" y="31" width="52" height="43" rx="7" fill="#fffdf8" stroke="currentColor" strokeWidth="5"/>
+    <path d="M60 33v39" stroke="currentColor" strokeWidth="4"/>
+    <circle cx="42" cy="88" r="6" fill="#fffdf8" stroke="currentColor" strokeWidth="4"/>
+    <circle cx="78" cy="88" r="6" fill="#fffdf8" stroke="currentColor" strokeWidth="4"/>
+    <rect x="34" y="98" width="52" height="7" rx="3" fill="currentColor"/>
+    <circle cx="37" cy="110" r="8" fill="currentColor"/>
+    <circle cx="83" cy="110" r="8" fill="currentColor"/>
   </svg>;
 
   if(kind==="building")return <svg viewBox="0 0 120 120" aria-hidden="true">
-    <rect x="31" y="5" width="58" height="110" rx="3" fill="#c9b9f4" stroke="currentColor" strokeWidth="6"/>
-    {[0,1,2,3].map(r=>[0,1,2].map(c=><rect key={`${r}-${c}`} x={41+c*16} y={19+r*20} width="8" height="10" fill="#fffdf8"/>))}
-    <rect x="51" y="94" width="18" height="21" fill="currentColor"/>
+    <rect x="31" y="2" width="58" height="116" rx="3" fill="#c9b9f4" stroke="currentColor" strokeWidth="6"/>
+    {[0,1,2,3].map(r=>[0,1,2].map(c=><rect key={`${r}-${c}`} x={41+c*16} y={17+r*20} width="8" height="10" fill="#fffdf8"/>))}
+    <rect x="51" y="96" width="18" height="22" fill="currentColor"/>
   </svg>;
 
   if(kind==="tree")return <svg viewBox="0 0 120 120" aria-hidden="true">
-    <path d="M51 115 56 52h10l5 63Z" fill="#7b4d32" stroke="currentColor" strokeWidth="5"/>
-    <path d="M61 4 32 46h17L25 70h22L29 94h64L75 70h21L72 46h17Z" fill="#6b9850" stroke="currentColor" strokeWidth="5" strokeLinejoin="round"/>
+    <path d="M51 118 56 50h10l5 68Z" fill="#7b4d32" stroke="currentColor" strokeWidth="5"/>
+    <path d="M61 2 32 44h17L24 69h22L28 96h66L76 69h20L72 44h17Z" fill="#6b9850" stroke="currentColor" strokeWidth="5" strokeLinejoin="round"/>
   </svg>;
 
   if(kind==="mountain")return <svg viewBox="0 0 120 120" aria-hidden="true">
-    <path d="M3 111 44 46l15 19 20-36 38 82Z" fill="#9aa9b7" stroke="currentColor" strokeWidth="6" strokeLinejoin="round"/>
-    <path d="m44 46 15 19 20-36 14 29-13-6-10 12-10-9-10 10Z" fill="#fffdf8"/>
+    <path d="M2 116 43 44l16 20 20-38 39 90Z" fill="#9aa9b7" stroke="currentColor" strokeWidth="6" strokeLinejoin="round"/>
+    <path d="m43 44 16 20 20-38 15 31-14-6-10 12-11-9-10 10Z" fill="#fffdf8"/>
   </svg>;
 
   return <svg viewBox="0 0 120 120" aria-hidden="true">
-    <circle cx="60" cy="60" r="54" fill="#7f84d8" stroke="currentColor" strokeWidth="6"/>
+    <circle cx="60" cy="60" r="56" fill="#7f84d8" stroke="currentColor" strokeWidth="6"/>
     <path d="M25 42c11-14 26-18 37-10l5 15 15 5 3 15-11 10-3 21-17-4-8-19-16-7-7-14Zm56-14c12 2 21 9 27 18l-12 8-12-7Z" fill="#82b864" stroke="currentColor" strokeWidth="3"/>
   </svg>;
 }
@@ -86,8 +90,8 @@ export function ScaleExplorer(){
   const current=items[index];
   const previous=items[index-1];
   const ratio=current.meters/previous.meters;
-  const previousPct=Math.max(.35,100/ratio);
-  const tooSmall=previousPct<6;
+  const previousPct=100/ratio;
+  const tooSmall=previousPct<7;
 
   return <div className="scale-pair">
     <section className="scale-pair-card">
@@ -104,16 +108,31 @@ export function ScaleExplorer(){
       </header>
 
       <div className="scale-ruler">
-        <div className="scale-ruler-line"><span>100%</span><span>75%</span><span>50%</span><span>25%</span><span>0</span></div>
-
-        <div className="scale-object previous" style={{height:`${previousPct}%`}}>
-          <Icon kind={previous.kind}/>
-          <i className="measure-line"/>
+        <div className="scale-axis" aria-hidden="true">
+          <span style={{bottom:"100%"}}>100%</span>
+          <span style={{bottom:"75%"}}>75%</span>
+          <span style={{bottom:"50%"}}>50%</span>
+          <span style={{bottom:"25%"}}>25%</span>
+          <span style={{bottom:"0%"}}>0</span>
         </div>
 
-        <div className="scale-object current">
-          <Icon kind={current.kind}/>
-          <i className="measure-line"/>
+        <div className="scale-plot">
+          <i className="grid g25"/><i className="grid g50"/><i className="grid g75"/>
+
+          <div className="scale-object previous" style={{height:`${Math.max(.45,previousPct)}%`}}>
+            <Icon kind={previous.kind}/>
+          </div>
+
+          <div className="scale-object current">
+            <Icon kind={current.kind}/>
+          </div>
+
+          {tooSmall&&<aside className="scale-inset">
+            <small>zoom de referência</small>
+            <Icon kind={previous.kind}/>
+            <strong>{previous.name}</strong>
+            <span>na régua real ele está logo acima do zero</span>
+          </aside>}
         </div>
 
         <div className="scale-label previous-label">
@@ -122,18 +141,11 @@ export function ScaleExplorer(){
         <div className="scale-label current-label">
           <strong>{current.name}</strong><span>{current.size}</span>
         </div>
-
-        {tooSmall&&<aside className="scale-inset">
-          <small>zoom de referência</small>
-          <Icon kind={previous.kind}/>
-          <strong>{previous.name}</strong>
-          <span>na régua real ele está marcado no chão</span>
-        </aside>}
       </div>
 
       <div className="scale-pair-caption">
         <span>{current.measure}</span>
-        <p>Na mesma régua, {previous.name} ocupa cerca de <strong>{previousPct<1?"menos de 1":fmt(previousPct)}%</strong> da medida de {current.name}.</p>
+        <p>Na mesma régua, {previous.name} mede <strong>{previousPct<1?"menos de 1":fmt(previousPct)}%</strong> de {current.name}.</p>
       </div>
 
       <div className="scale-pair-actions">
@@ -151,7 +163,7 @@ export function ScaleExplorer(){
 
     <section className="scale-pair-end">
       <span>mesma régua, referências diferentes</span>
-      <h2>Quando a proporção está certa, o desenho quase não precisa explicar nada.</h2>
+      <h2>Quando a proporção está certa, a diferença aparece antes do número.</h2>
     </section>
   </div>;
 }
