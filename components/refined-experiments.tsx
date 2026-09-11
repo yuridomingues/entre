@@ -114,7 +114,8 @@ export function RefinedIdeaSpread(){
                 onClick={()=>toggleSeed(node.id)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" ")toggleSeed(node.id)}}>
                 {justLit&&<circle className="network-ripple" cx={node.x} cy={node.y} r="20"/>}
                 <circle className="network-person" cx={node.x} cy={node.y} r="18"/>
-                <circle className="network-core" cx={node.x} cy={node.y} r="6"/>
+                <circle className="network-head" cx={node.x} cy={node.y-5} r="5.5"/>
+                <path className="network-body" d={"M"+(node.x-8)+" "+(node.y+9)+"q8-13 16 0"}/>
                 {seed&&<circle className="network-seed" cx={node.x} cy={node.y} r="28"/>}
               </g>;
             })}
@@ -281,6 +282,8 @@ const shipParts:ShipPart[]=[
 function ShipSvg({replaced,onPart,allOld=false}:{replaced:Set<number>;onPart?:(id:number)=>void;allOld?:boolean}){
   const isNew=(id:number)=>!allOld&&replaced.has(id);
   return <svg className="theseus-ship-svg" viewBox="0 0 720 360" role="img" aria-label="Barco dividido em doze partes substituíveis">
+    <path className="ship-cloud" d="M83 85c13-21 39-22 53-5 14-10 37-4 42 13H72c1-4 5-7 11-8ZM557 72c12-17 33-17 44-4 13-8 30-2 34 12h-89c2-4 5-7 11-8Z"/>
+    <path className="ship-water" d="M28 319c34-15 66-15 99 0 34 15 66 15 100 0 33-15 66-15 99 0 34 15 67 15 101 0 33-15 66-15 99 0 34 15 67 15 101 0 24-11 45-13 65-8"/>
     <path className={"ship-part sail "+(isNew(9)?"new":"")} d="M350 62 350 204 506 204Z" onClick={()=>onPart?.(9)}/>
     <rect className={"ship-part mast "+(isNew(8)?"new":"")} x="338" y="50" width="18" height="184" rx="5" onClick={()=>onPart?.(8)}/>
     <path className={"ship-part flag "+(isNew(11)?"new":"")} d="M350 52h92l-28 28 28 28h-92Z" onClick={()=>onPart?.(11)}/>
