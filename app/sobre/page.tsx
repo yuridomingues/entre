@@ -17,12 +17,6 @@ export default function About() {
         <section><span>03</span><h2>Desenho com motivo.</h2><p>As formas, cores e movimentos existem para ajudar uma ideia a acontecer na tela.</p></section>
         <section><span>04</span><h2>Curiosidade sem obrigação.</h2><p>Escolha algo interessante, mexa, pense um pouco e vá embora quando quiser.</p></section>
       </div>
-      <section id="apoio" className="support-note">
-        <span>apoio</span>
-        <h2>Se o ENTRE continuar crescendo, o apoio continua opcional.</h2>
-        <p>Uma contribuição pode ajudar a bancar pesquisa, tempo de desenvolvimento e novas experiências. Ela não deve comprar acesso, vantagem ou uma versão melhor do projeto.</p>
-        <p>As experiências continuam abertas. Apoiar é só uma forma de dizer: quero que isso continue existindo.</p>
-      </section>
       <div className="info-end"><BrandLogo/><p>feito por Yuri Domingues</p></div>
     </article>
   </main>;
