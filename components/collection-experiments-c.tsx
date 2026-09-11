@@ -87,24 +87,50 @@ export function BirthdayRoom(){
 /* 29. Mercator */
 export function ProjectionLab(){
   const [lat,setLat]=useState(0);
-  const rad=Math.abs(lat)*Math.PI/180;
-  const scale=Math.min(5.8,1/Math.max(.17,Math.cos(rad)));
+  const rad=lat*Math.PI/180;
+  const absRad=Math.abs(rad);
+  const scale=Math.min(5.8,1/Math.max(.17,Math.cos(absRad)));
   const area=scale*scale;
+  const mapY=Math.max(8,Math.min(92,50-(Math.asinh(Math.tan(rad))/Math.PI)*100));
+  const globeY=50-Math.sin(rad)*34;
+  const hemisphere=lat===0?"equador":lat>0?"hemisfério norte":"hemisfério sul";
+
   return <div className="projection-lab lab-shell">
-    <div className="instruction-banner"><span>o mesmo pedaço de terra</span><p>Mova-o do equador em direção ao polo numa projeção de Mercator.</p></div>
+    <div className="instruction-banner"><span>o mesmo pedaço de terra</span><p>Mova-o no globo. O mapa precisa redesenhá-lo para caber numa superfície plana.</p></div>
     <section className="lab-card tone-card-ice">
       <header className="lab-head"><div><span>mapas</span><h2>Um mapa precisa deformar alguma coisa.</h2></div><strong>{Math.abs(lat)}°</strong></header>
-      <div className="mercator-stage">
-        <div className="mercator-grid">{Array.from({length:8}).map((_,i)=><i key={"v"+i} className="v" style={{left:(i/7*100)+"%"}}/>)}{Array.from({length:7}).map((_,i)=><i key={"h"+i} className="h" style={{top:(i/6*100)+"%"}}/>)}</div>
-        <div className="map-patch" style={{transform:"translate(-50%,-50%) scale("+scale+")"}}><span>mesma área real</span></div>
+
+      <div className="projection-scene">
+        <div className="projection-globe-wrap">
+          <span>no globo</span>
+          <div className="projection-globe">
+            <i className="globe-lat lat-a"/><i className="globe-lat lat-b"/><i className="globe-lat lat-c"/>
+            <i className="globe-lon lon-a"/><i className="globe-lon lon-b"/>
+            <div className="globe-land land-a"/><div className="globe-land land-b"/>
+            <div className="globe-patch" style={{top:globeY+"%"}}/>
+          </div>
+          <small>a área real continua igual</small>
+        </div>
+
+        <div className="projection-arrow" aria-hidden="true"><i/><span>vira mapa</span><b>→</b></div>
+
+        <div className="projection-map-wrap">
+          <span>na projeção</span>
+          <div className="mercator-stage illustrated">
+            <div className="mercator-grid">{Array.from({length:8}).map((_,i)=><i key={"v"+i} className="v" style={{left:(i/7*100)+"%"}}/>)}{Array.from({length:7}).map((_,i)=><i key={"h"+i} className="h" style={{top:(i/6*100)+"%"}}/>)}</div>
+            <div className="map-continent c1"/><div className="map-continent c2"/><div className="map-continent c3"/>
+            <div className="map-patch" style={{top:mapY+"%",transform:"translate(-50%,-50%) scale("+scale+")"}}><span>mesma área</span></div>
+          </div>
+          <small>{hemisphere} · a forma aparente cresce</small>
+        </div>
       </div>
+
       <div className="projection-control"><label>latitude <b>{lat>=0?lat+"° N":Math.abs(lat)+"° S"}</b></label><input type="range" min="-80" max="80" value={lat} onChange={e=>setLat(Number(e.target.value))}/><div><span>80° S</span><span>equador</span><span>80° N</span></div></div>
       <div className="projection-readout"><span>escala linear aparente</span><strong>{scale.toFixed(2)}×</strong><span>área aparente</span><strong>{area.toFixed(1)}×</strong></div>
     </section>
     <p className="lab-thought">Todo mapa é uma negociação entre propriedades que não cabem intactas quando uma esfera vira uma folha.</p>
   </div>;
 }
-
 /* 30. abaixo dos pés */
 const depthMarks=[
   {d:0,title:"superfície",text:"Tudo o que chamamos de cotidiano ocupa uma película quase invisível na escala do planeta."},
