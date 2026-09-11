@@ -50,14 +50,7 @@ export function ThreeDoors(){
     setState({...state,resolved:true,switched:doSwitch,won});
   };
   const next=()=>{const r=round+1;setRound(r);setState(newDoorState(r))};
-  const sim=useMemo(()=>{
-    let stay=0,sw=0;
-    for(let i=0;i<600;i++){
-      const target=(i*37+11)%3,first=(i*19+1)%3;
-      if(first===target)stay++;else sw++;
-    }
-    return {stay,sw};
-  },[]);
+  const sim=useMemo(()=>({stay:200,sw:400}),[]);
   return <div className="doors-lab lab-shell">
     <div className="instruction-banner"><span>três portas</span><p>Uma esconde o símbolo. Você escolhe uma. Depois uma porta vazia é aberta de propósito.</p></div>
     <section className="lab-card tone-card-gold">
