@@ -46,10 +46,14 @@ export function TreeExperience(){
   return <div className="tree-story" ref={ref}>
     <div className="tree-story-stage" style={{background:sky}}>
       <div className="tree-year-watermark" aria-hidden="true">{year}</div>
+      <div className="tree-time-key" style={{opacity:Math.max(.18,1-progress*2.6)}}>
+        <strong>1500 → 2026</strong>
+        <span>role para atravessar 526 anos</span>
+      </div>
 
       <aside className="tree-rail">
         <div className="tree-clock">
-          <small>ano</small>
+          <small>linha do tempo · ano</small>
           <strong>{year}</strong>
           <span>{age===0?"começo":age+" anos depois"}</span>
         </div>
@@ -106,7 +110,7 @@ export function TreeExperience(){
       </div>
 
       <article className="tree-note" key={item.year}>
-        <span>{item.year} · {item.label}</span>
+        <span>marco histórico · {item.year} · {item.label}</span>
         <h2>{item.title}</h2>
         <p>{item.text}</p>
       </article>

@@ -66,18 +66,21 @@ const mindSlides=[
 export function MindLab(){
   const [step,setStep]=useState(0);
   const [answer,setAnswer]=useState<MindChoice|null>(null);
-  const next=()=>{setAnswer(null);setStep(v=>Math.min(2,v+1))};
-  const restart=()=>{setAnswer(null);setStep(0)};
+  const [context,setContext]=useState(100);
+  const next=()=>{setAnswer(null);setContext(100);setStep(v=>Math.min(2,v+1))};
+  const restart=()=>{setAnswer(null);setContext(100);setStep(0)};
+  const smallScale=1+(100-context)*.0071;
+  const bigScale=1-(100-context)*.00293;
 
   return <div className="illusion-room">
     <div className="illusion-top"><span>{step+1} de 3</span><div>{mindSlides.map((_,i)=><i key={i} className={i<=step?"on":""}/>)}</div><strong>{mindSlides[step].label}</strong></div>
     <section className="illusion-card">
-      <p>responda antes de revelar</p>
+      <p>{step===0&&answer?"agora mexa no contexto":"responda antes de revelar"}</p>
       <h2>{mindSlides[step].question}</h2>
 
       {step===0&&<div className={`ebbinghaus ${answer?"revealed":""}`}>
-        <div className="illusion-option"><span>A</span><div className="cluster cluster-small">{Array.from({length:8}).map((_,i)=><i key={i}/>)}<b/></div></div>
-        <div className="illusion-option"><span>B</span><div className="cluster cluster-big">{Array.from({length:6}).map((_,i)=><i key={i}/>)}<b/></div></div>
+        <div className="illusion-option"><span>A</span><div className="cluster cluster-small">{Array.from({length:8}).map((_,i)=><i key={i} style={{scale:String(smallScale)}}/>)}<b/></div></div>
+        <div className="illusion-option"><span>B</span><div className="cluster cluster-big">{Array.from({length:6}).map((_,i)=><i key={i} style={{scale:String(bigScale)}}/>)}<b/></div></div>
       </div>}
 
       {step===1&&<div className={`muller ${answer?"revealed":""}`}>
@@ -101,7 +104,14 @@ export function MindLab(){
       {!answer?<div className="illusion-choices"><button onClick={()=>setAnswer("a")}>A</button><button onClick={()=>setAnswer("b")}>B</button><button onClick={()=>setAnswer("same")}>são iguais</button></div>
       :<div className="illusion-reveal">
         <strong>{answer==="same"?"Você desconfiou certo.":"A e B são iguais."}</strong>
-        {step===0&&<p>Os círculos ao redor mudam a maneira como o centro parece. O contexto entra junto na percepção do tamanho.</p>}
+        {step===0&&<>
+          <p>Os centros não mudaram. Só o contexto ao redor.</p>
+          <div className="illusion-context">
+            <label htmlFor="context-range">força do contexto <b>{context}%</b></label>
+            <input id="context-range" type="range" min="0" max="100" value={context} onChange={e=>setContext(Number(e.target.value))}/>
+            <div><span>quase neutro</span><span>contraste forte</span></div>
+          </div>
+        </>}
         {step===1&&<p>As pontas mudam a impressão de comprimento. As linhas A e B começam e terminam exatamente no mesmo lugar.</p>}
         {step===2&&<p>O fundo muda a impressão de brilho. A e B têm o mesmo tom de cinza.</p>}
         {step<2?<button onClick={next}>próxima ilusão →</button>:<button onClick={restart}>ver de novo ↺</button>}
@@ -270,16 +280,31 @@ export function RandomWalk(){
 
 export function NightSky(){
   const [light,setLight]=useState(82);
+  const [districts,setDistricts]=useState([true,true,true]);
   const stars=useMemo(()=>Array.from({length:88},(_,i)=>({left:(i*47)%97,top:4+((i*71)%62),size:1+(i%4),threshold:(i*31)%100})),[]);
-  const darkness=100-light;
+  const active=districts.filter(Boolean).length;
+  const effectiveLight=light*(active/3);
+  const darkness=100-effectiveLight;
+  const names=["casas","avenida","centro"];
+
+  const toggle=(i:number)=>setDistricts(values=>values.map((v,n)=>n===i?!v:v));
 
   return <div className="night-lab">
-    <section className="night-stage" style={{background:`rgb(${12+light*.55},${18+light*.48},${42+light*.42})`}}>
+    <section className="night-stage" style={{background:`rgb(${12+effectiveLight*.55},${18+effectiveLight*.48},${42+effectiveLight*.42})`}}>
       <div className="stars" aria-hidden="true">{stars.map((star,i)=><i key={i} style={{left:`${star.left}%`,top:`${star.top}%`,width:star.size,height:star.size,opacity:darkness>star.threshold?1:.05}}/>)}</div>
-      <div className="night-title"><span>luz da cidade {light}%</span><h2>{light>65?"o céu parece quase vazio":light>30?"algumas estrelas voltam":"o céu estava cheio o tempo todo"}</h2></div>
-      <div className="skyline" aria-hidden="true">{[38,55,31,68,44,60,35,73,48,57,40].map((h,i)=><b key={i} style={{height:`${h}%`}}><em style={{opacity:light/100}}/></b>)}</div>
+      <div className="night-title"><span>brilho no céu {Math.round(effectiveLight)}%</span><h2>{effectiveLight>65?"o céu parece quase vazio":effectiveLight>30?"algumas estrelas voltam":"o céu estava cheio o tempo todo"}</h2></div>
+      <div className="skyline" aria-hidden="true">{[38,55,31,68,44,60,35,73,48,57,40].map((h,i)=>{
+        const zone=i%3;
+        return <b key={i} className={districts[zone]?"lit":"off"} style={{height:`${h}%`}}><em style={{opacity:districts[zone]?light/100:0}}/></b>
+      })}</div>
     </section>
-    <div className="night-control"><label htmlFor="city-light">luzes da cidade</label><input id="city-light" type="range" min="0" max="100" value={light} onChange={e=>setLight(Number(e.target.value))}/><div><span>apagadas</span><span>acesas</span></div></div>
-    <p className="night-ending">As estrelas não aparecem porque ficaram mais brilhantes. O fundo ficou menos claro.</p>
+
+    <div className="night-switches">
+      <div><span>apague por partes</span><small>cada região interfere no céu inteiro</small></div>
+      <div>{names.map((name,i)=><button key={name} className={districts[i]?"on":""} onClick={()=>toggle(i)} aria-pressed={districts[i]}><i/>{name}</button>)}</div>
+    </div>
+
+    <div className="night-control"><label htmlFor="city-light">intensidade das luzes que ficaram acesas</label><input id="city-light" type="range" min="0" max="100" value={light} onChange={e=>setLight(Number(e.target.value))}/><div><span>fracas</span><span>fortes</span></div></div>
+    <p className="night-ending">As estrelas não ficaram mais brilhantes. Você mudou o que competia com elas.</p>
   </div>;
 }
