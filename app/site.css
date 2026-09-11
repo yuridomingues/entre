@@ -312,3 +312,43 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
   .tree-finale{min-height:auto;padding:68px 16px 78px;gap:45px}.tree-rings{width:min(82vw,360px)}.tree-finale h2{font-size:42px}.tree-finale p{font-size:16px}
 }
 @media(prefers-reduced-motion:reduce){.tree-note{animation:none}.tree-branches path,.tree-leaves,.tree-sun{transition:none}}
+
+
+/* Árvore v4, caderno de observação */
+.tree-story-v4 .tree-year-watermark{top:43%;color:rgba(255,255,255,.22)}
+.tree-organism{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:min(58vw,680px);height:91%;display:flex;align-items:flex-end;justify-content:center}
+.tree-sketch{height:100%;width:auto;max-width:100%;overflow:visible;color:#21471d}
+.tree-sketch path,.tree-sketch ellipse{vector-effect:non-scaling-stroke}
+.tree-paper-ground path{fill:none;stroke:#183414;stroke-width:4;stroke-linecap:round}.tree-paper-ground .echo{stroke-width:1.5;opacity:.22}
+.tree-seed ellipse{fill:#a67c4b;stroke:#183414;stroke-width:2}.tree-seed path{fill:none;stroke:#183414;stroke-width:1.7;stroke-linecap:round}
+.tree-roots path,.tree-sprout path,.tree-trunk-main path,.tree-branches-v4 path,.tree-twigs path{fill:none;stroke:#21471d;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+.tree-roots path{stroke:#654a31;stroke-width:2.8}
+.tree-sprout .small-leaf{fill:#78a85e;stroke:#21471d;stroke-width:1.7}
+.tree-trunk-main path{stroke-width:4}.tree-trunk-main .echo{stroke-width:1.6;opacity:.22;transform:translate(2px,-1px)}
+.tree-branches-v4 path{stroke-width:3}.tree-twigs path{stroke-width:2.1}
+.tree-leaves-v4{fill:#6f9e58;stroke:#21471d;stroke-width:1.35;transition:opacity .12s linear}
+.tree-leaves-v4 ellipse:nth-child(3n){fill:#86ad68}.tree-leaves-v4 ellipse:nth-child(4n){fill:none}
+.tree-age-lines{fill:none;stroke:#b48b5a;stroke-width:1.7;stroke-linecap:round}
+.tree-sun-v4{position:absolute;z-index:-1;top:11%;left:48%;width:clamp(68px,8vw,108px);aspect-ratio:1;border:2px solid #183414;border-radius:50%;background:#ffe084;transition:transform .15s linear}
+.tree-growth-state{position:absolute;left:50%;bottom:4.5%;transform:translateX(-50%) rotate(-1deg);display:flex;align-items:center;gap:7px;background:rgba(255,253,248,.78);border:1.5px solid #183414;padding:5px 8px;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+.tree-growth-state i{width:6px;height:6px;border-radius:50%;background:#5f914b}
+.tree-story-v4 .tree-note{background:transparent;border-left-width:3px}
+.tree-story-v4 .tree-note h2{font-size:clamp(32px,4vw,54px)}
+.tree-story-v4 .tree-note p{max-width:300px}
+.tree-story-v4 .tree-rail-line button b{background:#dfe9d1}
+
+@media(max-width:900px){
+  .tree-organism{left:46%;width:min(66vw,620px)}
+}
+
+@media(max-width:640px){
+  .tree-story-v4 .tree-year-watermark{top:24%}
+  .tree-organism{left:50%;bottom:98px;width:min(92vw,455px);height:66%}
+  .tree-sun-v4{top:16%;left:59%;width:58px}
+  .tree-growth-state{bottom:1.5%;font-size:7px;padding:4px 6px}
+  .tree-story-v4 .tree-note{background:rgba(245,241,232,.88)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .tree-sun-v4,.tree-leaves-v4{transition:none}
+}
