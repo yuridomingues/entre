@@ -93,6 +93,12 @@ export function RefinedIdeaSpread(){
 
       <div className="refined-network-board">
         <svg viewBox="0 0 930 450" role="img" aria-label="Rede de vinte pessoas ligadas por conexões">
+          <path className="network-island island-a" d="M28 77c54-64 180-83 294-52 97 26 150 90 145 181-5 87-77 155-191 179-108 22-215-10-254-89-33-67-20-158 6-219Z"/>
+          <path className="network-island island-b" d="M502 74c63-60 178-73 279-34 90 35 136 105 123 192-13 89-89 151-195 165-104 14-191-29-221-108-27-73-15-156 14-215Z"/>
+          <g className="network-scenery">
+            <path d="M34 381c30-30 56-45 89-49l23 49M767 392c27-39 57-59 93-64l33 64" fill="#8ecb78" stroke="#111" strokeWidth="2.5"/>
+            <path d="M445 365c18 8 35 8 53 0 18-8 35-8 53 0v56H445Z" fill="#7ab9da" opacity=".7"/>
+          </g>
           <g className="refined-network-edges">
             {(run?.edges??(withBridge?[...baseEdges,bridge]:baseEdges)).map(([a,b],i)=>{
               const da=run?.dist[a]??-1, db=run?.dist[b]??-1;
@@ -109,14 +115,21 @@ export function RefinedIdeaSpread(){
               const active=run?d>=0&&d<=wave:seeds.includes(node.id);
               const justLit=run&&d===wave&&d>0;
               const seed=seeds.includes(node.id);
+              const skin=["#f2c19d","#c9825b","#8f563d","#e6ae86"][node.id%4];
+              const shirt=["#ef8a70","#f1cd65","#8ecb78","#7ab9da","#8466d7"][node.id%5];
+              const hair=["#2b211d","#4d3126","#1d1b1a","#7a432f"][node.id%4];
               return <g key={node.id} className={(active?"active ":"")+(seed?"seed ":"")+(justLit?"just-lit":"")}
                 role="button" tabIndex={0} aria-label={(seed?"Remover":"Escolher")+" ponto "+(node.id+1)}
                 onClick={()=>toggleSeed(node.id)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" ")toggleSeed(node.id)}}>
-                {justLit&&<circle className="network-ripple" cx={node.x} cy={node.y} r="20"/>}
-                <circle className="network-person" cx={node.x} cy={node.y} r="18"/>
-                <circle className="network-head" cx={node.x} cy={node.y-5} r="5.5"/>
-                <path className="network-body" d={"M"+(node.x-8)+" "+(node.y+9)+"q8-13 16 0"}/>
-                {seed&&<circle className="network-seed" cx={node.x} cy={node.y} r="28"/>}
+                {justLit&&<><circle className="network-ripple" cx={node.x} cy={node.y} r="20"/><circle className="network-ripple ripple-two" cx={node.x} cy={node.y} r="20"/></>}
+                {seed&&<g className="idea-rays" transform={"translate("+node.x+" "+node.y+")"}><path d="M0-39v-11M27-27l8-8M39 0h11M-27-27l-8-8M-39 0h-11"/></g>}
+                <circle className="network-person" cx={node.x} cy={node.y} r="22" style={{fill:active?"#fffaf0":"#fffdf8"}}/>
+                <path className="network-shirt" d={"M"+(node.x-13)+" "+(node.y+13)+"q13-20 26 0v8h-26Z"} fill={shirt}/>
+                <circle className="network-face" cx={node.x} cy={node.y-4} r="9" fill={skin}/>
+                <path className={"network-hair hair-"+(node.id%3)} d={"M"+(node.x-9)+" "+(node.y-7)+"q3-12 12-10 9 1 8 11-6-6-20-1Z"} fill={hair}/>
+                <circle className="network-eye" cx={node.x-3} cy={node.y-4} r="1.2"/><circle className="network-eye" cx={node.x+3} cy={node.y-4} r="1.2"/>
+                <path className="network-smile" d={"M"+(node.x-3)+" "+(node.y+1)+"q3 3 6 0"}/>
+                {seed&&<circle className="network-seed" cx={node.x} cy={node.y} r="31"/>}
               </g>;
             })}
           </g>
@@ -199,6 +212,9 @@ export function RefinedMemory(){
       </header>
 
       <div className={"refined-memory-room "+phase}>
+        <div className="memory-room-window" aria-hidden="true"><i/><b/></div>
+        <div className="memory-room-shelf" aria-hidden="true"><i/><i/><i/></div>
+        <div className="memory-room-light" aria-hidden="true"/>
         {Array.from({length:12}).map((_,cell)=>{
           const realIndex=positions.indexOf(cell);
           const guessedIndex=answers.indexOf(cell);
@@ -310,7 +326,7 @@ export function RefinedTheseus(){
     <section className="lab-card refined-theseus-card">
       <header className="lab-head"><div><span>identidade</span><h2>{count<12?"Ainda é o mesmo barco?":"Agora existem dois."}</h2></div><strong>{count}/12 trocadas</strong></header>
       {count<12?<div className="theseus-workbench">
-        <div className="theseus-ship"><ShipSvg replaced={replaced} onPart={replace}/><span>peças novas ficam verdes</span></div>
+        <div className="theseus-ship"><ShipSvg replaced={replaced} onPart={replace}/><div className="shipwright" aria-hidden="true"><i className="worker-head"/><i className="worker-body"/><i className="worker-arm"/><i className="worker-tool"/></div><span>toque numa peça para substituí-la</span></div>
         <div className="old-parts-tray"><span>peças antigas</span><div>{shipParts.filter(p=>replaced.has(p.id)).map(p=><i key={p.id}>{p.name}</i>)}</div></div>
       </div>:<div className="two-ships">
         <article><span>continuou viajando</span><ShipSvg replaced={new Set(shipParts.map(p=>p.id))}/><strong>todas as peças novas</strong></article>
@@ -375,15 +391,39 @@ export function RefinedEarthDepth(){
       <div className="depth-interactive-grid">
         <div className="depth-map">
           <svg ref={svgRef} viewBox="0 0 600 600" onPointerDown={pick} onPointerMove={e=>{if(e.buttons===1)pick(e)}} role="img" aria-label="Corte interativo da Terra. Toque em uma profundidade para explorá-la.">
-            <circle className="earth-shell mantle" cx="300" cy="300" r="240"/>
-            <circle className="earth-shell outer" cx="300" cy="300" r={240*(1-2900/6371)}/>
-            <circle className="earth-shell inner" cx="300" cy="300" r={240*(1-5150/6371)}/>
-            <circle className="earth-shell core" cx="300" cy="300" r="5"/>
+            <defs>
+              <radialGradient id="mantle-grad"><stop offset="0%" stopColor="#ef9a52"/><stop offset="100%" stopColor="#c85e3f"/></radialGradient>
+              <radialGradient id="outer-grad"><stop offset="0%" stopColor="#ffd36e"/><stop offset="100%" stopColor="#ef8a37"/></radialGradient>
+              <radialGradient id="inner-grad"><stop offset="0%" stopColor="#fff5b8"/><stop offset="100%" stopColor="#f4bf43"/></radialGradient>
+              <filter id="depth-glow"><feGaussianBlur stdDeviation="5"/></filter>
+            </defs>
+            <circle className="earth-shell mantle" cx="300" cy="300" r="240" fill="url(#mantle-grad)"/>
+            <circle className="earth-shell outer" cx="300" cy="300" r={240*(1-2900/6371)} fill="url(#outer-grad)"/>
+            <circle className="earth-shell inner" cx="300" cy="300" r={240*(1-5150/6371)} fill="url(#inner-grad)"/>
+            <circle className="earth-core-glow" cx="300" cy="300" r="34" filter="url(#depth-glow)"/>
+            <circle className="earth-shell core" cx="300" cy="300" r="12"/>
             <circle className="earth-crust-ring" cx="300" cy="300" r="238"/>
-            <line className="probe-line" x1="300" y1="60" x2={px} y2={py}/>
-            <circle className="depth-probe" cx={px} cy={py} r="12"/>
+            <g className="earth-surface-scene">
+              <path d="M121 126c31-31 61-47 93-51l29 51M344 82c25 9 46 25 64 48M398 128c23-14 44-17 65-10" fill="#8ecb78" stroke="#111" strokeWidth="3"/>
+              <path d="M188 98l27-23 18 30M365 111l18-25 18 27" fill="#fffaf0" stroke="#111" strokeWidth="2"/>
+              <path d="M103 164c33-13 64-12 94 2M410 159c25-10 49-9 72 2" fill="none" stroke="#7ab9da" strokeWidth="8" strokeLinecap="round"/>
+              <g fill="#315c2a">{[142,159,434,454].map((x,i)=><path key={i} d={"M"+x+" 139l-9 17h7l-10 17h20l-10-17h7Z"}/>)}</g>
+            </g>
+            <g className="mantle-texture" opacity=".32" fill="none" stroke="#7f352d" strokeWidth="3">
+              <path d="M185 233c32-31 67-37 102-19M341 185c40 13 65 37 76 71M175 364c39 22 77 27 113 15M355 403c24-21 43-49 51-81"/>
+            </g>
+            <g className="core-flow" opacity=".38" fill="none" stroke="#fff1a6" strokeWidth="4" strokeLinecap="round">
+              <path d="M244 274c22-24 47-30 74-17M243 333c24 23 53 28 84 13M315 237c20 13 33 31 39 54"/>
+            </g>
+            <line className="probe-line" x1="300" y1="62" x2={px} y2={py}/>
+            <circle className="depth-probe-pulse" cx={px} cy={py} r="24"/>
+            <g className="depth-vehicle" transform={"translate("+px+" "+py+")"}>
+              <path d="M-8-14h16l6 10v14L7 18H-7l-7-8V-4Z" fill="#fffaf0" stroke="#111" strokeWidth="3"/>
+              <circle cy="2" r="5" fill="#7ab9da" stroke="#111" strokeWidth="2"/>
+              <path d="M-7 18l-4 8M7 18l4 8" stroke="#111" strokeWidth="3" strokeLinecap="round"/>
+            </g>
             <text className="earth-label" x="300" y="28">superfície</text>
-            <text className="earth-label" x="300" y="590">clique em qualquer ponto do corte</text>
+            <text className="earth-label" x="300" y="590">toque em qualquer camada</text>
           </svg>
         </div>
 
