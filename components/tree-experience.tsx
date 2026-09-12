@@ -33,6 +33,19 @@ const leafSpecks=[
   [127,285,-7],[166,318,9],[211,280,-11],[255,287,8],[294,292,-8],[330,300,10]
 ];
 
+
+function EraVignette({index}:{index:number}){
+  const common={fill:"none",stroke:"currentColor",strokeWidth:3.2,strokeLinecap:"round" as const,strokeLinejoin:"round" as const};
+  if(index===0)return <svg viewBox="0 0 180 150" aria-hidden="true"><path d="M30 122h120" {...common}/><path d="M90 122V84M90 92c-22 0-31-15-31-27 20-1 31 10 31 27ZM91 102c21 0 31-15 31-28-20-1-31 11-31 28Z" fill="#8ecb78" stroke="currentColor" strokeWidth="3"/><path d="M84 122c-10 10-18 16-27 20M96 122c10 10 18 16 27 20" {...common}/><circle cx="90" cy="53" r="9" fill="#f1cd65" stroke="currentColor" strokeWidth="3"/></svg>;
+  if(index===1)return <svg viewBox="0 0 180 150" aria-hidden="true"><path d="M36 112 86 60l17 17 25-31" {...common}/><path d="M96 58 136 23l13 14-39 35Z" fill="#7ab9da" stroke="currentColor" strokeWidth="3"/><circle cx="149" cy="28" r="15" fill="#f1cd65" stroke="currentColor" strokeWidth="3"/><path d="M35 119h110" {...common}/><path d="M54 119v-28h28v28M112 119v-22h23v22" {...common}/></svg>;
+  if(index===2)return <svg viewBox="0 0 180 150" aria-hidden="true"><circle cx="90" cy="63" r="34" fill="#7ab9da" stroke="currentColor" strokeWidth="3"/><path d="M67 55c12-12 25-12 36-5l4 14 14 4-7 16-18-3-9 9-8-13-12-5Z" fill="#8ecb78" stroke="currentColor" strokeWidth="2"/><path d="M24 63c23-30 109-39 132 0-23 29-109 39-132 0Z" {...common}/><circle cx="144" cy="42" r="7" fill="#f1cd65" stroke="currentColor" strokeWidth="2"/><path d="M35 121c17-22 37-29 59-25 20 4 35 16 49 31" {...common}/><circle cx="54" cy="112" r="10" fill="#ef8a70" stroke="currentColor" strokeWidth="2"/></svg>;
+  if(index===3)return <svg viewBox="0 0 180 150" aria-hidden="true"><path d="M41 121c10-40 24-69 48-89 22 18 37 43 48 89" fill="#d7e6b7" stroke="currentColor" strokeWidth="3"/><path d="M59 109c16-18 30-29 46-40 11 9 20 20 29 35" {...common}/><path d="M30 128h120" {...common}/><path d="M111 35c9 6 15 12 17 22-9 8-19 10-29 4-3-11 1-19 12-26Z" fill="#8ecb78" stroke="currentColor" strokeWidth="2"/><path d="M114 38c-3 10-3 18 0 25" {...common}/></svg>;
+  if(index===4)return <svg viewBox="0 0 180 150" aria-hidden="true"><path d="M36 105h45V62H36Z" fill="#bd8156" stroke="currentColor" strokeWidth="3"/><path d="M81 74c27-9 44-2 54 15-9 17-27 23-54 15Z" fill="#f1cd65" stroke="currentColor" strokeWidth="3"/><circle cx="58" cy="83" r="8" fill="#111"/><path d="M30 118h120" {...common}/><path d="M118 54c8-11 17-18 28-19M121 62c10-3 19-1 27 4" {...common}/></svg>;
+  if(index===5)return <svg viewBox="0 0 180 150" aria-hidden="true"><path d="M91 119V54M66 119l25-65 25 65M51 119h80" {...common}/><path d="M91 53c-20 0-31-13-35-29M91 53c20 0 31-13 35-29" {...common}/><path d="M91 53c-10-17-10-31 0-43" {...common}/><circle cx="91" cy="54" r="8" fill="#ef8a70" stroke="currentColor" strokeWidth="2"/><path d="M34 127h112" {...common}/></svg>;
+  if(index===6)return <svg viewBox="0 0 180 150" aria-hidden="true"><rect x="32" y="33" width="116" height="79" rx="8" fill="#fffaf0" stroke="currentColor" strokeWidth="3"/><path d="M44 47h92v52H44Z" fill="#7ab9da" stroke="currentColor" strokeWidth="2"/><circle cx="63" cy="67" r="8" fill="#f1cd65" stroke="currentColor" strokeWidth="2"/><circle cx="116" cy="58" r="8" fill="#8ecb78" stroke="currentColor" strokeWidth="2"/><circle cx="94" cy="86" r="8" fill="#8466d7" stroke="currentColor" strokeWidth="2"/><path d="M70 68 91 84M100 82l12-18" {...common}/><path d="M73 113v17M108 113v17M58 130h65" {...common}/></svg>;
+  return <svg viewBox="0 0 180 150" aria-hidden="true"><path d="M31 121V79h24v42M55 121V55h29v66M84 121V69h27v52M111 121V42h34v79" fill="#dbe5e8" stroke="currentColor" strokeWidth="3"/><g fill="#f1cd65" stroke="currentColor" strokeWidth="1.5">{[[39,90],[64,68],[93,82],[122,55],[135,55],[122,73],[135,73],[65,88],[94,101]].map(([x,y],i)=><rect key={i} x={x} y={y} width="8" height="10" rx="2"/>)}</g><path d="M22 127h136" {...common}/><circle cx="151" cy="33" r="13" fill="#8ecb78" stroke="currentColor" strokeWidth="3"/><path d="M151 20v26M138 33h26" {...common}/></svg>;
+}
+
 export function TreeExperience(){
   const ref=useRef<HTMLDivElement>(null);
   const [progress,setProgress]=useState(0);
@@ -104,6 +117,10 @@ export function TreeExperience(){
 
       <div className="tree-canvas" aria-hidden="true">
         <div className="tree-sun" style={{transform:`translate(${progress*32-16}vw,${Math.sin(progress*Math.PI)*-18}px)`}}/>
+        <div className="tree-cloud cloud-a" style={{transform:`translateX(${progress*28}px)`}}/>
+        <div className="tree-cloud cloud-b" style={{transform:`translateX(${-progress*34}px)`}}/>
+        <div className="tree-era-vignette" key={index}><EraVignette index={index}/></div>
+        <div className="tree-era-caption"><span>{item.year}</span><strong>{item.label}</strong></div>
         <svg viewBox="0 0 480 620" className="tree-drawing tree-drawing-editorial">
           <defs>
             <filter id="tree-soft-shadow" x="-30%" y="-30%" width="160%" height="160%">
@@ -156,6 +173,10 @@ export function TreeExperience(){
             <ellipse cx="248" cy="548" rx="11" ry="3"/>
           </g>
 
+          <g className="tree-trunk-texture" opacity={maturity*.72}>
+            <path d="M235 550c15-28 20-63 13-96M261 548c-11-34-11-68-3-102M238 425c10-18 13-39 9-61M261 393c-8-19-6-38 5-59" fill="none" stroke="#6a4431" strokeWidth="3" strokeLinecap="round"/>
+            <path d="M239 519c8 6 15 6 23 0M241 483c6 5 13 5 20 0M246 449c5 4 10 4 16 0" fill="none" stroke="#d5a079" strokeWidth="2" strokeLinecap="round"/>
+          </g>
           <g className="tree-life-details" opacity={Math.max(0,(progress-.38)*1.8)}>
             <path d="M83 548q13-17 26 0" fill="none" stroke="#315c2a" strokeWidth="3"/>
             <path d="M367 542q13-16 25 0" fill="none" stroke="#315c2a" strokeWidth="3"/>
@@ -163,6 +184,9 @@ export function TreeExperience(){
             <circle cx="379" cy="541" r="4" fill="#ef8b77" stroke="#315c2a" strokeWidth="1.5"/>
           </g>
 
+          <g className="tree-falling-leaves" opacity={Math.max(0,(progress-.48)*1.6)}>
+            {[0,1,2,3,4,5].map(i=><path key={i} className={"falling-leaf leaf-"+i} d="M0 0q7-8 14 0-7 8-14 0Z" transform={`translate(${335+i*11} ${255+i*13}) rotate(${i*17})`} fill={i%2?"#ef8a70":"#f1cd65"} stroke="#315c2a" strokeWidth="1.4"/>)}
+          </g>
           <g className="tree-birds" opacity={Math.max(0,(progress-.62)*2.5)} fill="none" stroke="#315c2a" strokeWidth="3" strokeLinecap="round">
             <path d="M354 92q9-9 18 0 9-9 18 0"/>
             <path d="M385 117q7-7 14 0 7-7 14 0"/>
