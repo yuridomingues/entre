@@ -134,6 +134,16 @@ export function ScaleExplorer(){
           touchStart.current=null;
         }}
       >
+        <div className={"scale-world scene-"+current.kind} aria-hidden="true">
+          <i className="scale-sun"/>
+          <i className="scale-cloud cloud-one"/>
+          <i className="scale-cloud cloud-two"/>
+          <i className="scale-hill hill-one"/>
+          <i className="scale-hill hill-two"/>
+          <i className="scale-tree tree-one"/>
+          <i className="scale-tree tree-two"/>
+          <span className="scale-observer"><b/><i/><em/></span>
+        </div>
         <svg className="doodle-floor" viewBox="0 0 1000 80" preserveAspectRatio="none" aria-hidden="true">
           <path d="M30 39c180 3 344-2 518 1 151 3 286 1 423-1" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
           <path d="M34 43c164-1 343 3 511 0 149-2 288 2 420 1" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity=".35"/>
