@@ -226,7 +226,7 @@ export function CooperationGame(){
         <span>os dois guardam <b>+1 / +1</b></span>
       </div>
 
-      <div className="cooperate-scene">
+      <div className={"cooperate-scene "+(lastRound?"has-result":"")}>
         <div className="cooperate-person you">
           <div className="cooperate-head"><i/><b/></div>
           <div className="cooperate-body"/>
