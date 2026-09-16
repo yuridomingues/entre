@@ -1427,3 +1427,247 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
   .ship-cloud,.earth-core-glow,.mantle-texture path,.core-flow path,
   .depth-probe-pulse,.probe-line,.change-path.two{animation:none!important}
 }
+
+
+/* =========================================================
+   CHALK ILLUSTRATION SYSTEM
+   Um único dialeto visual para as ilustrações:
+   quadro escuro, giz claro, uma cor de apoio, sem SVG.
+   ========================================================= */
+.chalk-canvas{
+  display:block;
+  width:100%;
+  max-width:100%;
+  background:#23251f;
+  border-radius:16px;
+}
+.chalk-card{
+  width:min(100%,420px);
+  margin:auto;
+  border:2px solid rgba(23,23,20,.8);
+  box-shadow:0 4px 0 rgba(23,23,20,.16);
+}
+.chalk-card.compact{width:min(100%,300px)}
+.tile-visual{display:grid;place-items:center;padding:10px!important}
+.tile-visual:before,.cover-art:before{display:none!important}
+.cover-art{display:grid;place-items:center}
+.cover-art .chalk-card{width:min(100%,520px)}
+.next-tile .chalk-card{width:150px;border-radius:10px}
+
+/* árvore */
+.chalk-tree-story .tree-story-stage{
+  background:#e6eadc!important;
+}
+.chalk-tree-panel{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:min(50vw,560px);
+  transform:translate(-48%,-49%);
+  border-radius:22px;
+  overflow:hidden;
+  border:3px solid #183414;
+  box-shadow:0 8px 0 rgba(24,52,20,.12);
+  background:#23251f;
+}
+.chalk-tree{width:100%;border-radius:18px}
+.chalk-tree-era{
+  position:absolute;
+  right:14px;
+  top:14px;
+  display:flex;
+  flex-direction:column;
+  color:#f5efe2;
+  text-align:right;
+  pointer-events:none;
+}
+.chalk-tree-era span{font-size:9px;font-weight:900;letter-spacing:.1em}
+.chalk-tree-era strong{font-family:var(--serif);font-size:19px;font-weight:400}
+.chalk-rings{background:#23251f!important;border-color:#f5efe2!important}
+.chalk-rings i{border-color:rgba(245,239,226,.55)!important}
+.chalk-rings span{color:#f5efe2!important}
+
+/* escala */
+.chalk-scale-board{
+  background:#23251f!important;
+  color:#f5efe2!important;
+  border-color:#111!important;
+  overflow:hidden;
+}
+.chalk-scale-board .scale-world,
+.chalk-scale-board .doodle-floor{display:none!important}
+.chalk-floor{
+  position:absolute;
+  left:3%;
+  right:3%;
+  bottom:12%;
+  height:2px;
+  border-top:2px solid rgba(245,239,226,.35);
+  transform:rotate(-.2deg);
+}
+.chalk-scale-object{
+  width:100%;
+  height:100%;
+  border-radius:0;
+}
+.chalk-scale-board .doodle-object{z-index:3}
+.chalk-scale-board .doodle-label{
+  color:#f5efe2!important;
+  background:#23251f!important;
+  border:1px solid rgba(245,239,226,.32)!important;
+  box-shadow:none!important;
+}
+.chalk-scale-board .doodle-label span{color:rgba(245,239,226,.72)!important}
+.chalk-measure{
+  position:absolute;
+  right:4%;
+  top:15%;
+  bottom:13%;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:#f5efe2;
+}
+.chalk-measure i{
+  display:block;
+  height:100%;
+  border-left:2px solid rgba(245,239,226,.7);
+  position:relative;
+}
+.chalk-measure i:before,.chalk-measure i:after{
+  content:"";
+  position:absolute;
+  left:-7px;
+  width:12px;
+  border-top:2px solid rgba(245,239,226,.7);
+}
+.chalk-measure i:before{top:0}.chalk-measure i:after{bottom:0}
+.chalk-measure span{font-family:var(--serif);font-size:13px}
+.chalk-zoom{
+  background:#23251f!important;
+  color:#f5efe2!important;
+  border-color:rgba(245,239,226,.55)!important;
+}
+.chalk-zoom>div{background:#23251f!important}
+.chalk-zoom .chalk-scale-object{border-radius:7px}
+
+/* rede */
+.chalk-network-board{
+  background:#23251f!important;
+  border-color:#111!important;
+}
+.chalk-network{width:100%;border-radius:13px}
+.chalk-network-hits{position:absolute;inset:0;z-index:5}
+.chalk-network-hits button{
+  position:absolute;
+  width:42px;
+  height:42px;
+  transform:translate(-50%,-50%);
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  cursor:pointer;
+}
+.chalk-network-hits button:focus-visible{
+  outline:3px solid #f3c969;
+  outline-offset:2px;
+}
+.chalk-network-hits button.seed{box-shadow:0 0 0 2px rgba(243,201,105,.8)}
+.chalk-network-board .network-labels span{
+  background:#23251f!important;
+  color:#f5efe2!important;
+  border:1px solid rgba(245,239,226,.25);
+  border-radius:5px;
+}
+
+/* memória */
+.chalk-memory-room{
+  background:#23251f!important;
+  color:#f5efe2;
+  border-color:#111!important;
+}
+.chalk-memory-room:before{display:none!important}
+.chalk-memory-room .memory-slot{
+  border-right:1px dashed rgba(245,239,226,.13)!important;
+  border-bottom:1px dashed rgba(245,239,226,.13)!important;
+}
+.chalk-memory-room.recall .memory-slot:not(:disabled):hover{background:rgba(167,139,250,.12)!important}
+.chalk-memory-icon{
+  width:64px!important;
+  height:64px!important;
+  border-radius:8px;
+}
+.chalk-memory-icon.guess{
+  position:absolute;
+  width:54px!important;
+  height:54px!important;
+  opacity:.55;
+  transform:translate(17px,13px);
+  filter:none!important;
+}
+.memory-ready{
+  background:rgba(35,37,31,.95)!important;
+  color:#f5efe2!important;
+}
+.memory-ready button{background:#f5efe2!important;color:#23251f!important}
+.memory-prompt .chalk-memory-icon{width:48px!important;height:48px!important}
+.memory-summary .memory-legend i.real{background:#f5efe2!important}
+.memory-summary .memory-legend i.guess{background:#a78bfa!important}
+
+/* teseu */
+.chalk-theseus-board{
+  min-height:0!important;
+  background:#23251f!important;
+  padding:0!important;
+  border-color:#111!important;
+}
+.chalk-ship-wrap{position:relative;width:100%;background:#23251f;border-radius:14px;overflow:hidden}
+.chalk-ship{width:100%;border-radius:14px}
+.chalk-ship-hit{
+  position:absolute;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  padding:0;
+}
+.chalk-ship-hit:hover{background:rgba(163,217,119,.08)}
+.chalk-ship-hit:focus-visible{outline:3px solid #f3c969;outline-offset:-3px}
+.chalk-theseus-board>span{
+  position:absolute;
+  left:12px;
+  bottom:10px;
+  color:rgba(245,239,226,.72);
+  font-family:var(--serif);
+  font-size:11px;
+  pointer-events:none;
+}
+.two-ships article .chalk-ship-wrap{border:2px solid #111}
+
+/* profundidade */
+.chalk-depth-map{
+  background:#23251f!important;
+  padding:0!important;
+  overflow:hidden;
+}
+.chalk-earth{
+  width:100%;
+  cursor:crosshair;
+  touch-action:none;
+  border-radius:14px;
+}
+.refined-depth-card .depth-description,
+.refined-depth-card .depth-slider{
+  background:#fffaf0!important;
+}
+
+/* reduzir o ruído dos estilos antigos que tentavam parecer ilustração */
+.tree-era-vignette,.tree-era-caption,.tree-sun,.tree-cloud,
+.scale-sun,.scale-cloud,.scale-hill,.scale-tree,.scale-observer,
+.shipwright,.memory-room-window,.memory-room-shelf,.memory-room-light{display:none!important}
+
+@media(max-width:760px){
+  .chalk-tree-panel{width:min(68vw,410px);left:55%;top:44%}
+  .chalk-card{border-radius:12px}
+  .chalk-network-hits button{width:34px;height:34px}
+  .chalk-memory-icon{width:48px!important;height:48px!important}
+}
