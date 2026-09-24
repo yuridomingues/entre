@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { ChalkScaleObject } from "@/components/chalk-scenes";
+import { CollageScaleObject } from "@/components/collage-scenes";
 
 type Kind="grain"|"coin"|"phone"|"person"|"bus"|"building"|"tree"|"mountain"|"earth";
 type Item={kind:Kind;name:string;size:string;meters:number;measure:string};
@@ -97,12 +97,12 @@ export function ScaleExplorer(){
         <div className="chalk-floor" aria-hidden="true"/>
 
         <div className="doodle-object previous" key={"p-"+index+"-"+revealed} style={{height:Math.max(.25,revealed?actualPreviousHeight:shownPreviousHeight)+"%"}}>
-          <ChalkScaleObject kind={previous.kind}/>
+          <CollageScaleObject kind={previous.kind}/>
           <div className="doodle-label"><strong>{previous.name}</strong><span>{previous.size}</span></div>
         </div>
 
         <div className="doodle-object current" key={"c-"+index} style={{height:currentHeight+"%"}}>
-          <ChalkScaleObject kind={current.kind}/>
+          <CollageScaleObject kind={current.kind}/>
           <div className="doodle-label"><strong>{current.name}</strong><span>{revealed?current.size:"?"}</span></div>
         </div>
 
@@ -113,7 +113,7 @@ export function ScaleExplorer(){
 
         {tooSmall&&<div className="doodle-note chalk-zoom">
           <span>{revealed?"zoom":"seu palpite"}</span>
-          <div><ChalkScaleObject kind={previous.kind}/></div>
+          <div><CollageScaleObject kind={previous.kind}/></div>
           <small>{previous.name}</small>
         </div>}
       </div>
