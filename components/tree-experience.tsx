@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { ChalkTree } from "@/components/chalk-scenes";
+import { CollageTree } from "@/components/collage-scenes";
 
 const moments=[
   {year:1500,label:"semente",title:"começa pequena",text:"Uma semente encontra espaço, água e luz. O resto ainda é possibilidade."},
@@ -72,8 +72,8 @@ export function TreeExperience(){
         </div>
       </aside>
 
-      <div className="tree-canvas chalk-tree-panel">
-        <ChalkTree progress={progress}/>
+      <div className="tree-canvas collage-tree-panel">
+        <CollageTree progress={progress}/>
         <div className="chalk-tree-era">
           <span>{item.year}</span>
           <strong>{item.label}</strong>
@@ -94,7 +94,7 @@ export function TreeExperience(){
     </div>
 
     <section className="tree-finale">
-      <div className="tree-rings chalk-rings" aria-hidden="true">
+      <div className="tree-rings collage-rings" aria-hidden="true">
         {Array.from({length:10}).map((_,i)=><i key={i} style={{inset:(7+i*4)+"%"}}/>)}
         <span>526</span>
       </div>
