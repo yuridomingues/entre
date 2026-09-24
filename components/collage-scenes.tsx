@@ -81,6 +81,7 @@ export function CollageTree({progress}:{progress:number}){
   return <div className="collage-tree" aria-hidden="true">
     <div className="tree-paper-shadow"/>
     <Img src={A.tree} className="tree-cutout" alt="" />
+    <div className="tree-growth-window" style={{height:(28+progress*67)+"%"}}/>
     <div className="tree-mask" style={{transform:`scale(${scale})`,opacity}}/>
     <div className="tree-era-strip"><span>1500</span><i style={{width:(progress*100)+"%"}}/><span>2026</span></div>
     <div className="tree-stamp" style={{opacity:.2+progress*.8}}>526 anos</div>
@@ -93,10 +94,11 @@ export function CollageScaleObject({kind}:{kind:string}){
     kind==="building"?A.building:
     kind==="person"?A.person:
     kind==="bus"?A.ferry:
-    kind==="planet"?A.planets:
+    kind==="earth"?A.planets:
     kind==="coin"?A.clock:
     kind==="phone"?A.switchboard:
     kind==="mountain"?A.earth:
+    kind==="grain"?A.plant:
     A.reading;
   return <div className={"collage-scale-object kind-"+kind} aria-hidden="true">
     <div className="collage-paper"/>
