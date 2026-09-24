@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ChalkEarth, ChalkMemoryIcon, ChalkNetwork, ChalkShip } from "@/components/chalk-scenes";
+import { CollageEarth, CollageMemoryIcon, CollageNetwork, CollageShip } from "@/components/collage-scenes";
 
 /* REDE */
 type NetNode={id:number;x:number;y:number};
@@ -88,15 +88,15 @@ export function RefinedIdeaSpread(){
         <strong>{reached}/20</strong>
       </header>
 
-      <div className="refined-network-board chalk-network-board">
-        <ChalkNetwork
+      <div className="refined-network-board collage-network-board">
+        <CollageNetwork
           nodes={nodes}
           edges={run?.edges??(withBridge?[...baseEdges,bridge]:baseEdges)}
           seeds={seeds}
           dist={run?.dist??null}
           wave={wave}
         />
-        <div className="chalk-network-hits" aria-label="Pessoas da rede">
+        <div className="collage-network-hits" aria-label="Pessoas da rede">
           {nodes.map(node=>{
             const seed=seeds.includes(node.id);
             return <button
@@ -149,7 +149,7 @@ function memoryPositions(seed:number){
   return cells.slice(0,4);
 }
 function MemoryIcon({kind,className=""}:{kind:MemoryKind;className?:string}){
-  return <ChalkMemoryIcon kind={kind} className={className}/>;
+  return <CollageMemoryIcon kind={kind} className={className}/>;
 }
 
 export function RefinedMemory(){
@@ -190,7 +190,7 @@ export function RefinedMemory(){
         {phase==="study"&&<strong>{seconds}s</strong>}
       </header>
 
-      <div className={"refined-memory-room chalk-memory-room "+phase}>
+      <div className={"refined-memory-room collage-memory-room "+phase}>
         {Array.from({length:12}).map((_,cell)=>{
           const realIndex=positions.indexOf(cell);
           const guessedIndex=answers.indexOf(cell);
@@ -312,14 +312,14 @@ export function RefinedTheseus(){
       <header className="lab-head"><div><span>identidade</span><h2>{count<12?"Ainda é o mesmo barco?":"Agora existem dois."}</h2></div><strong>{count}/12 trocadas</strong></header>
 
       {count<12?<div className="theseus-workbench">
-        <div className="theseus-ship chalk-theseus-board">
-          <ChalkShip replaced={replaced} onPart={replace}/>
+        <div className="theseus-ship collage-theseus-board">
+          <CollageShip replaced={replaced} onPart={replace}/>
           <span>toque numa peça para substituí-la</span>
         </div>
         <div className="old-parts-tray"><span>peças antigas</span><div>{shipParts.filter(p=>replaced.has(p.id)).map(p=><i key={p.id}>{p.name}</i>)}</div></div>
       </div>:<div className="two-ships">
-        <article><span>continuou viajando</span><ChalkShip replaced={new Set(shipParts.map(p=>p.id))}/><strong>todas as peças novas</strong></article>
-        <article><span>remontado depois</span><ChalkShip replaced={new Set()} allOld/><strong>todas as peças antigas</strong></article>
+        <article><span>continuou viajando</span><CollageShip replaced={new Set(shipParts.map(p=>p.id))}/><strong>todas as peças novas</strong></article>
+        <article><span>remontado depois</span><CollageShip replaced={new Set()} allOld/><strong>todas as peças antigas</strong></article>
       </div>}
 
       {count<12?<div className="theseus-decision">
@@ -375,7 +375,7 @@ export function RefinedEarthDepth(){
 
       <div className="depth-interactive-grid">
         <div className="depth-map chalk-depth-map">
-          <ChalkEarth depth={depth} angle={angle} onPick={(d,a)=>{setDepth(d);setAngle(a)}}/>
+          <CollageEarth depth={depth} angle={angle} onPick={(d,a)=>{setDepth(d);setAngle(a)}}/>
         </div>
 
         <aside className="depth-panel">
