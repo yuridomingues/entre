@@ -11,6 +11,10 @@ export default function Sources() {
       <p className="info-kicker">fontes</p>
       <h1>De onde vieram <em>as ideias.</em></h1>
       <p className="info-lead">Algumas experiências usam conceitos conhecidos de ciência, percepção, linguagem e matemática. Aqui ficam as referências e as simplificações principais.</p>
+      <div className="credits-box">
+        <p><strong>Ilustrações e colagens.</strong> A linguagem visual usa recortes de gravuras e ilustrações históricas, principalmente do Old Book Illustrations, com composição própria em papel, fita, halftone e recortes. O site do OBI não limita o uso das ilustrações e sinaliza obras que considera provavelmente em domínio público; os trabalhos usados aqui são antigos e cada página mantém a referência de origem. A pesquisa visual também passou pela Heritage Library, da Heritage Type Co., que oferece bundles vintage gratuitos para projetos criativos, e pelas coleções públicas da NYPL.</p>
+        <p><a href="https://www.oldbookillustrations.com/" target="_blank" rel="noreferrer">Old Book Illustrations ↗</a> · <a href="https://www.heritagetype.com/pages/free-vintage-illustrations" target="_blank" rel="noreferrer">Heritage Library ↗</a> · <a href="https://digitalcollections.nypl.org/" target="_blank" rel="noreferrer">NYPL Digital Collections ↗</a></p>
+      </div>
       <div className="sources-list">
         <section><span>01</span><div><h2>A árvore que viu tudo</h2><p>A árvore de 1500 é imaginária. Os anéis de crescimento inspiram a ideia de usar uma árvore como régua de tempo.</p><a href="https://www.usgs.gov/media/images/tree-ring-illustration" target="_blank" rel="noreferrer">U.S. Geological Survey ↗</a></div></section>
         <section><span>02</span><div><h2>O mundo que seu cérebro inventa</h2><p>As imagens usam ilusões clássicas de tamanho, comprimento e contraste. A primeira permite alterar apenas o contexto externo mantendo os centros iguais.</p></div></section>
