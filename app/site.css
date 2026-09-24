@@ -1671,3 +1671,170 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
   .chalk-network-hits button{width:34px;height:34px}
   .chalk-memory-icon{width:48px!important;height:48px!important}
 }
+
+
+/* =========================================================
+   ARCHIVAL COLLAGE SYSTEM
+   Recortes de ilustrações históricas + papel + halftone.
+   Mantém a mecânica simples, troca a linguagem visual.
+   ========================================================= */
+.collage-card,.collage-tree,.collage-scale-object,.collage-network,.collage-ship-wrap,.collage-earth,.collage-memory-icon{position:relative;isolation:isolate}
+.collage-card{
+  width:min(100%,420px);
+  aspect-ratio:420/260;
+  overflow:hidden;
+  border-radius:18px;
+  background:#efe7d5;
+  border:2px solid rgba(17,17,17,.86);
+  box-shadow:0 5px 0 rgba(17,17,17,.16);
+}
+.collage-card.compact{width:min(100%,300px)}
+.tile-visual{display:grid;place-items:center;padding:10px!important}
+.tile-visual:before,.cover-art:before{display:none!important}
+.cover-art{display:grid;place-items:center}
+.cover-art .collage-card{width:min(100%,540px)}
+.next-tile .collage-card{width:150px;border-radius:11px}
+.collage-paper,.collage-paper-main{
+  position:absolute;inset:7%;
+  background:#fff8ea;
+  clip-path:polygon(2% 4%,97% 0,100% 94%,4% 100%,0 26%);
+  box-shadow:0 6px 14px rgba(63,45,27,.13);
+}
+.collage-halftone{
+  position:absolute;inset:0;z-index:7;pointer-events:none;opacity:.12;
+  background-image:radial-gradient(circle,#111 0 1px,transparent 1.2px);
+  background-size:7px 7px;mix-blend-mode:multiply;
+}
+.collage-img{
+  display:block;object-fit:cover;filter:grayscale(1) contrast(1.12) sepia(.13);
+  mix-blend-mode:multiply;user-select:none;pointer-events:none;
+}
+.collage-card .piece{position:absolute;z-index:2}
+.collage-card .piece-0{left:9%;top:6%;width:66%;height:86%;object-fit:contain;transform:rotate(-2deg)}
+.collage-card .piece-1{right:2%;bottom:-4%;width:45%;height:66%;object-fit:cover;object-position:center;transform:rotate(5deg);clip-path:polygon(4% 5%,98% 0,93% 96%,0 100%)}
+.collage-card .piece-2{right:8%;top:8%;width:36%;height:48%;object-fit:cover;transform:rotate(7deg);clip-path:polygon(7% 0,100% 4%,94% 98%,0 92%)}
+.collage-card:after{
+  content:"";position:absolute;z-index:4;right:5%;bottom:8%;width:34%;height:22%;
+  background:var(--accent,#64416f);opacity:.72;mix-blend-mode:multiply;
+  clip-path:polygon(8% 8%,94% 0,100% 78%,3% 100%);
+}
+.collage-tape{
+  position:absolute;z-index:8;width:72px;height:20px;background:rgba(232,218,173,.72);
+  border:1px solid rgba(91,74,47,.16);box-shadow:0 1px 1px rgba(0,0,0,.08);transform:rotate(-5deg)
+}
+.collage-tape.top{left:8%;top:5%}.collage-tape.bottom{right:8%;bottom:5%;transform:rotate(7deg)}
+.collage-scribble{
+  position:absolute;z-index:9;left:8%;bottom:9%;font:900 40px/1 var(--serif);
+  color:#111;transform:rotate(-6deg)
+}
+.collage-scribble.right{left:auto;right:8%;transform:rotate(5deg)}
+.collage-scribble.numbers{left:8%;bottom:7%;font-size:27px;background:#fff8ea;border:2px solid #111;padding:4px 8px}
+.collage-scribble.stroop{font-family:Arial,sans-serif;font-size:26px;padding:3px 6px;background:#fff8ea;border:2px solid #111}
+.collage-scribble.s1{left:7%;bottom:10%;color:#2e6a49}.collage-scribble.s2{left:auto;right:6%;bottom:19%;color:#7b5686}
+.collage-node{position:absolute;z-index:9;width:18px;height:18px;border-radius:50%;border:2px solid #111;background:#fff8ea}
+.collage-node.n1{left:20%;top:23%;background:#64416f}.collage-node.n2{left:40%;top:40%;background:#64416f}.collage-node.n3{left:67%;top:54%;background:#78834b}.collage-node.n4{left:80%;top:30%;background:#fff8ea}
+.collage-bridge{position:absolute;z-index:8;left:43%;top:47%;width:33%;border-top:5px dashed #111;transform:rotate(12deg)}
+.trajectory{position:absolute;z-index:8;left:7%;top:65%;width:84%;height:2px;border-top:5px solid #64416f;border-radius:50%;transform:rotate(-9deg)}
+.trajectory.t2{border-color:#78834b;transform:rotate(11deg);top:69%}
+.map-grid{position:absolute;z-index:8;right:7%;top:9%;width:45%;height:65%;opacity:.32;background:linear-gradient(90deg,transparent 31%,#111 32% 33%,transparent 34% 65%,#111 66% 67%,transparent 68%),linear-gradient(transparent 31%,#111 32% 33%,transparent 34% 65%,#111 66% 67%,transparent 68%)}
+
+/* cenas específicas dos cards */
+.scene-arvore .piece-0{left:16%;width:66%}
+.scene-mente .piece-0{left:12%;top:-2%;width:67%;height:105%}
+.scene-musica .piece-0{left:9%;top:0;width:72%;height:100%}
+.scene-conversa .piece-0{left:4%;top:1%;width:80%;height:100%}
+.scene-vida .piece-0{left:0%;top:0;width:56%;height:100%;object-fit:cover}.scene-vida .piece-1{right:2%;width:49%;height:80%}
+.scene-escala .piece-0{left:1%;top:3%;width:52%;height:92%}.scene-escala .piece-1{right:25%;bottom:0;width:39%;height:68%}.scene-escala .piece-2{right:0;top:9%;width:31%;height:74%}
+.scene-acaso .piece-0{left:5%;top:-12%;width:78%;height:120%}
+.scene-noite .piece-0{left:3%;top:-4%;width:93%;height:105%;object-fit:cover}
+.scene-rede .piece-0{left:0;top:0;width:100%;height:100%;object-fit:cover;opacity:.86}
+.scene-cooperar .piece-0{left:0;top:1%;width:65%;height:100%}.scene-cooperar .piece-1{right:-8%;bottom:-11%;width:57%;height:83%}
+.scene-memoria .piece-0{left:0;top:0;width:62%;height:100%;object-fit:cover}.scene-memoria .piece-1{right:3%;top:7%;width:35%;height:73%}
+.scene-mudanca .piece-0{left:0;top:0;width:55%;height:100%}.scene-mudanca .piece-1{right:0;top:1%;left:auto;width:55%;height:100%;transform:rotate(3deg);opacity:.55}
+.scene-atencao .piece-0{left:11%;top:-3%;width:66%;height:108%}
+.scene-aleatorio .piece-0{left:22%;top:0;width:51%;height:100%;object-fit:contain}
+.scene-teseu .piece-0{left:0;top:0;width:66%;height:100%;object-fit:cover}.scene-teseu .piece-1{right:-2%;bottom:-3%;width:47%;height:70%}
+.scene-perguntas .piece-0{left:0;top:0;width:55%;height:100%}.scene-perguntas .piece-1{right:-4%;bottom:-5%;width:52%;height:79%}
+.scene-regra .piece-0{left:0;top:0;width:69%;height:100%;object-fit:cover}
+.scene-minuto .piece-0{left:11%;top:-2%;width:73%;height:104%}
+.scene-stroop .piece-0{left:7%;top:-3%;width:69%;height:106%}
+.scene-mapa .piece-0{left:0;top:0;width:66%;height:100%}.scene-mapa .piece-1{right:-4%;bottom:-4%;width:45%;height:72%}
+.scene-profundidade .piece-0{left:0;top:0;width:100%;height:100%;object-fit:cover}
+
+/* árvore: gravura real como personagem central */
+.collage-tree-panel{
+  position:absolute;left:50%;top:50%;width:min(51vw,570px);height:min(78vh,650px);
+  transform:translate(-48%,-49%);border:3px solid #183414;border-radius:22px;
+  background:#f4ecd9;overflow:hidden;box-shadow:0 9px 0 rgba(24,52,20,.12)
+}
+.collage-tree{width:100%;height:100%;background:radial-gradient(circle at 50% 28%,#fdf8e9 0,#ede2c8 70%)}
+.collage-tree .tree-cutout{position:absolute;left:50%;bottom:5%;width:87%;height:88%;object-fit:contain;transform:translateX(-50%);filter:grayscale(1) contrast(1.25) sepia(.18);mix-blend-mode:multiply}
+.tree-paper-shadow{position:absolute;left:10%;right:9%;top:8%;bottom:8%;background:#fff9eb;transform:rotate(-1deg);box-shadow:0 8px 16px rgba(73,53,29,.11)}
+.tree-mask{position:absolute;inset:0;transform-origin:50% 100%;background:linear-gradient(180deg,transparent 0 68%,rgba(120,131,75,.12) 68%);pointer-events:none}
+.tree-era-strip{position:absolute;left:8%;right:8%;bottom:6%;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;font-size:9px;font-weight:900}
+.tree-era-strip i{height:4px;background:#d6cba9;position:relative}.tree-era-strip i:after{content:"";display:block;height:100%;width:100%;background:#78834b}
+.tree-stamp{position:absolute;right:8%;top:6%;padding:6px 9px;border:2px solid #64416f;color:#64416f;border-radius:50%;font:900 12px/1.1 var(--serif);transform:rotate(8deg)}
+.collage-rings{background:#efe5cf!important;border-color:#64416f!important}.collage-rings i{border-color:rgba(100,65,111,.5)!important}.collage-rings span{color:#64416f!important}
+
+/* escala: recorte fotográfico/gravura dentro da mesma régua */
+.collage-scale-object{width:100%;height:100%;min-height:18px;display:grid;place-items:end center;overflow:visible}
+.collage-scale-object .collage-paper{inset:5%;background:#fff8e8;box-shadow:0 4px 8px rgba(0,0,0,.12);clip-path:polygon(5% 2%,98% 5%,94% 97%,2% 93%)}
+.scale-cutout{position:absolute;inset:2% 4% 4%;width:92%;height:94%;object-fit:contain;filter:grayscale(1) contrast(1.18) sepia(.12);mix-blend-mode:multiply}
+.scale-object-label{position:absolute;left:50%;bottom:2%;transform:translateX(-50%) rotate(-2deg);font:900 8px/1 Arial,sans-serif;text-transform:uppercase;background:#fff8e8;padding:2px 4px;border:1px solid #111}
+.chalk-scale-board{background:#eee4cf!important;color:#111!important}
+.chalk-floor{border-color:rgba(17,17,17,.3)!important}
+.chalk-scale-board .doodle-label{color:#111!important;background:#fff8e8!important;border-color:#111!important}.chalk-scale-board .doodle-label span{color:#555!important}
+.chalk-measure{color:#111!important}.chalk-measure i,.chalk-measure i:before,.chalk-measure i:after{border-color:#111!important}
+.chalk-zoom{background:#fff8e8!important;color:#111!important;border-color:#111!important}.chalk-zoom>div{background:#eee4cf!important}
+
+/* rede: arquivo histórico de telecom + camada interativa */
+.collage-network-board{background:#e9dfc9!important;border-color:#111!important;overflow:hidden}
+.collage-network{position:relative;width:100%;aspect-ratio:930/450;background:#e9dfc9}
+.network-archive{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05) sepia(.22);opacity:.22;mix-blend-mode:multiply}
+.network-overlay{position:absolute;inset:0;width:100%;height:100%}
+.network-overlay line{stroke:#423b31;stroke-width:2;opacity:.35}.network-overlay line.active{stroke:#64416f;stroke-width:5;opacity:.95;stroke-dasharray:10 7;animation:collage-flow 1.3s linear infinite}
+@keyframes collage-flow{to{stroke-dashoffset:-34}}
+.network-overlay g circle:first-child{fill:#fff8e8;stroke:#111;stroke-width:3}.network-overlay g.active circle:first-child{fill:#8ea05f}.network-overlay g.seed circle:first-child{fill:#64416f}.network-overlay .core{fill:#111;stroke:none}
+.net-divider{stroke:#111;stroke-width:1.5;stroke-dasharray:5 7;opacity:.22}
+.collage-network-hits{position:absolute;inset:0;z-index:6}.collage-network-hits button{position:absolute;width:42px;height:42px;transform:translate(-50%,-50%);border:0;border-radius:50%;background:transparent;cursor:pointer}.collage-network-hits button:focus-visible{outline:3px solid #64416f;outline-offset:2px}
+.collage-network-board .network-labels span{background:#fff8e8!important;color:#111!important;border:1px solid #111;border-radius:4px}
+.network-tape{left:4%;top:3%;transform:rotate(-6deg)}
+
+/* memória: cada objeto vira recorte */
+.collage-memory-room{background:#e9dfc9!important;color:#111;border-color:#111!important}
+.collage-memory-room .memory-slot{border-color:rgba(17,17,17,.16)!important}
+.collage-memory-icon{display:block;position:relative;width:64px;height:64px;overflow:hidden;background:#fff8e8;clip-path:polygon(5% 2%,98% 6%,94% 98%,3% 93%);box-shadow:0 4px 7px rgba(0,0,0,.12)}
+.collage-memory-icon .collage-img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.35) sepia(.08);mix-blend-mode:multiply}
+.collage-memory-icon.book img{object-position:55% 46%}.collage-memory-icon.mug img{object-position:51% 56%}.collage-memory-icon.plant img{object-position:center}.collage-memory-icon.clock img{object-position:83% 20%}
+.collage-memory-icon.guess{position:absolute!important;width:54px!important;height:54px!important;opacity:.54;transform:translate(17px,13px) rotate(5deg);outline:3px dashed #64416f}
+.memory-prompt .collage-memory-icon{width:48px;height:48px}.memory-ready{background:rgba(239,230,210,.96)!important;color:#111!important}.memory-ready button{background:#111!important;color:#fff!important}
+
+/* teseu: estaleiro real + peças de papel substituíveis */
+.collage-theseus-board{min-height:0!important;background:#e9dfc9!important;padding:0!important;border-color:#111!important;overflow:hidden}
+.collage-ship-wrap{width:100%;aspect-ratio:720/360;overflow:hidden;background:#efe5cf;border-radius:14px}
+.ship-archive{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.12) sepia(.17);mix-blend-mode:multiply}
+.ship-paper-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,248,232,.05),rgba(255,248,232,.42));pointer-events:none}
+.ship-collage-part{position:absolute;border:1px dashed rgba(17,17,17,.18);background:rgba(255,248,232,.08);transform:rotate(-1deg);transition:background .18s,transform .18s}
+.ship-collage-part.new{background:#9cac65;mix-blend-mode:multiply;border:2px solid #111;transform:rotate(1.5deg);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.ship-collage-hit{position:absolute;border:0;background:transparent;cursor:pointer;padding:0}.ship-collage-hit:hover{background:rgba(100,65,111,.13)}.ship-collage-hit:focus-visible{outline:3px solid #64416f}
+.ship-tape{right:4%;top:4%;transform:rotate(8deg)}
+.two-ships article .collage-ship-wrap{border:2px solid #111}
+
+/* profundidade: gravura da Terra como fundo, corte funcional por cima */
+.chalk-depth-map{background:#171915!important;padding:0!important;overflow:hidden}
+.collage-earth{width:100%;aspect-ratio:1;background:#171915;overflow:hidden;border-radius:14px;touch-action:none;cursor:crosshair}
+.earth-archive{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.13) sepia(.15);opacity:.34;mix-blend-mode:screen}
+.earth-overlay{position:absolute;inset:0;width:100%;height:100%}
+.earth-overlay .shell{fill:none;stroke:#fff8e8;stroke-width:5;opacity:.82}.earth-overlay .outer{stroke:#d57f59;stroke-width:20;opacity:.7}.earth-overlay .inner{stroke:#e9bf5f;stroke-width:18;opacity:.82}
+.earth-probe-line{stroke:#fff8e8;stroke-width:3;stroke-dasharray:7 7;opacity:.72}.earth-probe{fill:#64416f;stroke:#fff8e8;stroke-width:4;filter:drop-shadow(0 0 8px rgba(255,248,232,.8))}
+.earth-tape{left:5%;top:4%}
+
+/* paper grain global das áreas ilustradas */
+.collage-card,.collage-tree-panel,.chalk-scale-board,.collage-network-board,.collage-memory-room,.collage-theseus-board,.chalk-depth-map{
+  background-image:linear-gradient(rgba(255,255,255,.03),rgba(0,0,0,.02)),radial-gradient(circle at 30% 20%,rgba(100,65,111,.04),transparent 34%);
+}
+@media(max-width:760px){
+  .collage-tree-panel{width:min(72vw,420px);left:55%;top:44%}
+  .collage-card{border-radius:13px}.collage-network-hits button{width:34px;height:34px}.collage-memory-icon{width:48px;height:48px}
+}
+@media(prefers-reduced-motion:reduce){.network-overlay line.active{animation:none!important}}
