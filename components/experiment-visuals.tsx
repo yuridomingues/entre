@@ -1,6 +1,6 @@
 "use client";
-import { ChalkCard } from "@/components/chalk-scenes";
+import { CollageCard } from "@/components/collage-scenes";
 
 export function ExperimentVisual({ slug, compact = false }: { slug: string; compact?: boolean }) {
-  return <ChalkCard scene={slug} className={compact?"compact":""}/>;
+  return <CollageCard scene={slug} className={compact?"compact":""}/>;
 }
