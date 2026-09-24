@@ -20,8 +20,8 @@ const A={
   plant:"https://www.oldbookillustrations.com/site/assets/high-res/1827-1833/camellia-narcissus-pansy-1600.jpg"
 };
 
-function Img({src,className="",alt=""}:{src:string;className?:string;alt?:string}){
-  return <img src={src} alt={alt} className={"collage-img "+className} loading="lazy" decoding="async"/>;
+function Img({src,className="",alt="",style}:{src:string;className?:string;alt?:string;style?:CSSProperties}){
+  return <img src={src} alt={alt} className={"collage-img "+className} style={style} loading="lazy" decoding="async"/>;
 }
 
 function Tape({className=""}:{className?:string}){return <i className={"collage-tape "+className} aria-hidden="true"/>}
@@ -80,7 +80,7 @@ export function CollageTree({progress}:{progress:number}){
   const opacity=.42+progress*.58;
   return <div className="collage-tree" aria-hidden="true">
     <div className="tree-paper-shadow"/>
-    <Img src={A.tree} className="tree-cutout" alt="" />
+    <Img src={A.tree} className="tree-cutout" alt="" style={{transform:`translateX(-50%) scale(${scale})`,opacity}}/>
     <div className="tree-growth-window" style={{height:(28+progress*67)+"%"}}/>
     <div className="tree-mask" style={{transform:`scale(${scale})`,opacity}}/>
     <div className="tree-era-strip"><span>1500</span><i style={{width:(progress*100)+"%"}}/><span>2026</span></div>
