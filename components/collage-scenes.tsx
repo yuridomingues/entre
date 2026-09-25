@@ -2,22 +2,27 @@
 import { type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 
 const A={
-  tree:"https://www.oldbookillustrations.com/site/assets/high-res/1885-1891/chestnut-tree-1600.jpg",
+  oak:"https://www.oldbookillustrations.com/site/assets/high-res/1826/beggars-oak-1600.jpg",
   brain:"https://www.oldbookillustrations.com/site/assets/high-res/1898/brain-body-1600.jpg",
   music:"https://www.oldbookillustrations.com/site/assets/high-res/1882/musique-1600.jpg",
   talk:"https://www.oldbookillustrations.com/site/assets/high-res/1877/conversation-1600.jpg",
   clock:"https://www.oldbookillustrations.com/site/assets/high-res/1866/majors-clock-1600.jpg",
   reading:"https://www.oldbookillustrations.com/site/assets/high-res/no-date-1839/reading-letter-1600.jpg",
-  ship:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-ca-1880/build-vessel-1600.jpg",
-  ferry:"https://www.oldbookillustrations.com/site/assets/high-res/1895/ferry-boat-1600.jpg",
+  microscope:"https://www.oldbookillustrations.com/site/assets/high-res/1885-1891/microscope-1600.jpg",
   switchboard:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-after-1887/switchboard-operator-1600.jpg",
   planets:"https://www.oldbookillustrations.com/site/assets/high-res/1844/balls-planets-1600.jpg",
-  earth:"https://www.oldbookillustrations.com/site/assets/high-res/1874/condensation-globe-1600.jpg",
-  building:"https://www.oldbookillustrations.com/site/assets/high-res/1883/paper-building-1600.jpg",
   mansion:"https://www.oldbookillustrations.com/site/assets/high-res/1886/old-family-mansion-1600.jpg",
   person:"https://www.oldbookillustrations.com/site/assets/high-res/1892/man-entered-1600.jpg",
-  cup:"https://www.oldbookillustrations.com/site/assets/high-res/1901/dipped-cup-1600.jpg",
-  plant:"https://www.oldbookillustrations.com/site/assets/high-res/1827-1833/camellia-narcissus-pansy-1600.jpg"
+  ant:"https://www.oldbookillustrations.com/site/assets/high-res/1838/grasshopper-ant-1600.jpg",
+  study:"https://www.oldbookillustrations.com/site/assets/high-res/1911/study-hour-1600.jpg",
+  seesaw:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-1852/faster-sister-1600.jpg",
+  heron:"https://www.oldbookillustrations.com/site/assets/high-res/1838/heron-1600.jpg",
+  questions:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-after-1862/several-questions-1600.jpg",
+  tower:"https://www.oldbookillustrations.com/site/assets/high-res/1825/gros-horloge-rouen-1600.jpg",
+  palette:"https://www.oldbookillustrations.com/site/assets/high-res/1838/attributes-art-illustration-1600.jpg",
+  ship:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-ca-1880/build-vessel-1600.jpg",
+  ferry:"https://www.oldbookillustrations.com/site/assets/high-res/1895/ferry-boat-1600.jpg",
+  earth:"https://www.oldbookillustrations.com/site/assets/high-res/1874/condensation-globe-1600.jpg"
 };
 
 function Img({src,className="",alt="",style}:{src:string;className?:string;alt?:string;style?:CSSProperties}){
@@ -28,34 +33,31 @@ function Tape({className=""}:{className?:string}){return <i className={"collage-
 function Scribble({children,className=""}:{children:string;className?:string}){return <span className={"collage-scribble "+className}>{children}</span>}
 
 const sceneAssets:Record<string,string[]> = {
-  arvore:[A.tree],
+  arvore:[A.oak],
   mente:[A.brain],
   musica:[A.music],
   conversa:[A.talk],
-  vida:[A.clock,A.reading],
-  escala:[A.planets,A.tree,A.building],
+  vida:[A.clock],
+  escala:[A.microscope],
   acaso:[A.planets],
   noite:[A.mansion],
   rede:[A.switchboard],
-  cooperar:[A.talk,A.reading],
-  memoria:[A.reading,A.clock],
-  mudanca:[A.tree,A.tree],
-  atencao:[A.brain],
+  cooperar:[A.ant],
+  memoria:[A.study],
+  mudanca:[A.seesaw],
+  atencao:[A.heron],
   aleatorio:[A.person],
-  teseu:[A.ship,A.ferry],
-  perguntas:[A.brain,A.reading],
+  perguntas:[A.questions],
   regra:[A.reading],
-  minuto:[A.clock],
-  stroop:[A.brain],
-  mapa:[A.earth,A.building],
-  profundidade:[A.earth]
+  minuto:[A.tower],
+  stroop:[A.palette]
 };
 
 const accent:Record<string,string>={
   arvore:"#78834B",mente:"#64416F",musica:"#d8b84d",conversa:"#6aa4b2",vida:"#9b684d",escala:"#9aac5c",
   acaso:"#bd7294",noite:"#3b405c",rede:"#6ea683",cooperar:"#d57d66",memoria:"#8d79b8",mudanca:"#7daab6",
-  atencao:"#d9b64c",aleatorio:"#bd7294",teseu:"#b49660",perguntas:"#6ea683",regra:"#7daab6",minuto:"#aa775a",
-  stroop:"#76558b",mapa:"#719db3",profundidade:"#78834B"
+  atencao:"#d9b64c",aleatorio:"#bd7294",perguntas:"#6ea683",regra:"#7daab6",minuto:"#aa775a",
+  stroop:"#76558b"
 };
 
 export function CollageCard({scene,className=""}:{scene:string;className?:string}){
@@ -70,46 +72,19 @@ export function CollageCard({scene,className=""}:{scene:string;className?:string
     {scene==="aleatorio"&&<><Scribble>←</Scribble><Scribble className="right">→</Scribble></>}
     {scene==="regra"&&<Scribble className="numbers">2 · 4 · 6 · ?</Scribble>}
     {scene==="stroop"&&<><Scribble className="stroop s1">AZUL</Scribble><Scribble className="stroop s2">VERDE</Scribble></>}
-    {scene==="mapa"&&<span className="map-grid"/>}
     <Tape className="top"/><Tape className="bottom"/>
   </div>;
 }
 
 export function CollageTree({progress}:{progress:number}){
-  const scale=.34+progress*.74;
-  const opacity=.42+progress*.58;
+  const reveal=Math.max(0,62-progress*62);
   return <div className="collage-tree" aria-hidden="true">
     <div className="tree-paper-shadow"/>
-    <Img src={A.tree} className="tree-cutout" alt="" style={{transform:`translateX(-50%) scale(${scale})`,opacity}}/>
-    <div className="tree-growth-window" style={{height:(28+progress*67)+"%"}}/>
-    <div className="tree-mask" style={{transform:`scale(${scale})`,opacity}}/>
+    <Img src={A.oak} className="tree-cutout" alt="" style={{clipPath:`inset(${reveal}% 0 0 0)`}}/>
+    <div className="tree-ground-line"/>
     <div className="tree-era-strip"><span>1500</span><i style={{width:(progress*100)+"%"}}/><span>2026</span></div>
-    <div className="tree-stamp" style={{opacity:.2+progress*.8}}>526 anos</div>
+    <div className="tree-stamp" style={{opacity:.25+progress*.75}}>526 anos</div>
   </div>;
-}
-
-export function CollageScaleObject({kind}:{kind:string}){
-  const src =
-    kind==="tree"?A.tree:
-    kind==="building"?A.building:
-    kind==="person"?A.person:
-    kind==="bus"?A.ferry:
-    kind==="earth"?A.planets:
-    kind==="coin"?A.clock:
-    kind==="phone"?A.switchboard:
-    kind==="mountain"?A.earth:
-    kind==="grain"?A.plant:
-    A.reading;
-  return <div className={"collage-scale-object kind-"+kind} aria-hidden="true">
-    <div className="collage-paper"/>
-    <Img src={src} className="scale-cutout"/>
-    <span className="scale-object-label">{kind}</span>
-  </div>;
-}
-
-export function CollageMemoryIcon({kind,className=""}:{kind:"book"|"mug"|"plant"|"clock";className?:string}){
-  const src=kind==="clock"?A.clock:kind==="plant"?A.plant:kind==="mug"?A.cup:A.reading;
-  return <span className={"collage-memory-icon "+kind+" "+className} aria-hidden="true"><Img src={src}/></span>;
 }
 
 type NetNode={x:number;y:number};
@@ -124,8 +99,14 @@ export function CollageNetwork({nodes,edges,seeds,dist,wave}:{nodes:NetNode[];ed
       })}
       {nodes.map((n,i)=>{
         const active=dist?dist[i]>=0&&dist[i]<=wave:seeds.includes(i);
+        const just=!!dist&&dist[i]===wave&&wave>=0;
         const seed=seeds.includes(i);
-        return <g key={i} className={(active?"active ":"")+(seed?"seed":"")}>
+        return <g key={i} className={(active?"active ":"")+(just?"just ":"")+(seed?"seed":"")}>
+          {just&&<>
+            <circle className="net-smoke s0" cx={n.x} cy={n.y} r="8"/>
+            <circle className="net-smoke s1" cx={n.x-4} cy={n.y+2} r="6"/>
+            <circle className="net-smoke s2" cx={n.x+5} cy={n.y-3} r="5"/>
+          </>}
           <circle cx={n.x} cy={n.y} r={seed?23:16}/>
           <circle cx={n.x} cy={n.y} r="5" className="core"/>
         </g>;

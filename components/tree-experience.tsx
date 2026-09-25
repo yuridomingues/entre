@@ -37,7 +37,10 @@ export function TreeExperience(){
   const year=Math.round(1500+526*progress);
   const age=year-1500;
 
-  return <div className="tree-story chalk-tree-story" ref={ref}>
+  const rings=()=>Array.from({length:10}).map((_,i)=><i key={i} style={{inset:(7+i*4)+"%"}}/>);
+
+  return <div className="tree-experience">
+  <div className="tree-story chalk-tree-story" ref={ref}>
     <div className="tree-story-stage">
       <div className="tree-year-watermark" aria-hidden="true">{year}</div>
 
@@ -93,10 +96,14 @@ export function TreeExperience(){
       </div>
     </div>
 
+  </div>
     <section className="tree-finale">
-      <div className="tree-rings collage-rings" aria-hidden="true">
-        {Array.from({length:10}).map((_,i)=><i key={i} style={{inset:(7+i*4)+"%"}}/>)}
-        <span>526</span>
+      <div className="tree-rings-stage">
+        <div className="tree-rings collage-rings" aria-hidden="true">
+          {rings()}
+          <span>526</span>
+        </div>
+        <div className="tree-rings collage-rings is-reflection" aria-hidden="true">{rings()}</div>
       </div>
       <div>
         <small>uma árvore imaginária</small>

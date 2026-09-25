@@ -1,15 +1,9 @@
 import Link from "next/link";
-import { experiments, type Experiment } from "@/lib/experiments";
+import { publicExperiments, type Experiment } from "@/lib/experiments";
 import { ExperimentVisual } from "@/components/experiment-visuals";
 import { BrandLogo } from "@/components/brand-logo";
 import { SurpriseButton } from "@/components/surprise-button";
 
-const flagshipOrder=["acaso","musica","vida","arvore"];
-const collectionOrder=["mente","conversa","escala","noite"];
-
-function ordered(slugs:string[]){
-  return slugs.map(slug=>experiments.find(exp=>exp.slug===slug)).filter(Boolean) as Experiment[];
-}
 
 function Cards({items,compact=false}:{items:Experiment[];compact?:boolean}){
   return <div className={compact?"play-grid experimental-grid":"play-grid"}>
@@ -23,10 +17,15 @@ function Cards({items,compact=false}:{items:Experiment[];compact?:boolean}){
   </div>;
 }
 
+function pick(slugs:string[], items:Experiment[]){
+  return slugs.map(slug=>items.find(exp=>exp.slug===slug)).filter(Boolean) as Experiment[];
+}
+
 export default function Home() {
-  const flagships=ordered(flagshipOrder);
-  const collection=ordered(collectionOrder);
-  const fresh=experiments.filter(exp=>exp.group==="experiment");
+  const published=publicExperiments();
+  const flagships=pick(["acaso","musica","vida","arvore"], published);
+  const collection=pick(["mente","conversa","escala","noite"], published);
+  const fresh=published.filter(exp=>exp.group==="experiment");
 
   return <main id="conteudo" className="home-page">
     <header className="home-header">
@@ -51,7 +50,7 @@ export default function Home() {
     </section>
 
     <section className="collection-block collection-new">
-      <header className="collection-heading"><span>novas experiências</span><h2>Ideias na bancada.</h2><p>Elas já funcionam e estão abertas para uso, mas ainda estamos descobrindo quais merecem virar parte central da coleção.</p></header>
+      <header className="collection-heading"><span>mais experiências</span><h2>Outras perguntas para mexer.</h2><p>Tempo, acaso, hipótese e leitura. Cada uma pede um gesto diferente.</p></header>
       <Cards items={fresh} compact/>
     </section>
 

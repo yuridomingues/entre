@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CollageEarth, CollageMemoryIcon, CollageNetwork, CollageShip } from "@/components/collage-scenes";
+import { CollageEarth, CollageNetwork, CollageShip } from "@/components/collage-scenes";
 
 /* REDE */
 type NetNode={id:number;x:number;y:number};
@@ -72,7 +72,7 @@ export function RefinedIdeaSpread(){
         if(timer.current)clearInterval(timer.current);
         timer.current=null;
       }
-    },300);
+    },460);
   };
 
   const reached=run?run.dist.filter(d=>d>=0&&d<=wave).length:seeds.length;
@@ -149,7 +149,12 @@ function memoryPositions(seed:number){
   return cells.slice(0,4);
 }
 function MemoryIcon({kind,className=""}:{kind:MemoryKind;className?:string}){
-  return <CollageMemoryIcon kind={kind} className={className}/>;
+  return <svg viewBox="0 0 64 64" className={"memory-svg memory-drawing "+className} aria-hidden="true">
+    {kind==="book"&&<><path d="M16 14h24c6 0 10 4 10 10v26H22c-6 0-10-4-10-10V14z"/><path className="ink" d="M16 16v24M26 26h14M26 34h10"/></>}
+    {kind==="mug"&&<><path d="M16 22h26v18c0 6-5 10-12 10h-2c-7 0-12-4-12-10V22z"/><path className="ink" d="M42 26h6c4 0 6 4 6 8s-2 8-6 8h-6"/></>}
+    {kind==="plant"&&<><path d="M24 46h16l-2 10H26z"/><path className="ink" d="M32 46V24"/><path d="M32 34c-12-1-16-14-8-18 6 4 8 10 8 16z"/><path d="M32 30c12-1 16-12 8-16-6 4-8 10-8 16z"/></>}
+    {kind==="clock"&&<><circle cx="32" cy="32" r="16"/><path className="ink" d="M32 32V20M32 32l10 6"/></>}
+  </svg>;
 }
 
 export function RefinedMemory(){
@@ -190,7 +195,8 @@ export function RefinedMemory(){
         {phase==="study"&&<strong>{seconds}s</strong>}
       </header>
 
-      <div className={"refined-memory-room collage-memory-room "+phase}>
+      <div className={"refined-memory-room "+phase}>
+        <div className="memory-room-window" aria-hidden="true"><i/><b/></div>
         {Array.from({length:12}).map((_,cell)=>{
           const realIndex=positions.indexOf(cell);
           const guessedIndex=answers.indexOf(cell);

@@ -164,6 +164,22 @@ function gains(you:Move,them:Move){
   return [1,1];
 }
 
+function CoopFigure({variant}:{variant:"you"|"steady"|"wary"|"fair"}){
+  return <svg className={"cooperate-figure variant-"+variant} viewBox="0 0 160 188" aria-hidden="true">
+    {variant==="you"&&<path className="coop-hair" d="M52 58c2-24 20-36 40-32 16 4 24 18 22 34-8-6-18-8-28-4-6 2-10 8-12 14-8-2-16-2-22-12z"/>}
+    {variant==="steady"&&<path className="coop-hair" d="M46 70c4-28 22-42 42-38 18 4 28 20 26 38-6-16-20-24-34-20-10 2-18 10-22 20-6 0-10 0-12 0z"/>}
+    {variant==="wary"&&<path className="coop-hat" d="M48 62h64l-8-28H58zM40 62h80"/>}
+    {variant==="fair"&&<path className="coop-hair" d="M50 64c0-22 16-36 34-36s32 12 34 32c-8-10-18-14-28-12-8 2-16 8-20 16-8-2-14-2-20 0z"/>}
+    <path className="coop-face" d="M62 62c10-8 26-8 34 2 6 8 6 18 0 26-4 6-12 10-20 8-12-2-20-12-18-24 0-4 2-8 4-12z"/>
+    <path className="coop-feature" d="M78 78c6 1 12 0 16-3M76 94c8 5 16 4 22 0"/>
+    <path className="coop-body" d="M38 118c10-18 24-26 42-26s32 8 42 26v58H38z"/>
+    <g className="coop-arm">
+      <path d="M86 124c16 6 30 24 36 42"/>
+      <path className="coop-hand" d="M118 162c8 1 14 8 11 14-7 2-14-2-18-8"/>
+    </g>
+  </svg>;
+}
+
 export function CooperationGame(){
   const [opponent,setOpponent]=useState(0);
   const [history,setHistory]=useState<Round[]>([]);
@@ -226,10 +242,9 @@ export function CooperationGame(){
         <span>os dois guardam <b>+1 / +1</b></span>
       </div>
 
-      <div className={"cooperate-scene "+(lastRound?"has-result":"")}>
+      <div className={"cooperate-scene "+(lastRound?"has-result you-"+lastRound.you+" them-"+lastRound.them:"")}>
         <div className="cooperate-person you">
-          <div className="cooperate-head"><i/><b/></div>
-          <div className="cooperate-body"/>
+          <CoopFigure variant="you"/>
           <span>você</span>
           <em className={lastRound?lastRound.you:"waiting"}>{lastRound?(lastRound.you==="share"?"abriu a mão":"guardou"):"?"}</em>
         </div>
@@ -238,8 +253,7 @@ export function CooperationGame(){
           <span>fichas em jogo</span>
         </div>
         <div className={"cooperate-person other opponent-"+opponent}>
-          <div className="cooperate-head"><i/><b/></div>
-          <div className="cooperate-body"/>
+          <CoopFigure variant={opponent===1?"wary":opponent===2?"fair":"steady"}/>
           <span>{opponents[opponent].name}</span>
           <em className={lastRound?lastRound.them:"waiting"}>{lastRound?(lastRound.them==="share"?"abriu a mão":"guardou"):"?"}</em>
         </div>

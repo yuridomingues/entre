@@ -1,141 +1,115 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { CollageScaleObject } from "@/components/collage-scenes";
 
-type Kind="grain"|"coin"|"phone"|"person"|"bus"|"building"|"tree"|"mountain"|"earth";
-type Item={kind:Kind;name:string;size:string;meters:number;measure:string};
-
-const items:Item[]=[
-  {kind:"grain",name:"grão de areia",size:"1 mm",meters:.001,measure:"diâmetro"},
-  {kind:"coin",name:"moeda",size:"2,5 cm",meters:.025,measure:"diâmetro"},
-  {kind:"phone",name:"celular",size:"15 cm",meters:.15,measure:"altura"},
-  {kind:"person",name:"pessoa",size:"1,7 m",meters:1.7,measure:"altura"},
-  {kind:"bus",name:"ônibus",size:"3,2 m",meters:3.2,measure:"altura"},
-  {kind:"building",name:"prédio",size:"30 m",meters:30,measure:"altura"},
-  {kind:"tree",name:"sequoia",size:"80 m",meters:80,measure:"altura"},
-  {kind:"mountain",name:"Everest",size:"8,8 km",meters:8849,measure:"altura"},
-  {kind:"earth",name:"Terra",size:"12.742 km",meters:12742000,measure:"diâmetro"}
-];
-
-const fmt=(n:number)=>{
-  if(n>=1000)return Math.round(n).toLocaleString("pt-BR");
-  return n.toFixed(1).replace(".",",");
+type Axis = "w" | "h";
+type Mode = "ink" | "planet";
+type Item = {
+  name: string;
+  size: string;
+  meters: number;
+  axis: Axis;
+  aspect: number;
+  src: string;
+  pos: string;
+  crop: number;
+  mode: Mode;
+  note: string;
 };
 
-export function ScaleExplorer(){
-  const [index,setIndex]=useState(1);
-  const [guess,setGuess]=useState(38);
-  const [revealed,setRevealed]=useState(false);
-  const touchStart=useRef<number|null>(null);
+const OBI = "https://www.oldbookillustrations.com/site/assets/high-res";
 
-  const current=items[index];
-  const previous=items[index-1];
-  const ratio=current.meters/previous.meters;
-  const previousPct=100/ratio;
-  const currentHeight=72;
-  const actualPreviousHeight=currentHeight*(previous.meters/current.meters);
-  const guessRatio=Math.exp(Math.log(1.2)+(guess/100)*Math.log(2000/1.2));
-  const shownRatio=revealed?ratio:guessRatio;
-  const shownPreviousHeight=currentHeight/shownRatio;
-  const tooSmall=(revealed?actualPreviousHeight:shownPreviousHeight)<5;
+const items: Item[] = [
+  {name:"pulga", size:"1 mm", meters:0.001, axis:"h", aspect:1.15, pos:"74% 32%", crop:1.62, mode:"ink", note:"a pulga-da-areia, do tamanho de um grão", src:`${OBI}/1885-1891/chigoe-flea-1600.jpg`},
+  {name:"joaninha", size:"7 mm", meters:0.007, axis:"h", aspect:1, pos:"50% 28%", crop:1.62, mode:"ink", note:"já cabe na unha", src:`${OBI}/1885-1891/ladybird-1600.jpg`},
+  {name:"denário", size:"1,9 cm", meters:0.019, axis:"h", aspect:1, pos:"20% 32%", crop:1.95, mode:"ink", note:"uma moeda romana, em tamanho real na gravura", src:`${OBI}/1885-1891/denarius-1600.jpg`},
+  {name:"figura", size:"1,6 m", meters:1.6, axis:"h", aspect:0.46, pos:"50% 56%", crop:1.15, mode:"ink", note:"uma pessoa inteira", src:`${OBI}/n-d-1914/temple-dancing-girl-1600.jpg`},
+  {name:"locomotiva", size:"7,5 m", meters:7.5, axis:"w", aspect:2.6, pos:"50% 42%", crop:1.22, mode:"ink", note:"uma locomotiva de estrada", src:`${OBI}/1876/thomson-road-steamer-1600.jpg`},
+  {name:"carvalho", size:"26 m", meters:26, axis:"h", aspect:1.02, pos:"50% 46%", crop:1.08, mode:"ink", note:"o carvalho de Cowthorpe", src:`${OBI}/1826/cowthorpe-oak-1600.jpg`},
+  {name:"monte", size:"155 m", meters:155, axis:"h", aspect:1.25, pos:"50% 42%", crop:1.12, mode:"ink", note:"a pirâmide de Tucumcari, cerca de 510 pés", src:`${OBI}/1862/pyramid-mountain-1600.jpg`},
+  {name:"Saturno", size:"270 mil km", meters:270000000, axis:"w", aspect:1.85, pos:"50% 46%", crop:1.06, mode:"planet", note:"de ponta a ponta dos anéis. O planeta em si tem cerca de 120 mil km", src:`${OBI}/1882/planet-saturn-1600.jpg`}
+];
 
-  useEffect(()=>{setRevealed(false);setGuess(38)},[index]);
+function fold(n: number) {
+  if (n >= 1e9) return (n / 1e9).toLocaleString("pt-BR", {maximumFractionDigits: 1}) + " bilhões";
+  if (n >= 1e6) return (n / 1e6).toLocaleString("pt-BR", {maximumFractionDigits: 1}) + " milhões";
+  if (n >= 100) return Math.round(n).toLocaleString("pt-BR");
+  if (n >= 10) return String(Math.round(n));
+  return n.toFixed(1).replace(".", ",");
+}
 
-  const advance=()=>{
-    if(!revealed){setRevealed(true);return}
-    setIndex(v=>v===items.length-1?1:v+1);
-  };
-  const back=()=>setIndex(v=>Math.max(1,v-1));
+export function ScaleExplorer() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+  const [vmin, setVmin] = useState(800);
 
-  useEffect(()=>{
-    const onKey=(event:KeyboardEvent)=>{
-      if(event.key==="ArrowRight")advance();
-      if(event.key==="ArrowLeft")back();
+  useEffect(() => {
+    const measure = () => {
+      const el = ref.current;
+      if (!el) return;
+      const total = Math.max(1, el.offsetHeight - window.innerHeight);
+      const p = Math.min(1, Math.max(0, -el.getBoundingClientRect().top / total));
+      setProgress(p);
+      setVmin(Math.min(window.innerWidth, window.innerHeight));
     };
-    addEventListener("keydown",onKey);
-    return()=>removeEventListener("keydown",onKey);
-  },[revealed,index]);
+    measure();
+    window.addEventListener("scroll", measure, {passive: true});
+    window.addEventListener("resize", measure);
+    return () => {
+      window.removeEventListener("scroll", measure);
+      window.removeEventListener("resize", measure);
+    };
+  }, []);
 
-  return <div className="scale-doodle chalk-scale">
-    <section className="scale-doodle-card">
-      <header className="scale-doodle-head">
-        <div>
-          <span>{String(index+1).padStart(2,"0")} / {String(items.length).padStart(2,"0")}</span>
-          <h2>{previous.name} <em>e</em> {current.name}</h2>
-        </div>
-        <div className={"scale-doodle-ratio "+(revealed?"revealed":"")}>
-          <b>{revealed?fmt(ratio):"?"}</b>
-          <span>{revealed?current.measure:"descubra"}</span>
-        </div>
-      </header>
+  const last = items.length - 1;
+  const t = progress * last;
+  const i0 = Math.min(last - 1, Math.floor(t));
+  const frac = Math.min(1, t - i0);
+  const viewLog = Math.log10(items[i0].meters) * (1 - frac) + Math.log10(items[i0 + 1].meters) * frac;
+  const viewMeters = 10 ** viewLog;
+  const px = (0.52 * vmin) / viewMeters;
+  const focus = Math.min(last, Math.round(t));
+  const item = items[focus];
+  const previous = focus > 0 ? items[focus - 1] : null;
+  const ratio = previous ? item.meters / previous.meters : 1;
 
-      <div className="scale-guess">
-        <div>
-          <span>{revealed?"seu palpite":"antes de revelar"}</span>
-          <strong>{fmt(guessRatio)}×</strong>
-          {revealed&&<small>real: {fmt(ratio)}×</small>}
-        </div>
-        <label>
-          <span>quanto maior você acha que {current.name} é?</span>
-          <input aria-label={"Palpite de quantas vezes "+current.name+" é maior"} type="range" min="0" max="100" value={guess} onChange={e=>{setGuess(Number(e.target.value));setRevealed(false)}}/>
-          <div><small>quase igual</small><small>muito maior</small></div>
-        </label>
-        <button onClick={()=>setRevealed(true)}>{revealed?"revelado ✓":"revelar"}</button>
+  const jump = (index: number) => {
+    const el = ref.current;
+    if (!el) return;
+    const total = Math.max(1, el.offsetHeight - window.innerHeight);
+    window.scrollTo({top: el.offsetTop + (index / last) * total, behavior: "smooth"});
+  };
+
+  return <div className="size-journey" ref={ref} style={{height: `calc(100svh + ${last * 130}vh)`}}>
+    <div className="size-stage">
+      <p className="size-hint" style={{opacity: Math.max(0, 1 - progress * 5)}}>role para crescer</p>
+      <div className="size-field" aria-hidden="true">
+        {items.map((thing, i) => {
+          const full = thing.meters * px;
+          if (full < 1.5) return null;
+          const limit = vmin * 1.35;
+          const main = Math.min(full, limit);
+          const zoom = full / main;
+          if (zoom > 1.65) return null;
+          const width = thing.axis === "w" ? main : main * thing.aspect;
+          const height = thing.axis === "h" ? main : main / thing.aspect;
+          if (full < 12) return <i key={thing.name} className="size-speck" style={{opacity: Math.min(1, full / 8), zIndex: 40}}/>;
+          const [ax, ay] = thing.pos.split(" ").map((value) => parseFloat(value));
+          return <div key={thing.name} className={"size-thing mode-" + thing.mode} style={{width, height, zIndex: items.length - i, transform: `translate(${-ax}%, ${-ay}%)`}}>
+            <img src={thing.src} alt="" style={{objectPosition: thing.pos, transform: `scale(${zoom * thing.crop})`, transformOrigin: thing.pos}} draggable={false}/>
+          </div>;
+        })}
       </div>
-
-      <div
-        className={"doodle-paper chalk-scale-board "+(revealed?"is-revealed":"is-guessing")}
-        onTouchStart={e=>{touchStart.current=e.touches[0]?.clientX??null}}
-        onTouchEnd={e=>{
-          if(touchStart.current===null)return;
-          const end=e.changedTouches[0]?.clientX??touchStart.current;
-          if(end-touchStart.current<-45)advance();
-          if(end-touchStart.current>45)back();
-          touchStart.current=null;
-        }}
-      >
-        <div className="chalk-floor" aria-hidden="true"/>
-
-        <div className="doodle-object previous" key={"p-"+index+"-"+revealed} style={{height:Math.max(.25,revealed?actualPreviousHeight:shownPreviousHeight)+"%"}}>
-          <CollageScaleObject kind={previous.kind}/>
-          <div className="doodle-label"><strong>{previous.name}</strong><span>{previous.size}</span></div>
-        </div>
-
-        <div className="doodle-object current" key={"c-"+index} style={{height:currentHeight+"%"}}>
-          <CollageScaleObject kind={current.kind}/>
-          <div className="doodle-label"><strong>{current.name}</strong><span>{revealed?current.size:"?"}</span></div>
-        </div>
-
-        {revealed&&<div className="chalk-measure">
-          <i/>
-          <span>{current.size}</span>
-        </div>}
-
-        {tooSmall&&<div className="doodle-note chalk-zoom">
-          <span>{revealed?"zoom":"seu palpite"}</span>
-          <div><CollageScaleObject kind={previous.kind}/></div>
-          <small>{previous.name}</small>
-        </div>}
-      </div>
-
-      <p className="scale-doodle-sentence">
-        {revealed
-          ? <>{previous.name} mede <strong>{previousPct<1?"menos de 1":fmt(previousPct)}%</strong> de {current.name} nesta comparação.</>
-          : <>Ajuste a diferença até ela parecer certa. <strong>Depois revele.</strong></>}
-      </p>
-
-      <div className="scale-doodle-controls">
-        <button onClick={back} disabled={index===1}>← anterior</button>
-        <div className="scale-doodle-progress"><i style={{width:(index/(items.length-1))*100+"%"}}/></div>
-        <button className="primary" onClick={advance}>{!revealed?"revelar →":index===items.length-1?"recomeçar ↺":"próxima →"}</button>
-      </div>
-      <p className="scale-doodle-hint">arraste o palpite · use as setas ou deslize no celular</p>
-    </section>
-
-    <nav className="scale-doodle-nav" aria-label="Comparações">
-      {items.slice(1).map((item,i)=><button key={item.kind} className={index===i+1?"active":""} onClick={()=>setIndex(i+1)}>
-        <span>{String(i+2).padStart(2,"0")}</span><strong>{item.name}</strong><small>{item.size}</small>
-      </button>)}
-    </nav>
+      <aside className="size-readout">
+        <span>{String(focus + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}</span>
+        <h2>{item.name}</h2>
+        <strong>{item.size}</strong>
+        <p>{item.note}</p>
+        {previous && <small>{ratio >= 1e6 ? fold(ratio) + " de vezes " + previous.name : "cerca de " + fold(ratio) + "× " + previous.name}</small>}
+      </aside>
+      <nav className="size-rail" aria-label="Objetos da escala">
+        {items.map((thing, i) => <button key={thing.name} className={i === focus ? "on" : i < focus ? "passed" : ""} onClick={() => jump(i)}>{thing.name}</button>)}
+      </nav>
+      <p className="size-credit">gravuras · Old Book Illustrations</p>
+    </div>
   </div>;
 }

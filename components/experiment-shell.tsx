@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { experiments, getExperiment } from "@/lib/experiments";
+import { getExperiment, publicExperiments } from "@/lib/experiments";
 import { ExperimentVisual } from "@/components/experiment-visuals";
 import { BrandLogo } from "@/components/brand-logo";
 
@@ -10,7 +10,7 @@ const hints: Record<string,string> = {
   musica:"ouça e desligue camadas",
   conversa:"escolha o detalhe que seguiria",
   vida:"arraste a escala",
-  escala:"avance pelas comparações",
+  escala:"role para crescer",
   acaso:"solte os pontos",
   noite:"diminua a luz",
   rede:"escolha começos, espalhe e corte a ponte",
@@ -19,19 +19,18 @@ const hints: Record<string,string> = {
   mudanca:"mude o começo e deixe acontecer",
   atencao:"conte uma coisa só",
   aleatorio:"toque nos lados ou use as setas",
-  teseu:"toque nas peças e marque seu limite",
   perguntas:"escolha perguntas que eliminem mais",
   regra:"teste a hipótese, inclusive contra ela",
   minuto:"pare quando sentir que chegou",
-  stroop:"responda à tinta, não à palavra",
-  mapa:"arraste a latitude",
-  profundidade:"toque no corte ou arraste a profundidade"
+  stroop:"responda à tinta, não à palavra"
 };
 
 export function ExperimentShell({ slug, title, intro, children }: { slug: string; title: string; intro: string; children: ReactNode }) {
-  const exp = getExperiment(slug)!;
-  const index = experiments.findIndex((item) => item.slug === slug);
-  const next = experiments[(index + 1) % experiments.length];
+  const catalog = getExperiment(slug)!;
+  const published = publicExperiments();
+  const exp = published.find((item) => item.slug === slug) ?? catalog;
+  const index = published.findIndex((item) => item.slug === slug);
+  const next = published[index === -1 ? 0 : (index + 1) % published.length];
 
   return <main id="conteudo" className={"experience-page tone-"+exp.tone}>
     <div className="experience-nav">
@@ -41,7 +40,7 @@ export function ExperimentShell({ slug, title, intro, children }: { slug: string
 
     <section className="experience-cover">
       <div className="cover-copy">
-        <div className="cover-meta"><span>{exp.number}</span><span>{exp.eyebrow}</span><span>{exp.duration}</span>{exp.group==="experiment"&&<span>em experimento</span>}</div>
+        <div className="cover-meta"><span>{exp.number}</span><span>{exp.eyebrow}</span><span>{exp.duration}</span></div>
         <p className="cover-question">{exp.question}</p>
         <h1>{title}</h1>
         <p className="cover-intro">{intro}</p>

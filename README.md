@@ -15,15 +15,11 @@ https://entre-ideias.vercel.app
 - **Anatomia de uma música** — composição desmontada em camadas.
 - **Por onde uma conversa vai?** — caminhos diferentes a partir de escolhas de linguagem.
 - **Quanto cabe em uma vida?** — tempo de vida transformado em semanas.
-- **Onde o acaso vai parar?** — distribuição e intuição sobre aleatoriedade.
-- **Como uma ideia se espalha?** — propagação em redes.
-- **Quando cooperar deixa de valer a pena?** — estratégias e decisões repetidas.
-- **Uma memória muda toda vez que você olha para ela** — reconstrução de memória.
-- **O que a atenção apaga?** — limites da atenção.
 - **Do grão ao planeta** — comparação de escalas.
-- **Abaixo dos seus pés** — viagem em profundidade pela Terra.
+- **Onde o acaso vai parar?** — distribuição e intuição sobre aleatoriedade.
+- **Apague a cidade** — o céu quando a luz da cidade diminui.
 
-A coleção continua crescendo e inclui outros experimentos sobre mapas, tempo subjetivo, hipótese, linguagem e comportamento.
+Cinco experiências continuam no código e ficam fora do site até entrarem em produção: como uma ideia se espalha, quando cooperar deixa de valer a pena, uma memória muda toda vez que você olha para ela, o que a atenção apaga e qual é a regra.
 
 ## Direção de produto
 
