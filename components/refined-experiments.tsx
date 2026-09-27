@@ -257,10 +257,14 @@ export function RefinedHumanRandom(){
   const [seq,setSeq]=useState<string[]>([]);
   const done=seq.length>=total;
   const add=(v:"E"|"D")=>setSeq(s=>s.length>=total?s:[...s,v]);
+  const progressRef=useRef<HTMLDivElement>(null);
 
   useEffect(()=>{
     const onKey=(e:KeyboardEvent)=>{
-      if(done||e.repeat)return;
+      if(done||e.repeat||e.ctrlKey||e.metaKey||e.altKey)return;
+      if(e.target instanceof HTMLElement&&e.target.closest("input,textarea,select,[contenteditable]"))return;
+      const box=progressRef.current?.getBoundingClientRect();
+      if(!box||box.top<0||box.bottom>innerHeight)return;
       if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a"){e.preventDefault();add("E")}
       if(e.key==="ArrowRight"||e.key.toLowerCase()==="d"){e.preventDefault();add("D")}
     };
@@ -271,10 +275,10 @@ export function RefinedHumanRandom(){
   const generated=useMemo(()=>pseudo(seq.reduce((n,v,i)=>n+(v==="E"?i+7:(i+13)*17),31),total),[done,seq]);
 
   return <div className="refined-random lab-shell">
-    <div className="instruction-banner"><span>não pense demais</span><p>Tente produzir uma sequência aleatória. Toque nos lados ou use ← e →.</p></div>
+    <div className="instruction-banner"><span>não pense demais</span><p>Tente produzir uma sequência aleatória.</p></div>
     <section className="lab-card refined-random-card">
       <header className="lab-head"><div><span>você contra o acaso</span><h2>Esquerda ou direita?</h2></div><strong>{seq.length}/{total}</strong></header>
-      <div className="random-progress">{Array.from({length:total}).map((_,i)=><i key={i} className={seq[i]?(seq[i]==="E"?"left":"right"):""}/>)}</div>
+      <div className="random-progress" ref={progressRef}>{Array.from({length:total}).map((_,i)=><i key={i} className={seq[i]?(seq[i]==="E"?"left":"right"):""}/>)}</div>
 
       {!done?<div className="random-big-actions">
         <button onClick={()=>add("E")} aria-keyshortcuts="ArrowLeft A"><span>←</span><strong>esquerda</strong><small>A ou ←</small></button>

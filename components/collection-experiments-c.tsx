@@ -10,13 +10,15 @@ export function InnerTime(){
   const start=()=>{startRef.current=performance.now();setElapsed(null);setRunning(true)};
   const stop=()=>{if(!running)return;setElapsed((performance.now()-startRef.current)/1000);setRunning(false)};
   const error=elapsed===null?0:elapsed-target;
+  const seconds=(n:number,digits:number)=>n.toLocaleString("pt-BR",{minimumFractionDigits:digits,maximumFractionDigits:digits});
+  const pickTarget=(n:number)=>{setTarget(n);setElapsed(null)};
   return <div className="inner-time-lab lab-shell">
     <div className="instruction-banner"><span>sem relógio</span><p>Comece. Pare quando sentir que o intervalo terminou. Não conte olhando para nada.</p></div>
     <section className="lab-card tone-card-clay">
       <header className="lab-head"><div><span>tempo percebido</span><h2>Quanto dura {target} segundos?</h2></div></header>
       <div className={"time-void "+(running?"running":"")}>{running?<button onClick={stop}>parar agora</button>:<button onClick={start}>{elapsed===null?"começar":"tentar de novo"}</button>}</div>
-      {!running&&elapsed===null&&<div className="time-targets">{[10,20,30].map(n=><button key={n} className={target===n?"active":""} onClick={()=>setTarget(n)}>{n}s</button>)}</div>}
-      {elapsed!==null&&!running&&<div className="time-result"><strong>{elapsed.toFixed(2)} s</strong><span>{Math.abs(error)<.5?"quase cravado":error>0?"você esperou "+Math.abs(error).toFixed(1)+" s a mais":"você parou "+Math.abs(error).toFixed(1)+" s antes"}</span><p>O relógio mede intervalos. A experiência desses intervalos acontece por outro caminho.</p></div>}
+      {!running&&<div className="time-targets" role="group" aria-label="Intervalo alvo">{[10,20,30].map(n=><button key={n} className={target===n?"active":""} aria-pressed={target===n} onClick={()=>pickTarget(n)}>{n}s</button>)}</div>}
+      <div role="status">{elapsed!==null&&!running&&<div className="time-result"><strong>{seconds(elapsed,2)} s</strong><span>{Math.abs(error)<.5?"quase cravado":error>0?"você esperou "+seconds(Math.abs(error),1)+" s a mais":"você parou "+seconds(Math.abs(error),1)+" s antes"}</span><p>O relógio mede intervalos. A experiência desses intervalos acontece por outro caminho.</p></div>}</div>
     </section>
     <p className="lab-thought">Tempo físico passa sem pedir opinião. Tempo vivido raramente parece tão regular.</p>
   </div>;
@@ -36,11 +38,13 @@ export function StroopLab(){
   const [index,setIndex]=useState(0);
   const [times,setTimes]=useState<number[]>([]);
   const [errors,setErrors]=useState(0);
+  const [miss,setMiss]=useState(false);
   const startedAt=useRef(0);
   useEffect(()=>{if(started&&index<stroopTrials.length)startedAt.current=performance.now()},[started,index]);
   const answer=(ink:Ink)=>{
     if(!started||index>=stroopTrials.length)return;
-    if(ink!==stroopTrials[index].ink){setErrors(v=>v+1);return}
+    if(ink!==stroopTrials[index].ink){setErrors(v=>v+1);setMiss(true);return}
+    setMiss(false);
     setTimes(v=>[...v,performance.now()-startedAt.current]);
     setIndex(v=>v+1);
   };
@@ -48,12 +52,12 @@ export function StroopLab(){
   const congruent=times.filter((_,i)=>stroopTrials[i]?.word===stroopTrials[i]?.ink);
   const incongruent=times.filter((_,i)=>stroopTrials[i]?.word!==stroopTrials[i]?.ink);
   const avg=(a:number[])=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
-  const reset=()=>{setStarted(false);setIndex(0);setTimes([]);setErrors(0)};
+  const reset=()=>{setStarted(false);setIndex(0);setTimes([]);setErrors(0);setMiss(false)};
   return <div className="stroop-lab lab-shell">
-    <div className="instruction-banner"><span>ignore a palavra</span><p>Responda à cor da tinta. Não ao que está escrito.</p></div>
+    <div className="instruction-banner"><span>ignore a palavra</span><p>Toque na bolinha da cor da tinta. Cada resposta é cronometrada.</p></div>
     <section className="lab-card tone-card-violet">
-      <header className="lab-head"><div><span>interferência</span><h2>Leia menos. Veja mais.</h2></div><strong>{Math.min(index+1,12)}/12</strong></header>
-      {!started?<div className="stroop-start"><button onClick={()=>setStarted(true)}>começar →</button></div>:!done?<div className="stroop-stage"><strong style={{color:inkHex[stroopTrials[index].ink]}}>{stroopTrials[index].word}</strong><div>{(Object.keys(inkHex) as Ink[]).map(c=><button key={c} style={{background:inkHex[c]}} aria-label={c} onClick={()=>answer(c)}/>)}</div></div>:
+      <header className="lab-head"><div><span>interferência</span><h2>Qual é a cor da tinta?</h2></div><strong>{Math.min(index+1,12)}/12</strong></header>
+      {!started?<div className="stroop-start"><button onClick={()=>setStarted(true)}>começar →</button></div>:!done?<div className="stroop-stage"><strong style={{color:inkHex[stroopTrials[index].ink]}}>{stroopTrials[index].word}</strong><div>{(Object.keys(inkHex) as Ink[]).map(c=><button key={c} style={{background:inkHex[c]}} aria-label={c} onClick={()=>answer(c)}/>)}</div><p className={"stroop-feedback"+(miss?" miss":"")} role="status">{miss?"Não é essa. Olhe a cor da tinta.":"\u00a0"}</p></div>:
       <div className="stroop-result"><div><article><span>quando combinava</span><strong>{Math.round(avg(congruent))} ms</strong></article><article><span>quando conflitava</span><strong>{Math.round(avg(incongruent))} ms</strong></article></div><p>{avg(incongruent)>avg(congruent)?"A palavra entrou no caminho mesmo quando a tarefa era ignorá-la.":"Nesta rodada a diferença foi pequena. O conflito ainda estava presente na tarefa, mas seu tempo não separou muito os grupos."}</p><small>{errors} erro(s) antes de acertar</small><button onClick={reset}>outra rodada ↺</button></div>}
     </section>
     <p className="lab-thought">Algumas coisas que aprendemos a fazer muito bem começam a acontecer antes mesmo de pedirmos.</p>

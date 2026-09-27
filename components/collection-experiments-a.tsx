@@ -81,6 +81,7 @@ export function Theseus(){
 type Creature={id:number;purple:boolean;round:boolean;antenna:boolean;big:boolean};
 const creatures:Creature[]=Array.from({length:16},(_,i)=>({id:i+1,purple:!!(i&1),round:!!(i&2),antenna:!!(i&4),big:!!(i&8)}));
 const secretCreature=creatures[10];
+const maxQuestions=4;
 const questionBank=[
   {label:"é roxa?",fn:(c:Creature)=>c.purple},
   {label:"é redonda?",fn:(c:Creature)=>c.round},
@@ -98,16 +99,21 @@ export function BetterQuestion(){
     const next=remaining.filter(c=>q.fn(c)===yes);
     setHistory(h=>[...h,{q:q.label,cut:remaining.length-next.length,yes}]);
     setRemaining(next);
-    if(next.length<=1||history.length>=3)setFinished(true);
+    if(next.length<=1||history.length>=maxQuestions-1)setFinished(true);
   };
   const reset=()=>{setRemaining(creatures);setHistory([]);setFinished(false)};
+  const last=history[history.length-1];
+  const left=maxQuestions-history.length;
   return <div className="question-lab lab-shell">
-    <div className="instruction-banner"><span>uma criatura foi escolhida</span><p>Você não precisa adivinhar rápido. Escolha perguntas que eliminem possibilidades.</p></div>
+    <div className="instruction-banner"><span>{maxQuestions} perguntas</span><p>Cada resposta apaga criaturas. Escolha as perguntas que apagam mais.</p></div>
     <section className="lab-card tone-card-mint">
       <header className="lab-head"><div><span>informação</span><h2>Qual pergunta vale mais?</h2></div><strong>{remaining.length} possíveis</strong></header>
       <div className="creature-grid">{creatures.map(c=><div key={c.id} className={"creature "+(!remaining.some(r=>r.id===c.id)?"eliminated ":"")+(c.purple?"purple ":"")+(c.round?"round ":"")+(c.big?"big":"")}><i/>{c.antenna&&<b/>}<span>{c.id}</span></div>)}</div>
-      {!finished?<div className="question-options">{questionBank.map(q=><button key={q.label} onClick={()=>ask(q)}>{q.label}</button>)}</div>:
-      <div className="question-result"><strong>{remaining.length===1?"encontrou":"restaram "+remaining.length}</strong><p>{history.map((h,i)=><span key={i}>{h.q} → {h.yes?"sim":"não"} · eliminou {h.cut}</span>)}</p><p>Uma pergunta vale pelo quanto ela reduz o espaço de possibilidades, não pelo quanto parece específica.</p><button onClick={reset}>outra vez ↺</button></div>}
+      {!finished?<>
+        <p className="question-status" role="status">{last?<><strong>{last.q} {last.yes?"sim":"não"}.</strong> Eliminou {last.cut}. </>:null}{left===1?"Resta 1 pergunta.":`Restam ${left} perguntas.`}</p>
+        <div className="question-options">{questionBank.map(q=>{const asked=history.some(h=>h.q===q.label);return <button key={q.label} onClick={()=>ask(q)} disabled={asked}>{q.label}</button>})}</div>
+      </>:
+      <div className="question-result" role="status"><strong>{remaining.length===1?"encontrou: criatura "+remaining[0].id:"restaram "+remaining.length}</strong><p>{history.map((h,i)=><span key={i}>{h.q} → {h.yes?"sim":"não"} · eliminou {h.cut}</span>)}</p><p>Uma pergunta vale pelo quanto ela reduz o espaço de possibilidades, não pelo quanto parece específica.</p><button onClick={reset}>outra vez ↺</button></div>}
     </section>
     <p className="lab-thought">Saber perguntar pode ser uma forma de saber procurar.</p>
   </div>;

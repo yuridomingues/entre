@@ -2,27 +2,27 @@
 import { type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 
 const A={
-  oak:"https://www.oldbookillustrations.com/site/assets/high-res/1826/beggars-oak-1600.jpg",
-  brain:"https://www.oldbookillustrations.com/site/assets/high-res/1898/brain-body-1600.jpg",
-  music:"https://www.oldbookillustrations.com/site/assets/high-res/1882/musique-1600.jpg",
-  talk:"https://www.oldbookillustrations.com/site/assets/high-res/1877/conversation-1600.jpg",
-  clock:"https://www.oldbookillustrations.com/site/assets/high-res/1866/majors-clock-1600.jpg",
-  reading:"https://www.oldbookillustrations.com/site/assets/high-res/no-date-1839/reading-letter-1600.jpg",
-  microscope:"https://www.oldbookillustrations.com/site/assets/high-res/1885-1891/microscope-1600.jpg",
-  switchboard:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-after-1887/switchboard-operator-1600.jpg",
-  planets:"https://www.oldbookillustrations.com/site/assets/high-res/1844/balls-planets-1600.jpg",
-  mansion:"https://www.oldbookillustrations.com/site/assets/high-res/1886/old-family-mansion-1600.jpg",
-  person:"https://www.oldbookillustrations.com/site/assets/high-res/1892/man-entered-1600.jpg",
-  ant:"https://www.oldbookillustrations.com/site/assets/high-res/1838/grasshopper-ant-1600.jpg",
-  study:"https://www.oldbookillustrations.com/site/assets/high-res/1911/study-hour-1600.jpg",
-  seesaw:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-1852/faster-sister-1600.jpg",
-  heron:"https://www.oldbookillustrations.com/site/assets/high-res/1838/heron-1600.jpg",
-  questions:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-after-1862/several-questions-1600.jpg",
-  tower:"https://www.oldbookillustrations.com/site/assets/high-res/1825/gros-horloge-rouen-1600.jpg",
-  palette:"https://www.oldbookillustrations.com/site/assets/high-res/1838/attributes-art-illustration-1600.jpg",
-  ship:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-ca-1880/build-vessel-1600.jpg",
-  ferry:"https://www.oldbookillustrations.com/site/assets/high-res/1895/ferry-boat-1600.jpg",
-  earth:"https://www.oldbookillustrations.com/site/assets/high-res/1874/condensation-globe-1600.jpg"
+  oak:"https://www.oldbookillustrations.com/site/assets/high-res/1826/beggars-oak-768.jpg",
+  brain:"https://www.oldbookillustrations.com/site/assets/high-res/1898/brain-body-768.jpg",
+  music:"https://www.oldbookillustrations.com/site/assets/high-res/1882/musique-768.jpg",
+  talk:"https://www.oldbookillustrations.com/site/assets/high-res/1877/conversation-768.jpg",
+  clock:"https://www.oldbookillustrations.com/site/assets/high-res/1866/majors-clock-768.jpg",
+  reading:"https://www.oldbookillustrations.com/site/assets/high-res/no-date-1839/reading-letter-768.jpg",
+  microscope:"https://www.oldbookillustrations.com/site/assets/high-res/1885-1891/microscope-768.jpg",
+  switchboard:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-after-1887/switchboard-operator-768.jpg",
+  planets:"https://www.oldbookillustrations.com/site/assets/high-res/1844/balls-planets-768.jpg",
+  mansion:"https://www.oldbookillustrations.com/site/assets/high-res/1886/old-family-mansion-768.jpg",
+  person:"https://www.oldbookillustrations.com/site/assets/high-res/1892/man-entered-768.jpg",
+  ant:"https://www.oldbookillustrations.com/site/assets/high-res/1838/grasshopper-ant-768.jpg",
+  study:"https://www.oldbookillustrations.com/site/assets/high-res/1911/study-hour-768.jpg",
+  seesaw:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-1852/faster-sister-768.jpg",
+  heron:"https://www.oldbookillustrations.com/site/assets/high-res/1838/heron-768.jpg",
+  questions:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-after-1862/several-questions-768.jpg",
+  tower:"https://www.oldbookillustrations.com/site/assets/high-res/1825/gros-horloge-rouen-768.jpg",
+  palette:"https://www.oldbookillustrations.com/site/assets/high-res/1838/attributes-art-illustration-768.jpg",
+  ship:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-ca-1880/build-vessel-768.jpg",
+  ferry:"https://www.oldbookillustrations.com/site/assets/high-res/1895/ferry-boat-768.jpg",
+  earth:"https://www.oldbookillustrations.com/site/assets/high-res/1874/condensation-globe-768.jpg"
 };
 
 function Img({src,className="",alt="",style}:{src:string;className?:string;alt?:string;style?:CSSProperties}){
@@ -73,17 +73,6 @@ export function CollageCard({scene,className=""}:{scene:string;className?:string
     {scene==="regra"&&<Scribble className="numbers">2 · 4 · 6 · ?</Scribble>}
     {scene==="stroop"&&<><Scribble className="stroop s1">AZUL</Scribble><Scribble className="stroop s2">VERDE</Scribble></>}
     <Tape className="top"/><Tape className="bottom"/>
-  </div>;
-}
-
-export function CollageTree({progress}:{progress:number}){
-  const reveal=Math.max(0,62-progress*62);
-  return <div className="collage-tree" aria-hidden="true">
-    <div className="tree-paper-shadow"/>
-    <Img src={A.oak} className="tree-cutout" alt="" style={{clipPath:`inset(${reveal}% 0 0 0)`}}/>
-    <div className="tree-ground-line"/>
-    <div className="tree-era-strip"><span>1500</span><i style={{width:(progress*100)+"%"}}/><span>2026</span></div>
-    <div className="tree-stamp" style={{opacity:.25+progress*.75}}>526 anos</div>
   </div>;
 }
 

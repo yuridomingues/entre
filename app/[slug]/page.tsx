@@ -14,12 +14,12 @@ import { RefinedIdeaSpread, RefinedMemory, RefinedHumanRandom } from "@/componen
 import { getExperiment, publicSlugs } from "@/lib/experiments";
 
 const intros: Record<string,string> = {
-  arvore:"Uma mesma árvore. 526 anos. Role.",
+  arvore:"A mesma faia, parada, enquanto 526 anos de estações passam por ela e algumas vidas passam ao pé do tronco. Role.",
   mente:"Três imagens. Responda antes de revelar.",
   musica:"Ouça tudo. Depois tire uma camada.",
   conversa:"Uma frase. Você escolhe o detalhe que a conversa segue.",
   vida:"Troque anos por semanas e veja o tempo mudar de forma.",
-  escala:"Role. Cada coisa fica no tamanho certo em relação à anterior, da pulga até Saturno.",
+  escala:"Role. Da pulga à Terra, passando pelo Everest, por São Paulo e por um furacão, tudo na mesma escala.",
   acaso:"Todos começam juntos. Depois, cada ponto escolhe um lado várias vezes.",
   noite:"A cidade está acesa. Apague-a devagar.",
   rede:"Escolha onde começa. Veja a rede acender. Depois corte a ponte e compare.",

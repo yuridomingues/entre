@@ -11,7 +11,7 @@ function Cards({items,compact=false}:{items:Experiment[];compact?:boolean}){
       <Link href={"/"+exp.slug} key={exp.slug} className={"play-tile tile-"+exp.tone+(compact?" compact-tile":"")}>
         <div className="tile-bar"><span>{exp.number}</span><span>{exp.duration}</span></div>
         <div className="tile-visual"><ExperimentVisual slug={exp.slug}/></div>
-        <div className="tile-copy"><p>{exp.question}</p><h2>{exp.title}</h2><div><span>{exp.action}</span><strong>abrir ↗</strong></div></div>
+        <div className="tile-copy"><p>{exp.question}</p><h3>{exp.title}</h3><div><span>{exp.action}</span><strong>abrir →</strong></div></div>
       </Link>
     ))}
   </div>;

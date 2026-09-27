@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Sobre", description: "Por que o ENTR
 
 export default function About() {
   return <main id="conteudo" className="info-page">
-    <header className="info-nav"><BrandLogo compact/><Link href="/">← voltar</Link></header>
+    <header className="info-nav"><BrandLogo compact/><Link href="/">← início</Link></header>
     <article>
       <p className="info-kicker">sobre</p>
       <h1>Uma internet feita para <em>curiosidade</em>.</h1>

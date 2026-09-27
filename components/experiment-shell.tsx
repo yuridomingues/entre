@@ -4,27 +4,6 @@ import { getExperiment, publicExperiments } from "@/lib/experiments";
 import { ExperimentVisual } from "@/components/experiment-visuals";
 import { BrandLogo } from "@/components/brand-logo";
 
-const hints: Record<string,string> = {
-  arvore:"role para atravessar o tempo",
-  mente:"responda antes de revelar",
-  musica:"ouça e desligue camadas",
-  conversa:"escolha o detalhe que seguiria",
-  vida:"arraste a escala",
-  escala:"role para crescer",
-  acaso:"solte os pontos",
-  noite:"diminua a luz",
-  rede:"escolha começos, espalhe e corte a ponte",
-  cooperar:"escolha sem saber a resposta do outro",
-  memoria:"olhe, esconda, reconstrua",
-  mudanca:"mude o começo e deixe acontecer",
-  atencao:"conte uma coisa só",
-  aleatorio:"toque nos lados ou use as setas",
-  perguntas:"escolha perguntas que eliminem mais",
-  regra:"teste a hipótese, inclusive contra ela",
-  minuto:"pare quando sentir que chegou",
-  stroop:"responda à tinta, não à palavra"
-};
-
 export function ExperimentShell({ slug, title, intro, children }: { slug: string; title: string; intro: string; children: ReactNode }) {
   const catalog = getExperiment(slug)!;
   const published = publicExperiments();
@@ -33,10 +12,10 @@ export function ExperimentShell({ slug, title, intro, children }: { slug: string
   const next = published[index === -1 ? 0 : (index + 1) % published.length];
 
   return <main id="conteudo" className={"experience-page tone-"+exp.tone}>
-    <div className="experience-nav">
+    <nav className="experience-nav" aria-label="Navegação">
       <BrandLogo compact/>
-      <Link href="/#experimentos" className="close-experience" aria-label="Voltar à coleção">×</Link>
-    </div>
+      <Link href="/#experimentos" className="close-experience">← experimentos</Link>
+    </nav>
 
     <section className="experience-cover">
       <div className="cover-copy">
@@ -44,12 +23,12 @@ export function ExperimentShell({ slug, title, intro, children }: { slug: string
         <p className="cover-question">{exp.question}</p>
         <h1>{title}</h1>
         <p className="cover-intro">{intro}</p>
-        <div className="cover-actions"><a href="#experiencia" className="cover-start">começar ↓</a><span>{hints[slug]}</span></div>
+        <div className="cover-actions"><a href="#experiencia" className="cover-start">começar ↓</a></div>
       </div>
       <div className="cover-art"><ExperimentVisual slug={slug}/></div>
     </section>
 
-    <section id="experiencia" className="experience-body">{children}</section>
+    <section id="experiencia" className="experience-body" aria-label={title}>{children}</section>
 
     <section className="next-card">
       <p>próxima ideia</p>

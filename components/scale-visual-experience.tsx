@@ -1,55 +1,80 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { preload } from "react-dom";
 
-type Axis = "w" | "h";
-type Mode = "ink" | "planet";
+type Mode = "ink" | "photo" | "glow";
 type Item = {
   name: string;
   size: string;
   meters: number;
-  axis: Axis;
-  aspect: number;
+  axis: "w" | "h";
   src: string;
-  pos: string;
-  crop: number;
+  px: [number, number];
+  crop: [number, number, number, number];
+  clip?: string;
   mode: Mode;
-  note: string;
 };
 
-const OBI = "https://www.oldbookillustrations.com/site/assets/high-res";
+const WM = "https://upload.wikimedia.org/wikipedia/commons/thumb";
 
 const items: Item[] = [
-  {name:"pulga", size:"1 mm", meters:0.001, axis:"h", aspect:1.15, pos:"74% 32%", crop:1.62, mode:"ink", note:"a pulga-da-areia, do tamanho de um grão", src:`${OBI}/1885-1891/chigoe-flea-1600.jpg`},
-  {name:"joaninha", size:"7 mm", meters:0.007, axis:"h", aspect:1, pos:"50% 28%", crop:1.62, mode:"ink", note:"já cabe na unha", src:`${OBI}/1885-1891/ladybird-1600.jpg`},
-  {name:"denário", size:"1,9 cm", meters:0.019, axis:"h", aspect:1, pos:"20% 32%", crop:1.95, mode:"ink", note:"uma moeda romana, em tamanho real na gravura", src:`${OBI}/1885-1891/denarius-1600.jpg`},
-  {name:"figura", size:"1,6 m", meters:1.6, axis:"h", aspect:0.46, pos:"50% 56%", crop:1.15, mode:"ink", note:"uma pessoa inteira", src:`${OBI}/n-d-1914/temple-dancing-girl-1600.jpg`},
-  {name:"locomotiva", size:"7,5 m", meters:7.5, axis:"w", aspect:2.6, pos:"50% 42%", crop:1.22, mode:"ink", note:"uma locomotiva de estrada", src:`${OBI}/1876/thomson-road-steamer-1600.jpg`},
-  {name:"carvalho", size:"26 m", meters:26, axis:"h", aspect:1.02, pos:"50% 46%", crop:1.08, mode:"ink", note:"o carvalho de Cowthorpe", src:`${OBI}/1826/cowthorpe-oak-1600.jpg`},
-  {name:"monte", size:"155 m", meters:155, axis:"h", aspect:1.25, pos:"50% 42%", crop:1.12, mode:"ink", note:"a pirâmide de Tucumcari, cerca de 510 pés", src:`${OBI}/1862/pyramid-mountain-1600.jpg`},
-  {name:"Saturno", size:"270 mil km", meters:270000000, axis:"w", aspect:1.85, pos:"50% 46%", crop:1.06, mode:"planet", note:"de ponta a ponta dos anéis. O planeta em si tem cerca de 120 mil km", src:`${OBI}/1882/planet-saturn-1600.jpg`}
+  {name:"pulga", size:"2 mm", meters:0.002, axis:"w", mode:"ink", px:[960, 870], crop:[0.005, 0.029, 0.968, 0.842],
+    clip:"polygon(evenodd,0 0,100% 0,100% 100%,0 100%,0 0,17% 83.5%,39% 83.5%,39% 90%,17% 90%,17% 83.5%)",
+    src:`${WM}/8/86/Flea_%28PSF%29.png/960px-Flea_%28PSF%29.png`},
+  {name:"joaninha", size:"7 mm", meters:0.007, axis:"h", mode:"ink", px:[960, 960], crop:[0.22, 0.17, 0.59, 0.68],
+    src:`${WM}/c/cc/Ladybug_%28PSF%29.svg/960px-Ladybug_%28PSF%29.svg.png`},
+  {name:"camundongo", size:"15 cm", meters:0.15, axis:"w", mode:"ink", px:[960, 480], crop:[0, 0, 1, 1],
+    src:`${WM}/d/d6/Mouse_%28PSF%29.png/960px-Mouse_%28PSF%29.png`},
+  {name:"pessoa", size:"1,75 m", meters:1.75, axis:"h", mode:"ink", px:[960, 1643], crop:[0.2, 0.055, 0.53, 0.93],
+    src:`${WM}/8/81/Silhouette_of_a_man_%28PSF%29.png/960px-Silhouette_of_a_man_%28PSF%29.png`},
+  {name:"ônibus", size:"12 m", meters:12, axis:"w", mode:"ink", px:[721, 258], crop:[0.06, 0.11, 0.86, 0.76],
+    src:"https://upload.wikimedia.org/wikipedia/commons/a/a7/Bus_%28PSF%29.jpg"},
+  {name:"pinheiro", size:"30 m", meters:30, axis:"h", mode:"ink", px:[960, 1490], crop:[0.01, 0, 0.98, 0.98],
+    src:`${WM}/9/98/Evergreen_%28PSF%29.png/960px-Evergreen_%28PSF%29.png`},
+  {name:"pirâmide de Gizé", size:"139 m", meters:139, axis:"h", mode:"ink", px:[960, 698], crop:[0.0625, 0.011, 0.922, 0.608],
+    clip:"polygon(48.6% 0,100% 100%,17.5% 100%,10.2% 70%)",
+    src:`${WM}/5/5a/Pyramid_2_%28PSF%29.png/960px-Pyramid_2_%28PSF%29.png`},
+  {name:"monte Everest", size:"8.849 m", meters:8849, axis:"h", mode:"ink", px:[960, 844], crop:[0.14, 0, 0.86, 1],
+    clip:"polygon(38.4% 0,53.5% 0,100% 50%,100% 68%,91% 100%,7% 100%,7% 84%,1.2% 66%,3.5% 52%,18.6% 30%)",
+    src:`${WM}/0/04/Peak_%28PSF%29.png/960px-Peak_%28PSF%29.png`},
+  {name:"Grande São Paulo", size:"90 km", meters:108000, axis:"w", mode:"glow", px:[960, 640], crop:[0.1, 0.02, 0.84, 0.96],
+    src:`${WM}/6/60/S%C3%A3o_Paulo%2C_Brazil%2C_home_to_a_metropolitan_population_of_about_23_million_%28iss073e0982063%29.jpg/960px-S%C3%A3o_Paulo%2C_Brazil%2C_home_to_a_metropolitan_population_of_about_23_million_%28iss073e0982063%29.jpg`},
+  {name:"furacão", size:"700 km", meters:1193000, axis:"w", mode:"glow", px:[960, 1268], crop:[0.044, 0.179, 0.9, 0.681],
+    src:`${WM}/a/a6/Isabel_2003-09-11_1415Z_%28alternate%2C_cropped%29.jpg/960px-Isabel_2003-09-11_1415Z_%28alternate%2C_cropped%29.jpg`},
+  {name:"Lua", size:"3.474 km", meters:3474000, axis:"w", mode:"photo", px:[960, 960], crop:[0, 0, 1, 1], clip:"circle(49.6%)",
+    src:`${WM}/c/c9/Moon_nearside_LRO.jpg/960px-Moon_nearside_LRO.jpg`},
+  {name:"Terra", size:"12.742 km", meters:12742000, axis:"w", mode:"photo", px:[960, 961], crop:[0.053, 0.05, 0.89, 0.89], clip:"circle(49.6%)",
+    src:`${WM}/9/97/The_Earth_seen_from_Apollo_17.jpg/960px-The_Earth_seen_from_Apollo_17.jpg`}
 ];
 
-function fold(n: number) {
-  if (n >= 1e9) return (n / 1e9).toLocaleString("pt-BR", {maximumFractionDigits: 1}) + " bilhões";
-  if (n >= 1e6) return (n / 1e6).toLocaleString("pt-BR", {maximumFractionDigits: 1}) + " milhões";
-  if (n >= 100) return Math.round(n).toLocaleString("pt-BR");
-  if (n >= 10) return String(Math.round(n));
-  return n.toFixed(1).replace(".", ",");
-}
+const boxes = items.map((item) => {
+  const aspect = (item.px[0] * item.crop[2]) / (item.px[1] * item.crop[3]);
+  return item.axis === "w" ? {w: item.meters, h: item.meters / aspect} : {w: item.meters * aspect, h: item.meters};
+});
+
+const centers = boxes.reduce<number[]>((acc, box, i) => {
+  if (i === 0) return [0];
+  const prev = boxes[i - 1];
+  return [...acc, acc[i - 1] + prev.w / 2 + 0.35 * prev.w + 0.12 * box.w + box.w / 2];
+}, []);
+
+const ease = (x: number) => {
+  const k = Math.min(1, Math.max(0, (x - 0.14) / 0.72));
+  return k * k * (3 - 2 * k);
+};
 
 export function ScaleExplorer() {
   const ref = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
-  const [vmin, setVmin] = useState(800);
+  const [view, setView] = useState({w: 1280, h: 800});
 
   useEffect(() => {
     const measure = () => {
       const el = ref.current;
       if (!el) return;
       const total = Math.max(1, el.offsetHeight - window.innerHeight);
-      const p = Math.min(1, Math.max(0, -el.getBoundingClientRect().top / total));
-      setProgress(p);
-      setVmin(Math.min(window.innerWidth, window.innerHeight));
+      setProgress(Math.min(1, Math.max(0, -el.getBoundingClientRect().top / total)));
+      setView({w: window.innerWidth, h: window.innerHeight});
     };
     measure();
     window.addEventListener("scroll", measure, {passive: true});
@@ -63,14 +88,22 @@ export function ScaleExplorer() {
   const last = items.length - 1;
   const t = progress * last;
   const i0 = Math.min(last - 1, Math.floor(t));
-  const frac = Math.min(1, t - i0);
-  const viewLog = Math.log10(items[i0].meters) * (1 - frac) + Math.log10(items[i0 + 1].meters) * frac;
-  const viewMeters = 10 ** viewLog;
-  const px = (0.52 * vmin) / viewMeters;
+  const frac = ease(t - i0);
   const focus = Math.min(last, Math.round(t));
-  const item = items[focus];
-  const previous = focus > 0 ? items[focus - 1] : null;
-  const ratio = previous ? item.meters / previous.meters : 1;
+
+  preload(items[focus].src, {as: "image"});
+  if (focus < last) preload(items[focus + 1].src, {as: "image"});
+
+  const fit = (i: number) => Math.min((0.62 * view.w) / boxes[i].w, (0.5 * view.h) / boxes[i].h);
+  const k0 = fit(i0), k1 = fit(i0 + 1);
+  const px = k0 * (k1 / k0) ** frac;
+  const r = k0 / k1;
+  const pan = Math.abs(r - 1) < 1e-6 ? frac : (r ** frac - 1) / (r - 1);
+  const camera = centers[i0] + (centers[i0 + 1] - centers[i0]) * pan;
+  const cameraY = boxes[i0].h / 2 + (boxes[i0 + 1].h / 2 - boxes[i0].h / 2) * pan;
+  const midY = view.h * 0.47;
+  const floor = midY + cameraY * px;
+  const reach = Math.max(view.w, view.h) * 6;
 
   const jump = (index: number) => {
     const el = ref.current;
@@ -79,37 +112,34 @@ export function ScaleExplorer() {
     window.scrollTo({top: el.offsetTop + (index / last) * total, behavior: "smooth"});
   };
 
-  return <div className="size-journey" ref={ref} style={{height: `calc(100svh + ${last * 130}vh)`}}>
+  const labelOpacity = Math.max(0, 1 - Math.max(0, Math.abs(t - focus) - 0.12) * 2.8);
+  const focusX = view.w / 2 + (centers[focus] - camera) * px;
+  const focusBottom = floor;
+
+  return <div className="size-journey" ref={ref} style={{height: `calc(100svh + ${last * 120}vh)`}}>
     <div className="size-stage">
-      <p className="size-hint" style={{opacity: Math.max(0, 1 - progress * 5)}}>role para crescer</p>
       <div className="size-field" aria-hidden="true">
-        {items.map((thing, i) => {
-          const full = thing.meters * px;
-          if (full < 1.5) return null;
-          const limit = vmin * 1.35;
-          const main = Math.min(full, limit);
-          const zoom = full / main;
-          if (zoom > 1.65) return null;
-          const width = thing.axis === "w" ? main : main * thing.aspect;
-          const height = thing.axis === "h" ? main : main / thing.aspect;
-          if (full < 12) return <i key={thing.name} className="size-speck" style={{opacity: Math.min(1, full / 8), zIndex: 40}}/>;
-          const [ax, ay] = thing.pos.split(" ").map((value) => parseFloat(value));
-          return <div key={thing.name} className={"size-thing mode-" + thing.mode} style={{width, height, zIndex: items.length - i, transform: `translate(${-ax}%, ${-ay}%)`}}>
-            <img src={thing.src} alt="" style={{objectPosition: thing.pos, transform: `scale(${zoom * thing.crop})`, transformOrigin: thing.pos}} draggable={false}/>
+        {items.map((item, i) => {
+          const w = boxes[i].w * px, h = boxes[i].h * px;
+          const x = view.w / 2 + (centers[i] - camera) * px;
+          const big = Math.max(w, h);
+          if (big < 0.4 || big > reach) return null;
+          if (x + w / 2 < -40 || x - w / 2 > view.w + 40) return null;
+          if (big < 3) return <i key={item.name} className="size-speck" style={{left: x, top: floor - h / 2}}/>;
+          const [cx, cy, cw, ch] = item.crop;
+          return <div key={item.name} className={"size-thing mode-" + item.mode} style={{left: x - w / 2, top: floor - h, width: w, height: h, clipPath: item.clip}}>
+            <img src={item.src} alt="" draggable={false} style={{width: `${100 / cw}%`, height: `${100 / ch}%`, left: `${(-cx / cw) * 100}%`, top: `${(-cy / ch) * 100}%`}}/>
           </div>;
         })}
       </div>
-      <aside className="size-readout">
-        <span>{String(focus + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}</span>
-        <h2>{item.name}</h2>
-        <strong>{item.size}</strong>
-        <p>{item.note}</p>
-        {previous && <small>{ratio >= 1e6 ? fold(ratio) + " de vezes " + previous.name : "cerca de " + fold(ratio) + "× " + previous.name}</small>}
-      </aside>
+      <p className="size-label" style={{left: focusX, top: Math.min(focusBottom + 14, view.h - 64), opacity: labelOpacity}}>
+        <strong>{items[focus].name}</strong><span>{items[focus].size}</span>
+      </p>
+      <p className="size-hint" style={{opacity: Math.max(0, 1 - t * 2.5)}}>role para crescer</p>
       <nav className="size-rail" aria-label="Objetos da escala">
-        {items.map((thing, i) => <button key={thing.name} className={i === focus ? "on" : i < focus ? "passed" : ""} onClick={() => jump(i)}>{thing.name}</button>)}
+        {items.map((item, i) => <button key={item.name} title={item.name} aria-label={item.name} className={i === focus ? "on" : i < focus ? "passed" : ""} onClick={() => jump(i)}/>)}
       </nav>
-      <p className="size-credit">gravuras · Old Book Illustrations</p>
+      <p className="size-credit">desenhos Pearson Scott Foresman · fotos NASA · domínio público</p>
     </div>
   </div>;
 }

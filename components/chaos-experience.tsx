@@ -42,7 +42,7 @@ export function SmallChange(){
   const initialLabel=amount===0?"nenhuma":delta<.00001?"quase invisível":delta<.0002?"minúscula":"pequena";
 
   return <div className="change-lab">
-    <div className="instruction-banner"><span>duas histórias</span><p>Elas seguem exatamente a mesma regra. Você só muda um detalhe no começo.</p></div>
+    <div className="instruction-banner"><span>duas histórias</span><p>Ajuste a diferença inicial e deixe o tempo correr.</p></div>
     <section className="change-card">
       <header className="change-head">
         <div><span>sensibilidade ao começo</span><h2>Quanto cabe em uma diferença pequena?</h2></div>
@@ -62,7 +62,7 @@ export function SmallChange(){
 
       <div className="change-control">
         <div><span>diferença inicial</span><strong>{initialLabel}</strong></div>
-        <input type="range" min="0" max="100" value={amount} disabled={running} onChange={e=>{setAmount(Number(e.target.value));setVisible(1)}}/>
+        <input type="range" min="0" max="100" value={amount} disabled={running} aria-label="Diferença inicial" aria-valuetext={initialLabel} onChange={e=>{setAmount(Number(e.target.value));setVisible(1)}}/>
         <div className="change-scale"><span>idênticos</span><span>um detalhe maior</span></div>
         <button onClick={()=>setRunning(true)} disabled={running}>{running?"acontecendo...":visible>1?"rodar de novo ↺":"deixar acontecer →"}</button>
       </div>
