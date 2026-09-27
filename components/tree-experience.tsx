@@ -268,14 +268,13 @@ export function TreeExperience(){
       if(i>=N-1)return beats[N-1].season;
       return beats[i].season+(beats[i+1].season-beats[i].season)*ramp(u,.6,1);
     };
-    let top=0,span=1;
-    const measure=()=>{
+    const viewH=()=>window.visualViewport?.height??window.innerHeight;
+    const read=()=>{
       const el=track.current;
-      if(!el)return;
-      top=el.getBoundingClientRect().top+scrollY;
-      span=Math.max(1,el.offsetHeight-innerHeight);
+      if(!el)return 0;
+      const total=Math.max(1,el.offsetHeight-viewH());
+      return clamp(-el.getBoundingClientRect().top/total)*END;
     };
-    const read=()=>clamp((scrollY-top)/span)*END;
 
     let target=0,shown=0,seen=0,raf=0,last=0;
     const tick=(now:number)=>{
@@ -298,7 +297,6 @@ export function TreeExperience(){
     };
     const settle=()=>{
       cancelAnimationFrame(raf);raf=0;
-      measure();
       target=shown=reduce.matches?END:read();
       seen=seasonAt(shown);
       paint(shown,seen);
@@ -309,12 +307,16 @@ export function TreeExperience(){
     if(track.current)ro.observe(track.current);
     addEventListener("scroll",onScroll,{passive:true});
     addEventListener("resize",settle);
+    window.visualViewport?.addEventListener("resize",settle);
+    window.visualViewport?.addEventListener("scroll",onScroll);
     reduce.addEventListener("change",settle);
     return()=>{
       cancelAnimationFrame(raf);
       ro.disconnect();
       removeEventListener("scroll",onScroll);
       removeEventListener("resize",settle);
+      window.visualViewport?.removeEventListener("resize",settle);
+      window.visualViewport?.removeEventListener("scroll",onScroll);
       reduce.removeEventListener("change",settle);
     };
   },[]);
@@ -343,6 +345,8 @@ export function TreeExperience(){
         <g className="arv-falling" opacity="0">{leaves.map(([x,y],i)=><path key={i} d={`M${x} ${y}q5 -6 10 0q-5 6 -10 0z`} className={"arv-fall arv-fall-"+i}/>)}</g>
       </svg>
       <p className="arv-year" aria-hidden="true"><b>1500</b></p>
+      <p className="arv-scroll-hint" aria-hidden="true">role para avançar</p>
+      <p className="arv-scroll-hint" aria-hidden="true">role para avançar</p>
       {beats.map((b,i)=><div key={b.year} className={"arv-beat arv-beat-"+b.scene} aria-hidden="true" style={{opacity:i?0:1,visibility:i?"hidden":"visible"}}>
         <div className="arv-col">
           <div className="arv-copy">
