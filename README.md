@@ -6,7 +6,9 @@ O projeto transforma perguntas sobre percepção, tempo, linguagem, sistemas, ac
 
 ## Demo
 
-https://entre-ideias.vercel.app
+https://yuridomingues.github.io/entre/
+
+Espelho na Vercel: https://entre-ideias.vercel.app
 
 ## Algumas experiências
 
