@@ -6,7 +6,7 @@ import { publicExperiments } from "@/lib/experiments";
 export const metadata: Metadata = { title: "Fontes", description: "Referências usadas nas experiências do ENTRE." };
 
 const notes: Record<string, { text: string; href?: string; label?: string }> = {
-  arvore: { text: "A árvore de 1500 é imaginária: as estações passam por uma faia parada enquanto Copérnico, Newton, Darwin e você ficam ao pé dela pelo tempo de uma vida, e os anéis do final vêm da ideia de usar uma árvore como régua de tempo. Os desenhos da faia e da silhueta são de Pearson Scott Foresman, em domínio público.", href: "https://www.usgs.gov/media/images/tree-ring-illustration", label: "U.S. Geological Survey" },
+  arvore: { text: "A árvore é imaginária e foi desenhada para esta página; os momentos são reais: Copérnico (1543), Newton (1687), Darwin (1859), o fonógrafo de Edison (1877) e a primeira mensagem da ARPANET (1969). Os retratos e a foto de Edison estão em domínio público no Wikimedia Commons, e os anéis do final vêm da ideia de usar uma árvore como régua de tempo.", href: "https://www.usgs.gov/media/images/tree-ring-illustration", label: "U.S. Geological Survey" },
   mente: { text: "As imagens usam ilusões clássicas de tamanho, comprimento e contraste. A primeira permite alterar apenas o contexto externo mantendo os centros iguais." },
   musica: { text: "O som é sintetizado na hora dentro da própria página. Nenhuma gravação é usada." },
   conversa: { text: "A conversa é fictícia e existe para mostrar como detalhes diferentes abrem assuntos diferentes." },

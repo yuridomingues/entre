@@ -14,7 +14,7 @@ import { RefinedIdeaSpread, RefinedMemory, RefinedHumanRandom } from "@/componen
 import { getExperiment, publicSlugs } from "@/lib/experiments";
 
 const intros: Record<string,string> = {
-  arvore:"A mesma faia, parada, enquanto 526 anos de estações passam por ela e algumas vidas passam ao pé do tronco. Role.",
+  arvore:"De 1500 até hoje, a história passa ao lado de uma árvore que não sai do lugar. Role.",
   mente:"Três imagens. Responda antes de revelar.",
   musica:"Ouça tudo. Depois tire uma camada.",
   conversa:"Uma frase. Você escolhe o detalhe que a conversa segue.",
