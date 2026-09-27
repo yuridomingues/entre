@@ -1837,7 +1837,8 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
   .arv-copy small{font-size:11px}
   .arv-copy h2{font-size:clamp(25px,7vw,34px);margin:8px 0 6px;max-width:none}
   .arv-copy p{font-size:14px;line-height:1.4;max-width:none}
-  .arv-face{padding:4px}
+  .arv-example{max-height:34svh;align-items:center}
+  .arv-face{width:32%;height:auto;max-width:none;padding:4px}
   .arv-face:before{height:11px;top:-5px}
   .arv-sun{display:none}
   .arv-credit{bottom:6px;right:10px;font-size:8px}
@@ -2003,7 +2004,15 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
 .cover-start,.intro-actions>a,a.pill-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px}
 .surprise-button,.pill-button,.play-button,.illusion-choices button,.illusion-reveal button,.quick-years button,.night-switches button,.time-targets button,.time-void button,.question-options button,.question-result button,.stroop-start button,.stroop-result button,.conversation-doors button,.conversation-result button,.random-stage>button,.change-control button,.random-comparison>button{min-height:44px}
 .surprise-button:disabled{cursor:progress;transform:none;box-shadow:0 3px 0 #111}
-.year-control input[type=range],.night-control input,.change-control input,.illusion-context input{height:32px}
+.year-control input[type=range],.night-control input,.change-control input,.illusion-context input{height:44px}
+.brand-logo{min-height:44px}
+.sources-list h2 a,.sources-list div>a,.credits-box p a{display:inline-flex;align-items:center;min-height:44px}
+.size-rail{gap:0;right:clamp(0px,1vw,16px)}
+.size-rail button{display:grid;place-items:center;width:44px;height:min(44px,calc((100svh - 160px)/12));background:transparent}
+.size-rail button:before{content:"";width:7px;height:7px;border-radius:50%;background:rgba(244,239,228,.22);transition:transform .2s}
+.size-rail button.passed,.size-rail button.on{background:transparent;transform:none}
+.size-rail button.passed:before{background:rgba(244,239,228,.5)}
+.size-rail button.on:before{background:#f4efe4;transform:scale(1.3)}
 
 .home-note a,.back-collection{display:inline-flex;align-items:center;min-height:44px;border-bottom:0;text-decoration-line:underline;text-decoration-thickness:2px;text-underline-offset:5px}
 .credits-box a{color:#fffdf8;font-weight:800;text-decoration-line:underline;text-decoration-thickness:2px;text-underline-offset:4px}
