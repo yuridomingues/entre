@@ -10,7 +10,7 @@ type Beat={year:number,season:number,who:string,title:string,line:string,scene:S
 
 // season: 0 spring, 1 summer, 2 autumn, 3 winter (unwrapped, always forward)
 const beats:Beat[]=[
-  {year:1500,season:.2,who:"uma colina",title:"Uma árvore, numa colina.",line:"Ela vai ficar aqui enquanto a história passa. Role.",scene:"open"},
+  {year:1500,season:.2,who:"uma colina",title:"Uma árvore, numa colina.",line:"Ela fica aqui enquanto a história passa.",scene:"open"},
   {year:1543,season:1,who:"Copérnico",title:"A Terra sai do centro.",line:"O Sol fica no meio, e a Terra passa a girar em volta dele.",scene:"sun",img:WM+"f/f2/Nikolaus_Kopernikus.jpg/500px-Nikolaus_Kopernikus.jpg",pos:"50% 30%"},
   {year:1687,season:1.3,who:"Newton",title:"A maçã e a Lua caem pela mesma força.",line:"A gravidade que derruba a fruta é a mesma que prende a Lua à Terra.",scene:"apple",img:WM+"3/39/GodfreyKneller-IsaacNewton-1689.jpg/500px-GodfreyKneller-IsaacNewton-1689.jpg",pos:"50% 22%"},
   {year:1859,season:2.3,who:"Darwin",title:"Todas as espécies são parentes.",line:"Em A Origem das Espécies, a vida vira galhos de um mesmo tronco.",scene:"branch",img:WM+"3/3c/Charles_Darwin_01.jpg/500px-Charles_Darwin_01.jpg",pos:"50% 25%"},
@@ -345,8 +345,6 @@ export function TreeExperience(){
         <g className="arv-falling" opacity="0">{leaves.map(([x,y],i)=><path key={i} d={`M${x} ${y}q5 -6 10 0q-5 6 -10 0z`} className={"arv-fall arv-fall-"+i}/>)}</g>
       </svg>
       <p className="arv-year" aria-hidden="true"><b>1500</b></p>
-      <p className="arv-scroll-hint" aria-hidden="true">role para avançar</p>
-      <p className="arv-scroll-hint" aria-hidden="true">role para avançar</p>
       {beats.map((b,i)=><div key={b.year} className={"arv-beat arv-beat-"+b.scene} aria-hidden="true" style={{opacity:i?0:1,visibility:i?"hidden":"visible"}}>
         <div className="arv-col">
           <div className="arv-copy">
