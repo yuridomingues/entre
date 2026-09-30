@@ -344,33 +344,4 @@ export function RandomWalk(){
   </div>;
 }
 
-export function NightSky(){
-  const [light,setLight]=useState(82);
-  const [districts,setDistricts]=useState([true,true,true]);
-  const stars=useMemo(()=>Array.from({length:88},(_,i)=>({left:(i*47)%97,top:4+((i*71)%62),size:1+(i%4),threshold:(i*31)%100})),[]);
-  const active=districts.filter(Boolean).length;
-  const effectiveLight=light*(active/3);
-  const darkness=100-effectiveLight;
-  const names=["casas","avenida","centro"];
-
-  const toggle=(i:number)=>setDistricts(values=>values.map((v,n)=>n===i?!v:v));
-
-  return <div className="night-lab">
-    <section className="night-stage" style={{background:`rgb(${12+effectiveLight*.55},${18+effectiveLight*.48},${42+effectiveLight*.42})`}}>
-      <div className="stars" aria-hidden="true">{stars.map((star,i)=><i key={i} style={{left:`${star.left}%`,top:`${star.top}%`,width:star.size,height:star.size,opacity:darkness>star.threshold?1:.05}}/>)}</div>
-      <div className="night-title"><span>brilho no céu {Math.round(effectiveLight)}%</span><h2>{effectiveLight>65?"o céu parece quase vazio":effectiveLight>30?"algumas estrelas voltam":"o céu estava cheio o tempo todo"}</h2></div>
-      <div className="skyline" aria-hidden="true">{[38,55,31,68,44,60,35,73,48,57,40].map((h,i)=>{
-        const zone=i%3;
-        return <b key={i} className={districts[zone]?"lit":"off"} style={{height:`${h}%`}}><em style={{opacity:districts[zone]?light/100:0}}/></b>
-      })}</div>
-    </section>
-
-    <div className="night-switches">
-      <div><span>apague por partes</span><small>cada região interfere no céu inteiro</small></div>
-      <div>{names.map((name,i)=><button key={name} className={districts[i]?"on":""} onClick={()=>toggle(i)} aria-pressed={districts[i]}><i/>{name}</button>)}</div>
-    </div>
-
-    <div className="night-control"><label htmlFor="city-light">intensidade das luzes que ficaram acesas</label><input id="city-light" type="range" min="0" max="100" value={light} onChange={e=>setLight(Number(e.target.value))}/><div><span>fracas</span><span>fortes</span></div></div>
-    <p className="night-ending">As estrelas não ficaram mais brilhantes. Você mudou o que competia com elas.</p>
-  </div>;
-}
+export { NightSky } from "./night-sky";

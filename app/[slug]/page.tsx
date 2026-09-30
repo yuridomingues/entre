@@ -21,7 +21,7 @@ const intros: Record<string,string> = {
   vida:"Troque anos por semanas e veja o tempo mudar de forma.",
   escala:"Role. Da pulga à Terra, passando pelo Everest, por São Paulo e por um furacão, tudo na mesma escala.",
   acaso:"Todos começam juntos. Depois, cada ponto escolhe um lado várias vezes.",
-  noite:"A cidade está acesa. Apague-a devagar.",
+  noite:"A cidade está acesa. Apague devagar.",
   rede:"Escolha onde começa. Veja a rede acender. Depois corte a ponte e compare.",
   cooperar:"A mesma escolha vai encontrar três pessoas que respondem de jeitos diferentes.",
   memoria:"Olhe por cinco segundos. Depois coloque os mesmos objetos de volta sem ver a cena.",

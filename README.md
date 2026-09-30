@@ -21,7 +21,7 @@ Espelho na Vercel: https://entre-ideias.vercel.app
 - **Onde o acaso vai parar?** — distribuição e intuição sobre aleatoriedade.
 - **Apague a cidade** — o céu quando a luz da cidade diminui.
 
-Cinco experiências continuam no código e ficam fora do site até entrarem em produção: como uma ideia se espalha, quando cooperar deixa de valer a pena, uma memória muda toda vez que você olha para ela, o que a atenção apaga e qual é a regra.
+Seis experiências continuam no código e ficam fora do site até entrarem em produção: como uma ideia se espalha, quando cooperar deixa de valer a pena, uma memória muda toda vez que você olha para ela, o que a atenção apaga, qual é a regra e qual pergunta vale mais.
 
 ## Direção de produto
 

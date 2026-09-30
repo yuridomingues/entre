@@ -38,7 +38,7 @@ export const experiments: Experiment[] = [
   { slug:"stroop", number:"18", eyebrow:"atenção + leitura", title:"Leia menos. Veja mais.", description:"Responda à cor da tinta enquanto a palavra tenta responder por você.", question:"É possível ignorar algo que seu cérebro lê sozinho?", duration:"2 min", action:"cores", tone:"violet", group:"experiment" }
 ];
 
-const heldBack = ["rede", "cooperar", "memoria", "atencao", "regra"];
+const heldBack = ["rede", "cooperar", "memoria", "atencao", "regra", "perguntas"];
 
 export const publicSlugs = experiments.map((experiment) => experiment.slug).filter((slug) => !heldBack.includes(slug));
 
