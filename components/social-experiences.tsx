@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { usePulseTick } from "@/lib/use-motion";
 import type { PointerEvent as ReactPointerEvent } from "react";
 
 type NetNode={id:number;x:number;y:number};
@@ -38,9 +39,17 @@ export function IdeaSpread(){
   const [hasBridge,setHasBridge]=useState(true);
   const [result,setResult]=useState<number[]|null>(null);
   const [wave,setWave]=useState(-1);
+  const [waveHits,setWaveHits]=useState<number[]>([]);
   const timer=useRef<ReturnType<typeof setInterval>|null>(null);
 
   useEffect(()=>()=>{if(timer.current)clearInterval(timer.current)},[]);
+
+  useEffect(()=>{
+    if(wave<0||!result)return;
+    setWaveHits(result.map((d,id)=>d===wave?id:-1).filter(id=>id>=0));
+    const clear=setTimeout(()=>setWaveHits([]),520);
+    return ()=>clearTimeout(clear);
+  },[wave,result]);
 
   const resetRun=()=>{
     if(timer.current)clearInterval(timer.current);
@@ -83,13 +92,15 @@ export function IdeaSpread(){
   const finalReached=result?result.filter(v=>v>=0).length:seeds.length;
   const finished=!!result&&wave>=Math.max(...result);
 
+  const counterTick=usePulseTick([reached]);
+
   return <div className="spread-lab">
     <div className="instruction-banner"><span>experimente</span><p>Escolha até 3 pessoas para começar. Depois corte uma única ponte e rode de novo.</p></div>
 
     <section className="spread-card">
       <header className="spread-head">
         <div><span>a mesma ideia</span><h2>Quem conhece quem muda o caminho.</h2></div>
-        <div className="spread-counter"><strong>{reached}</strong><span>de 16</span></div>
+        <div className="spread-counter"><strong className={counterTick?"tick":undefined}>{reached}</strong><span>de 16</span></div>
       </header>
 
       <div className="spread-board">
@@ -103,7 +114,8 @@ export function IdeaSpread(){
               const distance=result?.[node.id]??-1;
               const active=result?distance>=0&&distance<=wave:seeds.includes(node.id);
               const seed=seeds.includes(node.id);
-              return <g key={node.id} className={(active?"active ":"")+(seed?"seed":"")} role="button" tabIndex={0}
+              const waveHit=waveHits.includes(node.id);
+              return <g key={node.id} className={(active?"active ":"")+(seed?"seed ":"")+(waveHit?"wave-hit":"")} role="button" tabIndex={0}
                 aria-label={(seed?"Remover":"Escolher")+" pessoa "+(node.id+1)}
                 onClick={()=>toggleSeed(node.id)}
                 onKeyDown={e=>{if(e.key==="Enter"||e.key===" ")toggleSeed(node.id)}}>
@@ -188,6 +200,7 @@ export function CooperationGame(){
   const round=history.length;
   const finished=round>=5;
   const lastRound=history[history.length-1]??null;
+  const scoreTick=usePulseTick([history.length,totals.you,totals.them]);
 
   const choose=(move:Move)=>{
     if(finished)return;
@@ -233,7 +246,7 @@ export function CooperationGame(){
     <section className="cooperate-card">
       <header>
         <div><span>{opponents[opponent].name} · rodada {Math.min(round+1,5)} de 5</span><h2>Dividir ou guardar?</h2></div>
-        <div className="score-pair"><span>você <b>{totals.you}</b></span><span>outra pessoa <b>{totals.them}</b></span></div>
+        <div className="score-pair"><span>você <b className={scoreTick?"tick":undefined}>{totals.you}</b></span><span>outra pessoa <b className={scoreTick?"tick":undefined}>{totals.them}</b></span></div>
       </header>
 
       <div className="payoff-note">

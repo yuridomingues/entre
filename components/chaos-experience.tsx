@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
+import { usePulseTick } from "@/lib/use-motion";
 
 function logisticSeries(start:number,steps=38){
   const r=3.91;
@@ -40,13 +41,14 @@ export function SmallChange(){
   const last=Math.min(visible,a.length)-1;
   const difference=Math.abs(a[last]-b[last]);
   const initialLabel=amount===0?"nenhuma":delta<.00001?"quase invisível":delta<.0002?"minúscula":"pequena";
+  const meterTick=usePulseTick([difference,visible]);
 
   return <div className="change-lab">
     <div className="instruction-banner"><span>duas histórias</span><p>Ajuste a diferença inicial e deixe o tempo correr.</p></div>
     <section className="change-card">
       <header className="change-head">
         <div><span>sensibilidade ao começo</span><h2>Quanto cabe em uma diferença pequena?</h2></div>
-        <div className="change-meter"><span>diferença agora</span><strong>{Math.round(difference*100)}%</strong></div>
+        <div className="change-meter"><span>diferença agora</span><strong className={meterTick?"tick":undefined}>{Math.round(difference*100)}%</strong></div>
       </header>
 
       <div className="change-stage">

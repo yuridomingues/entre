@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { usePulseTick } from "@/lib/use-motion";
 import { CollageEarth, CollageNetwork, CollageShip } from "@/components/collage-scenes";
 
 /* REDE */
@@ -79,13 +80,14 @@ export function RefinedIdeaSpread(){
   const finalReached=run?run.dist.filter(d=>d>=0).length:seeds.length;
   const maxWave=run?Math.max(...run.dist):0;
   const finished=!!run&&wave>=maxWave;
+  const reachTick=usePulseTick([reached]);
 
   return <div className="refined-network lab-shell">
     <div className="instruction-banner"><span>3 passos</span><p><b>1.</b> escolha onde começa <b>2.</b> espalhe <b>3.</b> corte a ponte e rode de novo</p></div>
     <section className="lab-card refined-network-card">
       <header className="lab-head">
         <div><span>uma ideia precisa de caminhos</span><h2>Veja a rede acender.</h2></div>
-        <strong>{reached}/20</strong>
+        <strong className={reachTick?"tick":undefined}>{reached}/20</strong>
       </header>
 
       <div className="refined-network-board collage-network-board">
@@ -186,13 +188,15 @@ export function RefinedMemory(){
     else setCurrent(v=>v+1);
   };
   const score=answers.reduce((n,cell,i)=>n+(cell===positions[i]?1:0),0);
+  const countdownTick=usePulseTick([seconds]);
+  const scoreTick=usePulseTick([score,phase]);
 
   return <div className="refined-memory lab-shell">
     <div className="instruction-banner"><span>olhe primeiro</span><p>Você terá cinco segundos. Depois o quadro apaga e você reconstrói as posições.</p></div>
     <section className="lab-card refined-memory-card">
       <header className="lab-head">
         <div><span>memória espacial</span><h2>{phase==="recall"?"Desenhe a cena de volta.":"Quatro coisas no quadro."}</h2></div>
-        {phase==="study"&&<strong>{seconds}s</strong>}
+        {phase==="study"&&<strong className={countdownTick?"tick":undefined}>{seconds}s</strong>}
       </header>
 
       <div className={"refined-memory-room "+phase}>
@@ -217,7 +221,7 @@ export function RefinedMemory(){
 
       {phase==="result"&&<div className="memory-summary">
         <div className="memory-legend"><span><i className="real"/>posição real</span><span><i className="guess"/>onde você colocou</span></div>
-        <strong>{score}/4</strong>
+        <strong className={scoreTick?"tick":undefined}>{score}/4</strong>
         <p>{score===4?"Você remontou as quatro posições.":score>=2?"Parte voltou com precisão. O restante parecia lembrança, mas já era reconstrução.":"A cena voltou diferente mesmo depois de apenas cinco segundos."}</p>
         <button onClick={()=>{setSeed(v=>v+1);setPhase("ready");setAnswers([])}}>novo quadro ↺</button>
       </div>}
@@ -256,6 +260,7 @@ export function RefinedHumanRandom(){
   const total=24;
   const [seq,setSeq]=useState<string[]>([]);
   const done=seq.length>=total;
+  const progressTick=usePulseTick([seq.length]);
   const add=(v:"E"|"D")=>setSeq(s=>s.length>=total?s:[...s,v]);
   const progressRef=useRef<HTMLDivElement>(null);
 
@@ -277,7 +282,7 @@ export function RefinedHumanRandom(){
   return <div className="refined-random lab-shell">
     <div className="instruction-banner"><span>não pense demais</span><p>Tente produzir uma sequência aleatória.</p></div>
     <section className="lab-card refined-random-card">
-      <header className="lab-head"><div><span>você contra o acaso</span><h2>Esquerda ou direita?</h2></div><strong>{seq.length}/{total}</strong></header>
+      <header className="lab-head"><div><span>você contra o acaso</span><h2>Esquerda ou direita?</h2></div><strong className={progressTick?"tick":undefined}>{seq.length}/{total}</strong></header>
       <div className="random-progress" ref={progressRef}>{Array.from({length:total}).map((_,i)=><i key={i} className={seq[i]?(seq[i]==="E"?"left":"right"):""}/>)}</div>
 
       {!done?<div className="random-big-actions">

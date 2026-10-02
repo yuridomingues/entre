@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { usePulseTick } from "@/lib/use-motion";
 
 const treeMoments=[
   {year:1500,word:"SEMENTE",title:"uma semente começa",text:"O mundo ao redor ainda não sabe o que vai acontecer."},
@@ -82,7 +83,7 @@ export function MindLab(){
 
   return <div className="illusion-room">
     <div className="illusion-top"><span>{step+1} de 3</span><div>{mindSlides.map((_,i)=><i key={i} className={i<=step?"on":""}/>)}</div><strong>{mindSlides[step].label}</strong></div>
-    <section className="illusion-card">
+    <section className="illusion-card" key={step}>
       <p>{step===0&&answer?"agora retire o contexto aos poucos":"responda antes de revelar"}</p>
       <h2>{mindSlides[step].question}</h2>
 
@@ -222,7 +223,7 @@ export function MusicLab(){
 
   return <div className="music-lab">
     <div className="instruction-banner"><span>como usar</span><p><strong>1.</strong> ouça tudo junto <strong>2.</strong> desligue uma camada <strong>3.</strong> compare o que mudou</p></div>
-    <section className="sound-console">
+    <section className={"sound-console"+(playing?" is-playing":"")}>
       <div className="now-playing"><span className={playing?"pulse-dot active":"pulse-dot"}/><div><small>composição</small><strong>{playing?"tocando":"em silêncio"}</strong></div></div>
       <button className="play-button" onClick={playing?stop:start} aria-pressed={playing}>{playing?"■ parar":"▶ ouvir composição"}</button>
       <div className="equalizer" aria-hidden="true">{Array.from({length:20}).map((_,i)=><i key={i} style={{height:playing?`${25+(i*37)%72}%`:"8%"}}/>)}</div>
@@ -235,54 +236,16 @@ export function MusicLab(){
   </div>;
 }
 
-type Door={label:string;question:string;next:string};
-type ConversationNode={reply:string;doors:Door[];ending?:string};
-const conversationNodes:Record<string,ConversationNode>={
-  start:{reply:"Foi corrido, mas no almoço encontrei uma música que eu não ouvia há anos.",doors:[{label:"corrido",question:"Corrido como?",next:"rush"},{label:"música",question:"Que música?",next:"music"},{label:"anos",question:"Há quanto tempo?",next:"years"}]},
-  rush:{reply:"Tive três coisas para resolver ao mesmo tempo. O curioso é que quase não lembro da manhã.",doors:[{label:"três coisas",question:"O que estava acontecendo?",next:"tasks"},{label:"não lembro",question:"Como assim, não lembra?",next:"attention"}]},
-  music:{reply:"Era uma música que tocava muito em casa quando eu era pequeno. Bastou o começo para a sala antiga aparecer na cabeça.",doors:[{label:"em casa",question:"Você lembra da casa?",next:"home"},{label:"aparecer",question:"Veio tudo de uma vez?",next:"memory"}]},
-  years:{reply:"Nem sei quantos. É estranho como algumas coisas somem por muito tempo e voltam com um detalhe só.",doors:[{label:"somem",question:"O que faz uma coisa sumir?",next:"memory"},{label:"detalhe",question:"Qual detalhe voltou primeiro?",next:"detail"}]},
-  tasks:{reply:"Nada dramático. Mensagem, prazo, ligação. Quando tudo compete ao mesmo tempo, o dia vira uma lista.",doors:[],ending:"Uma palavra levou a conversa para rotina e atenção."},
-  attention:{reply:"Lembro de pedaços, não da sequência. Parece que a manhã aconteceu sem eu estar olhando direito para ela.",doors:[],ending:"Uma palavra levou a conversa para memória e presença."},
-  home:{reply:"Lembro da luz da janela e de uma mesa que nem existe mais. A música puxou o resto.",doors:[],ending:"Uma palavra levou a conversa para lugares e lembranças."},
-  memory:{reply:"Primeiro veio uma sensação. Depois apareceram cenas. A ordem parece ter sido inventada depois.",doors:[],ending:"Uma palavra levou a conversa para o jeito como lembramos."},
-  detail:{reply:"O barulho do começo da música. Engraçado que o som veio antes da imagem.",doors:[],ending:"Uma palavra levou a conversa para um detalhe quase esquecido."}
-};
-type Turn={question:string;reply:string;label:string};
-
-export function ConversationDive(){
-  const [nodeId,setNodeId]=useState("start");
-  const [turns,setTurns]=useState<Turn[]>([]);
-  const node=conversationNodes[nodeId];
-
-  const follow=(door:Door)=>{
-    const next=conversationNodes[door.next];
-    setTurns(items=>[...items,{question:door.question,reply:next.reply,label:door.label}]);
-    setNodeId(door.next);
-  };
-  const reset=()=>{setTurns([]);setNodeId("start")};
-
-  return <div className="conversation-game">
-    <div className="conversation-rule"><span>uma regra</span><p>Você não responde nada. Só escolhe qual detalhe da fala seguir.</p></div>
-    <div className="chat-stage">
-      <div className="chat-thread">
-        <div className="bubble you">Como foi seu dia?</div><div className="bubble other">{conversationNodes.start.reply}</div>
-        {turns.map((turn,i)=><div className="chat-turn" key={i}><div className="bubble you">{turn.question}</div><div className="bubble other">{turn.reply}</div></div>)}
-      </div>
-      {node.doors.length>0?<div className="conversation-doors"><small>qual porta você abre?</small><div>{node.doors.map(door=><button key={door.label} onClick={()=>follow(door)}>{door.label}<span>→</span></button>)}</div></div>
-      :<div className="conversation-result"><span>{turns.map(turn=>turn.label).join(" → ")}</span><h2>{node.ending}</h2><p>A primeira frase era a mesma. A conversa mudou porque você escolheu o que merecia atenção.</p><button onClick={reset}>tentar outro caminho ↺</button></div>}
-    </div>
-    <div className="conversation-map" aria-label="Caminho escolhido"><strong>como foi seu dia?</strong>{turns.map((turn,i)=><span key={i}>→ {turn.label}</span>)}</div>
-  </div>;
-}
+export { ConversationDive } from "@/components/conversation-dive";
 
 export function LifeWeeks(){
   const [years,setYears]=useState(5);
   const weeks=years*52;
+  const readoutTick=usePulseTick([weeks]);
   const dots=useMemo(()=>Array.from({length:520},(_,i)=>i),[]);
   return <div className="life-weeks">
     <section className="year-control"><p className="step-label">mexa na escala</p><h2><strong>{years}</strong> {years===1?"ano":"anos"} <span>≈ {weeks.toLocaleString("pt-BR")} semanas</span></h2><p>Arraste o controle ou escolha um atalho. Cada ponto abaixo representa uma semana.</p><input aria-label="Quantidade de anos" type="range" min="1" max="10" value={years} onChange={e=>setYears(Number(e.target.value))}/><div className="range-labels"><span>1 ano</span><span>10 anos</span></div><div className="quick-years">{[1,5,10].map(n=><button key={n} className={years===n?"active":""} onClick={()=>setYears(n)}>{n} {n===1?"ano":"anos"}</button>)}</div></section>
-    <div className="weeks-readout"><strong aria-live="polite">{weeks}</strong><span>pontos preenchidos</span></div>
+    <div className="weeks-readout"><strong className={readoutTick?"tick":undefined} aria-live="polite">{weeks}</strong><span>pontos preenchidos</span></div>
     <div className="weeks-grid" aria-label={`${weeks} semanas representadas visualmente`}>{dots.map(i=><i key={i} className={i<weeks?"filled":""}/>)}</div>
     <section className="time-prompts"><article><span>52</span><h3>semanas fazem um ano parecer diferente.</h3><p>Uma unidade menor torna repetição e intervalo mais fáceis de enxergar.</p></article><article><span>igual</span><h3>no gráfico, diferente na experiência.</h3><p>Uma semana memorável e uma semana rotineira ocupam o mesmo ponto. Medir duração não mede significado.</p></article><article><span>sem meta</span><h3>isto não é uma planilha de produtividade.</h3><p>Descanso, espera, brincadeira, estudo, conversa e silêncio também são tempo vivido.</p></article></section>
     <blockquote className="life-quote">A pergunta não é “como preencher todos os pontos?”.<br/><strong>Que tipo de coisa merece virar tempo?</strong></blockquote>

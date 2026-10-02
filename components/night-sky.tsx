@@ -181,7 +181,7 @@ export function NightSky() {
 
         <div className="night-title night-title-minimal">
           <span>{Math.round(effectiveLight)}% de luz no céu</span>
-          <h2>{headline(effectiveLight, visibleShapes.length)}</h2>
+          <h2 key={headline(effectiveLight, visibleShapes.length)}>{headline(effectiveLight, visibleShapes.length)}</h2>
         </div>
 
         <div className="skyline" aria-hidden="true">

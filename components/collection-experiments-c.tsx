@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { usePulseTick } from "@/lib/use-motion";
 
 /* 26. tempo interno */
 export function InnerTime(){
@@ -10,6 +11,7 @@ export function InnerTime(){
   const start=()=>{startRef.current=performance.now();setElapsed(null);setRunning(true)};
   const stop=()=>{if(!running)return;setElapsed((performance.now()-startRef.current)/1000);setRunning(false)};
   const error=elapsed===null?0:elapsed-target;
+  const resultTick=usePulseTick([elapsed]);
   const seconds=(n:number,digits:number)=>n.toLocaleString("pt-BR",{minimumFractionDigits:digits,maximumFractionDigits:digits});
   const pickTarget=(n:number)=>{setTarget(n);setElapsed(null)};
   return <div className="inner-time-lab lab-shell">
@@ -18,7 +20,7 @@ export function InnerTime(){
       <header className="lab-head"><div><span>tempo percebido</span><h2>Quanto dura {target} segundos?</h2></div></header>
       <div className={"time-void "+(running?"running":"")}>{running?<button onClick={stop}>parar agora</button>:<button onClick={start}>{elapsed===null?"começar":"tentar de novo"}</button>}</div>
       {!running&&<div className="time-targets" role="group" aria-label="Intervalo alvo">{[10,20,30].map(n=><button key={n} className={target===n?"active":""} aria-pressed={target===n} onClick={()=>pickTarget(n)}>{n}s</button>)}</div>}
-      <div role="status">{elapsed!==null&&!running&&<div className="time-result"><strong>{seconds(elapsed,2)} s</strong><span>{Math.abs(error)<.5?"quase cravado":error>0?"você esperou "+seconds(Math.abs(error),1)+" s a mais":"você parou "+seconds(Math.abs(error),1)+" s antes"}</span><p>O relógio mede intervalos. A experiência desses intervalos acontece por outro caminho.</p></div>}</div>
+      <div role="status">{elapsed!==null&&!running&&<div className="time-result"><strong className={resultTick?"tick":undefined}>{seconds(elapsed,2)} s</strong><span>{Math.abs(error)<.5?"quase cravado":error>0?"você esperou "+seconds(Math.abs(error),1)+" s a mais":"você parou "+seconds(Math.abs(error),1)+" s antes"}</span><p>O relógio mede intervalos. A experiência desses intervalos acontece por outro caminho.</p></div>}</div>
     </section>
     <p className="lab-thought">Tempo físico passa sem pedir opinião. Tempo vivido raramente parece tão regular.</p>
   </div>;
@@ -57,7 +59,7 @@ export function StroopLab(){
     <div className="instruction-banner"><span>ignore a palavra</span><p>Toque na bolinha da cor da tinta. Cada resposta é cronometrada.</p></div>
     <section className="lab-card tone-card-violet">
       <header className="lab-head"><div><span>interferência</span><h2>Qual é a cor da tinta?</h2></div><strong>{Math.min(index+1,12)}/12</strong></header>
-      {!started?<div className="stroop-start"><button onClick={()=>setStarted(true)}>começar →</button></div>:!done?<div className="stroop-stage"><strong style={{color:inkHex[stroopTrials[index].ink]}}>{stroopTrials[index].word}</strong><div>{(Object.keys(inkHex) as Ink[]).map(c=><button key={c} style={{background:inkHex[c]}} aria-label={c} onClick={()=>answer(c)}/>)}</div><p className={"stroop-feedback"+(miss?" miss":"")} role="status">{miss?"Não é essa. Olhe a cor da tinta.":"\u00a0"}</p></div>:
+      {!started?<div className="stroop-start"><button onClick={()=>setStarted(true)}>começar →</button></div>:!done?<div className="stroop-stage"><strong key={index} style={{color:inkHex[stroopTrials[index].ink]}}>{stroopTrials[index].word}</strong><div>{(Object.keys(inkHex) as Ink[]).map(c=><button key={c} style={{background:inkHex[c]}} aria-label={c} onClick={()=>answer(c)}/>)}</div><p className={"stroop-feedback"+(miss?" miss":"")} role="status">{miss?"Não é essa. Olhe a cor da tinta.":"\u00a0"}</p></div>:
       <div className="stroop-result"><div><article><span>quando combinava</span><strong>{Math.round(avg(congruent))} ms</strong></article><article><span>quando conflitava</span><strong>{Math.round(avg(incongruent))} ms</strong></article></div><p>{avg(incongruent)>avg(congruent)?"A palavra entrou no caminho mesmo quando a tarefa era ignorá-la.":"Nesta rodada a diferença foi pequena. O conflito ainda estava presente na tarefa, mas seu tempo não separou muito os grupos."}</p><small>{errors} erro(s) antes de acertar</small><button onClick={reset}>outra rodada ↺</button></div>}
     </section>
     <p className="lab-thought">Algumas coisas que aprendemos a fazer muito bem começam a acontecer antes mesmo de pedirmos.</p>

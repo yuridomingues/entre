@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { usePulseTick } from "@/lib/use-motion";
 
 type MemoryKind="book"|"mug"|"plant"|"clock";
 const memoryObjects:{kind:MemoryKind;label:string}[]=[
@@ -49,13 +50,14 @@ export function MemoryRebuild(){
   };
 
   const score=answers.reduce((n,cell,i)=>n+(cell===positions[i]?1:0),0);
+  const countdownTick=usePulseTick([seconds]);
 
   return <div className="memory-lab">
     <div className="instruction-banner"><span>sem anotar</span><p>Olhe a cena por cinco segundos. Depois reconstrua onde cada coisa estava.</p></div>
     <section className="memory-card">
       <header className="memory-head">
         <div><span>{phase==="study"?"agora olhe":phase==="recall"?"agora lembre":"memória espacial"}</span><h2>{phase==="recall"?"Onde estava?":"Uma sala pequena."}</h2></div>
-        {phase==="study"&&<strong className="memory-countdown">{seconds}</strong>}
+        {phase==="study"&&<strong className={"memory-countdown"+(countdownTick?" tick":"")}>{seconds}</strong>}
       </header>
 
       <div className={"memory-room "+phase}>

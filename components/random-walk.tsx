@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
+import { usePulseTick } from "@/lib/use-motion";
 
 const WALKERS=81;
 const STEPS=32;
@@ -26,10 +27,11 @@ export function RandomWalk(){
   },[positions]);
 
   const start=()=>{setPositions(Array(WALKERS).fill(0));setStep(0);setRunning(true)};
+  const headTick=usePulseTick([step,running]);
 
   return <div className="random-lab">
     <section className="random-stage">
-      <div className="random-head"><span>{step} de {STEPS} escolhas</span><h2>{running?"cada ponto escolhe um lado":step===STEPS?"olhe onde eles chegaram":"81 pontos no mesmo lugar"}</h2></div>
+      <div className="random-head"><span>{step} de {STEPS} escolhas</span><h2 className={headTick?"tick":undefined}>{running?"cada ponto escolhe um lado":step===STEPS?"olhe onde eles chegaram":"81 pontos no mesmo lugar"}</h2></div>
       <div className="random-bars" aria-label="Distribuição dos pontos">
         {bins.map((count,i)=><div key={i} className="random-column"><i style={{height:`${Math.max(2,count*9)}px`}}/><small>{count||""}</small></div>)}
       </div>

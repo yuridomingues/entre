@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { usePulseTick } from "@/lib/use-motion";
 
 /* 16. Tente ser aleatório */
 function longestRun(seq:string[]){
@@ -104,10 +105,11 @@ export function BetterQuestion(){
   const reset=()=>{setRemaining(creatures);setHistory([]);setFinished(false)};
   const last=history[history.length-1];
   const left=maxQuestions-history.length;
+  const remainTick=usePulseTick([remaining.length,history.length]);
   return <div className="question-lab lab-shell">
     <div className="instruction-banner"><span>{maxQuestions} perguntas</span><p>Cada resposta apaga criaturas. Escolha as perguntas que apagam mais.</p></div>
     <section className="lab-card tone-card-mint">
-      <header className="lab-head"><div><span>informação</span><h2>Qual pergunta vale mais?</h2></div><strong>{remaining.length} possíveis</strong></header>
+      <header className="lab-head"><div><span>informação</span><h2>Qual pergunta vale mais?</h2></div><strong className={remainTick?"tick":undefined}>{remaining.length} possíveis</strong></header>
       <div className="creature-grid">{creatures.map(c=><div key={c.id} className={"creature "+(!remaining.some(r=>r.id===c.id)?"eliminated ":"")+(c.purple?"purple ":"")+(c.round?"round ":"")+(c.big?"big":"")}><i/>{c.antenna&&<b/>}<span>{c.id}</span></div>)}</div>
       {!finished?<>
         <p className="question-status" role="status">{last?<><strong>{last.q} {last.yes?"sim":"não"}.</strong> Eliminou {last.cut}. </>:null}{left===1?"Resta 1 pergunta.":`Restam ${left} perguntas.`}</p>
