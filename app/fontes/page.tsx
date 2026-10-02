@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { BrandLogo } from "@/components/brand-logo";
 import { publicExperiments } from "@/lib/experiments";
 
-export const metadata: Metadata = { title: "Fontes", description: "Referências usadas nas experiências do ENTRE." };
+export const metadata: Metadata = { title: "Fontes", description: "Referências usadas nas experiências do ENTRE.", alternates: { canonical: "/fontes/" } };
 
 const notes: Record<string, { text: string; href?: string; label?: string }> = {
   arvore: { text: "A árvore é imaginária e foi desenhada para esta página; os momentos são reais: Copérnico (1543), Newton (1687), Darwin (1859), o fonógrafo de Edison (1877) e a primeira mensagem da ARPANET (1969). Os retratos e a foto de Edison estão em domínio público no Wikimedia Commons, e os anéis do final vêm da ideia de usar uma árvore como régua de tempo.", href: "https://www.usgs.gov/media/images/tree-ring-illustration", label: "U.S. Geological Survey" },

@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { preload } from "react-dom";
+import { assetPath } from "@/lib/asset-path";
 
-const WM="https://upload.wikimedia.org/wikipedia/commons/thumb/";
 const INK="#2a2119";
 
 type Scene="open"|"sun"|"apple"|"branch"|"voice"|"net"|"you";
@@ -11,10 +11,10 @@ type Beat={year:number,season:number,who:string,title:string,line:string,scene:S
 // season: 0 spring, 1 summer, 2 autumn, 3 winter (unwrapped, always forward)
 const beats:Beat[]=[
   {year:1500,season:.2,who:"uma colina",title:"Uma árvore, numa colina.",line:"Ela fica aqui enquanto a história passa.",scene:"open"},
-  {year:1543,season:1,who:"Copérnico",title:"A Terra sai do centro.",line:"O Sol fica no meio, e a Terra passa a girar em volta dele.",scene:"sun",img:WM+"f/f2/Nikolaus_Kopernikus.jpg/500px-Nikolaus_Kopernikus.jpg",pos:"50% 30%"},
-  {year:1687,season:1.3,who:"Newton",title:"A maçã e a Lua caem pela mesma força.",line:"A gravidade que derruba a fruta é a mesma que prende a Lua à Terra.",scene:"apple",img:WM+"3/39/GodfreyKneller-IsaacNewton-1689.jpg/500px-GodfreyKneller-IsaacNewton-1689.jpg",pos:"50% 22%"},
-  {year:1859,season:2.3,who:"Darwin",title:"Todas as espécies são parentes.",line:"Em A Origem das Espécies, a vida vira galhos de um mesmo tronco.",scene:"branch",img:WM+"3/3c/Charles_Darwin_01.jpg/500px-Charles_Darwin_01.jpg",pos:"50% 25%"},
-  {year:1877,season:3.05,who:"o fonógrafo",title:"Uma voz fica gravada.",line:"Edison recita uma cantiga num cilindro de estanho, e a máquina repete.",scene:"voice",img:WM+"0/03/Edison_and_phonograph_edit1.jpg/500px-Edison_and_phonograph_edit1.jpg",pos:"30% 40%"},
+  {year:1543,season:1,who:"Copérnico",title:"A Terra sai do centro.",line:"O Sol fica no meio, e a Terra passa a girar em volta dele.",scene:"sun",img:assetPath("/assets/tree/copernicus.jpg"),pos:"50% 30%"},
+  {year:1687,season:1.3,who:"Newton",title:"A maçã e a Lua caem pela mesma força.",line:"A gravidade que derruba a fruta é a mesma que prende a Lua à Terra.",scene:"apple",img:assetPath("/assets/tree/newton.jpg"),pos:"50% 22%"},
+  {year:1859,season:2.3,who:"Darwin",title:"Todas as espécies são parentes.",line:"Em A Origem das Espécies, a vida vira galhos de um mesmo tronco.",scene:"branch",img:assetPath("/assets/tree/darwin.jpg"),pos:"50% 25%"},
+  {year:1877,season:3.05,who:"o fonógrafo",title:"Uma voz fica gravada.",line:"Edison recita uma cantiga num cilindro de estanho, e a máquina repete.",scene:"voice",img:assetPath("/assets/tree/edison.jpg"),pos:"30% 40%"},
   {year:1969,season:4.2,who:"a ARPANET",title:"Dois computadores se falam.",line:"A primeira mensagem ia ser LOGIN. A rede caiu depois de LO.",scene:"net"},
   {year:2026,season:5,who:"você",title:"Você, agora.",line:"Lendo isto numa tela, ao lado da mesma árvore.",scene:"you"}
 ];

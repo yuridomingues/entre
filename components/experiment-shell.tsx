@@ -25,7 +25,7 @@ export function ExperimentShell({ slug, title, intro, children }: { slug: string
         <p className="cover-intro">{intro}</p>
         <div className="cover-actions"><a href="#experiencia" className="cover-start">começar ↓</a></div>
       </div>
-      <div className="cover-art"><ExperimentVisual slug={slug}/></div>
+      <div className="cover-art"><ExperimentVisual slug={slug} priority/></div>
     </section>
 
     <section id="experiencia" className="experience-body" aria-label={title}>{children}</section>

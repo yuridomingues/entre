@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { BrandLogo } from "@/components/brand-logo";
 
-export const metadata: Metadata = { title: "Sobre", description: "Por que o ENTRE existe." };
+export const metadata: Metadata = { title: "Sobre", description: "Por que o ENTRE existe.", alternates: { canonical: "/sobre/" } };
 
 export default function About() {
   return <main id="conteudo" className="info-page">

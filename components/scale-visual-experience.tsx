@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { preload } from "react-dom";
+import { assetPath } from "@/lib/asset-path";
 
 type Mode = "ink" | "photo" | "glow";
 type Item = {
@@ -15,36 +16,34 @@ type Item = {
   mode: Mode;
 };
 
-const WM = "https://upload.wikimedia.org/wikipedia/commons/thumb";
-
 const items: Item[] = [
   {name:"pulga", size:"2 mm", meters:0.002, axis:"w", mode:"ink", px:[960, 870], crop:[0.005, 0.029, 0.968, 0.842],
     clip:"polygon(evenodd,0 0,100% 0,100% 100%,0 100%,0 0,17% 83.5%,39% 83.5%,39% 90%,17% 90%,17% 83.5%)",
-    src:`${WM}/8/86/Flea_%28PSF%29.png/960px-Flea_%28PSF%29.png`},
+    src:assetPath("/assets/scale/flea.png")},
   {name:"joaninha", size:"7 mm", meters:0.007, axis:"h", mode:"ink", px:[960, 960], crop:[0.22, 0.17, 0.59, 0.68],
-    src:`${WM}/c/cc/Ladybug_%28PSF%29.svg/960px-Ladybug_%28PSF%29.svg.png`},
+    src:assetPath("/assets/scale/ladybug.png")},
   {name:"camundongo", size:"15 cm", meters:0.15, axis:"w", mode:"ink", px:[960, 480], crop:[0, 0, 1, 1],
-    src:`${WM}/d/d6/Mouse_%28PSF%29.png/960px-Mouse_%28PSF%29.png`},
+    src:assetPath("/assets/scale/mouse.png")},
   {name:"pessoa", size:"1,75 m", meters:1.75, axis:"h", mode:"ink", px:[960, 1643], crop:[0.2, 0.055, 0.53, 0.93],
-    src:`${WM}/8/81/Silhouette_of_a_man_%28PSF%29.png/960px-Silhouette_of_a_man_%28PSF%29.png`},
+    src:assetPath("/assets/scale/person.png")},
   {name:"ônibus", size:"12 m", meters:12, axis:"w", mode:"ink", px:[721, 258], crop:[0.06, 0.11, 0.86, 0.76],
-    src:"https://upload.wikimedia.org/wikipedia/commons/a/a7/Bus_%28PSF%29.jpg"},
+    src:assetPath("/assets/scale/bus.jpg")},
   {name:"pinheiro", size:"30 m", meters:30, axis:"h", mode:"ink", px:[960, 1490], crop:[0.01, 0, 0.98, 0.98],
-    src:`${WM}/9/98/Evergreen_%28PSF%29.png/960px-Evergreen_%28PSF%29.png`},
+    src:assetPath("/assets/scale/evergreen.png")},
   {name:"pirâmide de Gizé", size:"139 m", meters:139, axis:"h", mode:"ink", px:[960, 698], crop:[0.0625, 0.011, 0.922, 0.608],
     clip:"polygon(48.6% 0,100% 100%,17.5% 100%,10.2% 70%)",
-    src:`${WM}/5/5a/Pyramid_2_%28PSF%29.png/960px-Pyramid_2_%28PSF%29.png`},
+    src:assetPath("/assets/scale/pyramid.png")},
   {name:"monte Everest", size:"8.849 m", meters:8849, axis:"h", mode:"ink", px:[960, 844], crop:[0.14, 0, 0.86, 1],
     clip:"polygon(38.4% 0,53.5% 0,100% 50%,100% 68%,91% 100%,7% 100%,7% 84%,1.2% 66%,3.5% 52%,18.6% 30%)",
-    src:`${WM}/0/04/Peak_%28PSF%29.png/960px-Peak_%28PSF%29.png`},
+    src:assetPath("/assets/scale/everest.png")},
   {name:"Grande São Paulo", size:"90 km", meters:108000, axis:"w", mode:"glow", px:[960, 640], crop:[0.1, 0.02, 0.84, 0.96],
-    src:`${WM}/6/60/S%C3%A3o_Paulo%2C_Brazil%2C_home_to_a_metropolitan_population_of_about_23_million_%28iss073e0982063%29.jpg/960px-S%C3%A3o_Paulo%2C_Brazil%2C_home_to_a_metropolitan_population_of_about_23_million_%28iss073e0982063%29.jpg`},
+    src:assetPath("/assets/scale/sao-paulo.jpg")},
   {name:"furacão", size:"700 km", meters:1193000, axis:"w", mode:"glow", px:[960, 1268], crop:[0.044, 0.179, 0.9, 0.681],
-    src:`${WM}/a/a6/Isabel_2003-09-11_1415Z_%28alternate%2C_cropped%29.jpg/960px-Isabel_2003-09-11_1415Z_%28alternate%2C_cropped%29.jpg`},
+    src:assetPath("/assets/scale/hurricane.jpg")},
   {name:"Lua", size:"3.474 km", meters:3474000, axis:"w", mode:"photo", px:[960, 960], crop:[0, 0, 1, 1], clip:"circle(49.6%)",
-    src:`${WM}/c/c9/Moon_nearside_LRO.jpg/960px-Moon_nearside_LRO.jpg`},
+    src:assetPath("/assets/scale/moon.jpg")},
   {name:"Terra", size:"12.742 km", meters:12742000, axis:"w", mode:"photo", px:[960, 961], crop:[0.053, 0.05, 0.89, 0.89], clip:"circle(49.6%)",
-    src:`${WM}/9/97/The_Earth_seen_from_Apollo_17.jpg/960px-The_Earth_seen_from_Apollo_17.jpg`}
+    src:assetPath("/assets/scale/earth.jpg")}
 ];
 
 const boxes = items.map((item) => {

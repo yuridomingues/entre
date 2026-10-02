@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   description: "Experimentos interativos para mexer em ideias sobre percepção, tempo, linguagem, sistemas e vida coletiva.",
   authors: [{ name: "Yuri Domingues" }],
   creator: "Yuri Domingues",
-  openGraph: { title: "ENTRE | coisas para pensar com as mãos", description: "Experimentos curtos para mexer em ideias.", type: "website", locale: "pt_BR" },
-  twitter: { card: "summary_large_image" }
+  openGraph: { title: "ENTRE | coisas para pensar com as mãos", description: "Experimentos curtos para mexer em ideias.", type: "website", locale: "pt_BR", url: "/", images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "ENTRE | coisas para pensar com as mãos" }] },
+  twitter: { card: "summary_large_image", title: "ENTRE | coisas para pensar com as mãos", description: "Experimentos curtos para mexer em ideias.", images: ["/opengraph-image"] }
 };
 
 export const viewport: Viewport = { themeColor: "#fffdf8", colorScheme: "light", width:"device-width", initialScale:1 };

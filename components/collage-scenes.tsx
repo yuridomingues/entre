@@ -1,32 +1,33 @@
 "use client";
 import { type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
+import { assetPath } from "@/lib/asset-path";
 
 const A={
-  oak:"https://www.oldbookillustrations.com/site/assets/high-res/1826/beggars-oak-768.jpg",
-  brain:"https://www.oldbookillustrations.com/site/assets/high-res/1898/brain-body-768.jpg",
-  music:"https://www.oldbookillustrations.com/site/assets/high-res/1882/musique-768.jpg",
-  talk:"https://www.oldbookillustrations.com/site/assets/high-res/1877/conversation-768.jpg",
-  clock:"https://www.oldbookillustrations.com/site/assets/high-res/1866/majors-clock-768.jpg",
-  reading:"https://www.oldbookillustrations.com/site/assets/high-res/no-date-1839/reading-letter-768.jpg",
-  microscope:"https://www.oldbookillustrations.com/site/assets/high-res/1885-1891/microscope-768.jpg",
-  switchboard:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-after-1887/switchboard-operator-768.jpg",
-  planets:"https://www.oldbookillustrations.com/site/assets/high-res/1844/balls-planets-768.jpg",
-  mansion:"https://www.oldbookillustrations.com/site/assets/high-res/1886/old-family-mansion-768.jpg",
-  person:"https://www.oldbookillustrations.com/site/assets/high-res/1892/man-entered-768.jpg",
-  ant:"https://www.oldbookillustrations.com/site/assets/high-res/1838/grasshopper-ant-768.jpg",
-  study:"https://www.oldbookillustrations.com/site/assets/high-res/1911/study-hour-768.jpg",
-  seesaw:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-1852/faster-sister-768.jpg",
-  heron:"https://www.oldbookillustrations.com/site/assets/high-res/1838/heron-768.jpg",
-  questions:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-after-1862/several-questions-768.jpg",
-  tower:"https://www.oldbookillustrations.com/site/assets/high-res/1825/gros-horloge-rouen-768.jpg",
-  palette:"https://www.oldbookillustrations.com/site/assets/high-res/1838/attributes-art-illustration-768.jpg",
-  ship:"https://www.oldbookillustrations.com/site/assets/high-res/n-d-ca-1880/build-vessel-768.jpg",
-  ferry:"https://www.oldbookillustrations.com/site/assets/high-res/1895/ferry-boat-768.jpg",
-  earth:"https://www.oldbookillustrations.com/site/assets/high-res/1874/condensation-globe-768.jpg"
+  oak:assetPath("/assets/collage/oak.jpg"),
+  brain:assetPath("/assets/collage/brain.jpg"),
+  music:assetPath("/assets/collage/music.jpg"),
+  talk:assetPath("/assets/collage/talk.jpg"),
+  clock:assetPath("/assets/collage/clock.jpg"),
+  reading:assetPath("/assets/collage/reading.jpg"),
+  microscope:assetPath("/assets/collage/microscope.jpg"),
+  switchboard:assetPath("/assets/collage/switchboard.jpg"),
+  planets:assetPath("/assets/collage/planets.jpg"),
+  mansion:assetPath("/assets/collage/mansion.jpg"),
+  person:assetPath("/assets/collage/person.jpg"),
+  ant:assetPath("/assets/collage/ant.jpg"),
+  study:assetPath("/assets/collage/study.jpg"),
+  seesaw:assetPath("/assets/collage/seesaw.jpg"),
+  heron:assetPath("/assets/collage/heron.jpg"),
+  questions:assetPath("/assets/collage/questions.jpg"),
+  tower:assetPath("/assets/collage/tower.jpg"),
+  palette:assetPath("/assets/collage/palette.jpg"),
+  ship:assetPath("/assets/collage/ship.jpg"),
+  ferry:assetPath("/assets/collage/ferry.jpg"),
+  earth:assetPath("/assets/collage/earth.jpg"),
 };
 
-function Img({src,className="",alt="",style}:{src:string;className?:string;alt?:string;style?:CSSProperties}){
-  return <img src={src} alt={alt} className={"collage-img "+className} style={style} loading="lazy" decoding="async"/>;
+function Img({src,className="",alt="",style,priority=false}:{src:string;className?:string;alt?:string;style?:CSSProperties;priority?:boolean}){
+  return <img src={src} alt={alt} className={"collage-img "+className} style={style} loading={priority?"eager":"lazy"} fetchPriority={priority?"high":"auto"} decoding="async"/>;
 }
 
 function Tape({className=""}:{className?:string}){return <i className={"collage-tape "+className} aria-hidden="true"/>}
@@ -60,13 +61,13 @@ const accent:Record<string,string>={
   stroop:"#76558b"
 };
 
-export function CollageCard({scene,className=""}:{scene:string;className?:string}){
+export function CollageCard({scene,className="",priority=false}:{scene:string;className?:string;priority?:boolean}){
   const imgs=sceneAssets[scene]||[A.reading];
   const color=accent[scene]||"#64416F";
   return <div className={"collage-card scene-"+scene+" "+className} style={{"--accent":color} as CSSProperties} aria-hidden="true">
     <div className="collage-paper collage-paper-main"/>
     <div className="collage-halftone"/>
-    {imgs.map((src,i)=><Img key={src+i} src={src} className={"piece piece-"+i}/>)}
+    {imgs.map((src,i)=><Img key={src+i} src={src} className={"piece piece-"+i} priority={priority}/>)}
     {scene==="rede"&&<><span className="collage-node n1"/><span className="collage-node n2"/><span className="collage-node n3"/><span className="collage-node n4"/><b className="collage-bridge"/></>}
     {scene==="mudanca"&&<><b className="trajectory t1"/><b className="trajectory t2"/></>}
     {scene==="aleatorio"&&<><Scribble>←</Scribble><Scribble className="right">→</Scribble></>}

@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
   trailingSlash: true,
   basePath: isGitHubPages ? "/entre" : "",
   assetPrefix: isGitHubPages ? "/entre/" : undefined,
+  env: { NEXT_PUBLIC_BASE_PATH: isGitHubPages ? "/entre" : "" },
   images: { unoptimized: true },
 };
 

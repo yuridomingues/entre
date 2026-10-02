@@ -1,8 +1,11 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { publicExperiments, type Experiment } from "@/lib/experiments";
 import { ExperimentVisual } from "@/components/experiment-visuals";
 import { BrandLogo } from "@/components/brand-logo";
 import { SurpriseButton } from "@/components/surprise-button";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 
 function Cards({items,compact=false}:{items:Experiment[];compact?:boolean}){

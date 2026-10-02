@@ -61,7 +61,14 @@ export async function generateMetadata({params}:{params:Promise<{slug:string}>})
   const {slug}=await params;
   const exp=getExperiment(slug);
   if(!exp||!publicSlugs.includes(slug))return {};
-  return {title:exp.title,description:exp.description};
+  const url=`/${slug}/`;
+  return {
+    title:exp.title,
+    description:exp.description,
+    alternates:{canonical:url},
+    openGraph:{title:exp.title,description:exp.description,type:"website",locale:"pt_BR",url,images:[{url:"/opengraph-image",width:1200,height:630,alt:"ENTRE | coisas para pensar com as mãos"}]},
+    twitter:{card:"summary_large_image",title:exp.title,description:exp.description,images:["/opengraph-image"]}
+  };
 }
 
 export default async function Page({params}:{params:Promise<{slug:string}>}){
