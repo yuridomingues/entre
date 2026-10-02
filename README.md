@@ -19,9 +19,9 @@ Espelho na Vercel: https://entre-ideias.vercel.app
 - **Quanto cabe em uma vida?** — tempo de vida transformado em semanas.
 - **Do grão ao planeta** — comparação de escalas.
 - **Onde o acaso vai parar?** — distribuição e intuição sobre aleatoriedade.
-- **Apague a cidade** — o céu quando a luz da cidade diminui.
+- **Leia menos. Veja mais.** — interferência entre cor da tinta e palavra escrita.
 
-Seis experiências continuam no código e ficam fora do site até entrarem em produção: como uma ideia se espalha, quando cooperar deixa de valer a pena, uma memória muda toda vez que você olha para ela, o que a atenção apaga, qual é a regra e qual pergunta vale mais.
+A coleção pública tem oito experiências. As demais permanecem no código, arquivadas (`heldBack` em `lib/experiments.ts`), até nova rodada de polish.
 
 ## Direção de produto
 

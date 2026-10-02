@@ -35,10 +35,10 @@ export const experiments: Experiment[] = [
   { slug:"perguntas", number:"15", eyebrow:"informação", title:"Qual pergunta vale mais?", description:"Descubra uma criatura escondida escolhendo perguntas que eliminam possibilidades.", question:"Uma pergunta pode valer mais do que outra?", duration:"3 min", action:"perguntas", tone:"mint", group:"experiment" },
   { slug:"regra", number:"16", eyebrow:"hipóteses", title:"Qual é a regra?", description:"Teste sequências para descobrir uma regra que começa com 2, 4, 6.", question:"Você tenta confirmar ou tenta quebrar sua hipótese?", duration:"4 min", action:"testes", tone:"ice", group:"experiment" },
   { slug:"minuto", number:"17", eyebrow:"tempo percebido", title:"Quanto dura um intervalo?", description:"Tente sentir dez, vinte ou trinta segundos sem olhar para um relógio.", question:"Seu tempo passa na mesma velocidade do relógio?", duration:"1 min", action:"cronômetro invisível", tone:"clay", group:"experiment" },
-  { slug:"stroop", number:"18", eyebrow:"atenção + leitura", title:"Leia menos. Veja mais.", description:"Responda à cor da tinta enquanto a palavra tenta responder por você.", question:"É possível ignorar algo que seu cérebro lê sozinho?", duration:"2 min", action:"cores", tone:"violet", group:"experiment" }
+  { slug:"stroop", number:"18", eyebrow:"atenção + leitura", title:"Leia menos. Veja mais.", description:"Responda à cor da tinta enquanto a palavra tenta responder por você.", question:"É possível ignorar algo que seu cérebro lê sozinho?", duration:"2 min", action:"cores", tone:"violet", group:"collection" }
 ];
 
-const heldBack = ["rede", "cooperar", "memoria", "atencao", "regra", "perguntas"];
+const heldBack = ["rede", "cooperar", "memoria", "atencao", "regra", "perguntas", "noite", "mudanca", "aleatorio", "minuto"];
 
 export const publicSlugs = experiments.map((experiment) => experiment.slug).filter((slug) => !heldBack.includes(slug));
 

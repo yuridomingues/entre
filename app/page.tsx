@@ -24,8 +24,7 @@ function pick(slugs:string[], items:Experiment[]){
 export default function Home() {
   const published=publicExperiments();
   const flagships=pick(["acaso","musica","vida","arvore"], published);
-  const collection=pick(["mente","conversa","escala","noite"], published);
-  const fresh=published.filter(exp=>exp.group==="experiment");
+  const collection=pick(["mente","conversa","escala","stroop"], published);
 
   return <main id="conteudo" className="home-page">
     <header className="home-header">
@@ -45,13 +44,8 @@ export default function Home() {
     </section>
 
     <section className="collection-block collection-secondary">
-      <header className="collection-heading"><span>explore mais</span><h2>A coleção continua.</h2><p>Percepção, linguagem, escala e céu. Nem toda experiência precisa pedir o mesmo tipo de atenção.</p></header>
+      <header className="collection-heading"><span>explore mais</span><h2>A coleção continua.</h2><p>Percepção, linguagem, escala e leitura. Nem toda experiência precisa pedir o mesmo tipo de atenção.</p></header>
       <Cards items={collection}/>
-    </section>
-
-    <section className="collection-block collection-new">
-      <header className="collection-heading"><span>mais experiências</span><h2>Outras perguntas para mexer.</h2><p>Tempo, acaso, hipótese e leitura. Cada uma pede um gesto diferente.</p></header>
-      <Cards items={fresh} compact/>
     </section>
 
     <section className="home-note">
