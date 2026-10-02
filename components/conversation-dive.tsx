@@ -88,7 +88,6 @@ export function ConversationDive() {
   const uid = useId();
   const turnSeq = useRef(0);
   const threadRef = useRef<HTMLDivElement>(null);
-  const endRef = useRef<HTMLDivElement>(null);
 
   const [nodeId, setNodeId] = useState("start");
   const [turns, setTurns] = useState<Turn[]>([]);
@@ -109,7 +108,17 @@ export function ConversationDive() {
   }, [reduced]);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "end" });
+    const stage = threadRef.current;
+    if (!stage) return;
+
+    const frame = requestAnimationFrame(() => {
+      stage.scrollTo({
+        top: Math.max(0, stage.scrollHeight - stage.clientHeight),
+        behavior: reduced ? "auto" : "smooth",
+      });
+    });
+
+    return () => cancelAnimationFrame(frame);
   }, [turns.length, pending?.phase, nodeId, reduced]);
 
   const finishPending = useCallback((item: Pending) => {
@@ -210,7 +219,7 @@ export function ConversationDive() {
             </div>
           )}
 
-          <div className="chat-thread-end" ref={endRef} aria-hidden="true" />
+          <div className="chat-thread-end" aria-hidden="true" />
         </div>
 
         {doorsOpen && (
