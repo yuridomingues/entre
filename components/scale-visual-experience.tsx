@@ -127,7 +127,7 @@ export function ScaleExplorer() {
           if (big < 3) return <i key={item.name} className="size-speck" style={{left: x, top: floor - h / 2}}/>;
           const [cx, cy, cw, ch] = item.crop;
           return <div key={item.name} className={"size-thing mode-" + item.mode} style={{left: x - w / 2, top: floor - h, width: w, height: h, clipPath: item.clip}}>
-            <img src={item.src} alt="" draggable={false} style={{width: `${100 / cw}%`, height: `${100 / ch}%`, left: `${(-cx / cw) * 100}%`, top: `${(-cy / ch) * 100}%`}}/>
+            <img src={item.src} width={item.px[0]} height={item.px[1]} alt="" draggable={false} style={{width: `${100 / cw}%`, height: `${100 / ch}%`, left: `${(-cx / cw) * 100}%`, top: `${(-cy / ch) * 100}%`}}/>
           </div>;
         })}
       </div>

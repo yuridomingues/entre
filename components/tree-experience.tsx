@@ -6,15 +6,15 @@ import { assetPath } from "@/lib/asset-path";
 const INK="#2a2119";
 
 type Scene="open"|"sun"|"apple"|"branch"|"voice"|"net"|"you";
-type Beat={year:number,season:number,who:string,title:string,line:string,scene:Scene,img?:string,pos?:string};
+type Beat={year:number,season:number,who:string,title:string,line:string,scene:Scene,img?:string,imgSize?:[number,number],pos?:string};
 
 // season: 0 spring, 1 summer, 2 autumn, 3 winter (unwrapped, always forward)
 const beats:Beat[]=[
   {year:1500,season:.2,who:"uma colina",title:"Uma árvore, numa colina.",line:"Ela fica aqui enquanto a história passa.",scene:"open"},
-  {year:1543,season:1,who:"Copérnico",title:"A Terra sai do centro.",line:"O Sol fica no meio, e a Terra passa a girar em volta dele.",scene:"sun",img:assetPath("/assets/tree/copernicus.jpg"),pos:"50% 30%"},
-  {year:1687,season:1.3,who:"Newton",title:"A maçã e a Lua caem pela mesma força.",line:"A gravidade que derruba a fruta é a mesma que prende a Lua à Terra.",scene:"apple",img:assetPath("/assets/tree/newton.jpg"),pos:"50% 22%"},
-  {year:1859,season:2.3,who:"Darwin",title:"Todas as espécies são parentes.",line:"Em A Origem das Espécies, a vida vira galhos de um mesmo tronco.",scene:"branch",img:assetPath("/assets/tree/darwin.jpg"),pos:"50% 25%"},
-  {year:1877,season:3.05,who:"o fonógrafo",title:"Uma voz fica gravada.",line:"Edison recita uma cantiga num cilindro de estanho, e a máquina repete.",scene:"voice",img:assetPath("/assets/tree/edison.jpg"),pos:"30% 40%"},
+  {year:1543,season:1,who:"Copérnico",title:"A Terra sai do centro.",line:"O Sol fica no meio, e a Terra passa a girar em volta dele.",scene:"sun",img:assetPath("/assets/tree/copernicus.jpg"),imgSize:[500,489],pos:"50% 30%"},
+  {year:1687,season:1.3,who:"Newton",title:"A maçã e a Lua caem pela mesma força.",line:"A gravidade que derruba a fruta é a mesma que prende a Lua à Terra.",scene:"apple",img:assetPath("/assets/tree/newton.jpg"),imgSize:[500,702],pos:"50% 22%"},
+  {year:1859,season:2.3,who:"Darwin",title:"Todas as espécies são parentes.",line:"Em A Origem das Espécies, a vida vira galhos de um mesmo tronco.",scene:"branch",img:assetPath("/assets/tree/darwin.jpg"),imgSize:[500,642],pos:"50% 25%"},
+  {year:1877,season:3.05,who:"o fonógrafo",title:"Uma voz fica gravada.",line:"Edison recita uma cantiga num cilindro de estanho, e a máquina repete.",scene:"voice",img:assetPath("/assets/tree/edison.jpg"),imgSize:[500,630],pos:"30% 40%"},
   {year:1969,season:4.2,who:"a ARPANET",title:"Dois computadores se falam.",line:"A primeira mensagem ia ser LOGIN. A rede caiu depois de LO.",scene:"net"},
   {year:2026,season:5,who:"você",title:"Você, agora.",line:"Lendo isto numa tela, ao lado da mesma árvore.",scene:"you"}
 ];
@@ -353,7 +353,7 @@ export function TreeExperience(){
             <p>{b.line}</p>
           </div>
           {b.scene!=="open"&&<div className="arv-example">
-            {b.img&&<figure className="arv-face"><img alt="" draggable={false} decoding="async" data-src={b.img} src={i<3?b.img:undefined} style={{objectPosition:b.pos}}/></figure>}
+            {b.img&&<figure className="arv-face"><img width={b.imgSize?.[0]} height={b.imgSize?.[1]} alt="" draggable={false} decoding="async" data-src={b.img} src={i<3?b.img:undefined} style={{objectPosition:b.pos}}/></figure>}
             <div className="arv-visual"><Visual scene={b.scene}/></div>
           </div>}
         </div>

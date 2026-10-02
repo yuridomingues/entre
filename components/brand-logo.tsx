@@ -4,6 +4,6 @@ const logo = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAArwAAAC2CAMAAAAMYK4+
 
 export function BrandLogo({ compact = false, href = "/" }: { compact?: boolean; href?: string }) {
   return <Link href={href} className={compact ? "brand-logo compact" : "brand-logo"} aria-label="ENTRE, página inicial">
-    <img src={logo} alt="ENTRE"/>
+    <img src={logo} width={700} height={182} alt="ENTRE"/>
   </Link>;
 }
