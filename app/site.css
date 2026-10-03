@@ -1893,6 +1893,7 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
   .arv-copy p{font-size:13px;line-height:1.35}
 }
 @media(max-width:720px),(max-aspect-ratio:4/5){
+  .tree-experience>.arv-track{min-height:calc(100vh + 380vh);height:calc(100vh + 380vh);height:calc(100svh + 380svh)}
   .tree-experience>.arv-track .tree-story-stage.arv-stage{--nav-safe:calc(env(safe-area-inset-top,0px) + 52px)}
   .arv-stage{--pad:16px;--top:var(--nav-safe);--ys:clamp(34px,9.5vw,46px);--gh:clamp(40px,6svh,56px);--cw:calc(100vw - 32px);--tree-h:min(26svh,68vw);--tree-r:10px;--tree-w:calc(100vw - 20px);--ex:min(24svh,200px)}
   .arv-year{left:auto;right:var(--pad);top:var(--nav-safe);z-index:4;text-align:right;max-width:calc(100% - 120px);line-height:.82}
@@ -1915,7 +1916,6 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
   .arv-copy h2{font-size:clamp(20px,5.8vw,26px)}
 }
 @media(prefers-reduced-motion:reduce){
-  .tree-experience>.arv-track{height:auto}
   .arv-stage{position:relative}
   .arv-tree,.arv-fall{animation:none}
   .arv-falling{display:none}

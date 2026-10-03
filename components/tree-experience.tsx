@@ -269,20 +269,18 @@ export function TreeExperience(){
       if(i>=N-1)return beats[N-1].season;
       return beats[i].season+(beats[i+1].season-beats[i].season)*ramp(u,.6,1);
     };
-    const viewH=()=>window.visualViewport?.height??window.innerHeight;
-    let trackStart=0;
-    const measureStart=()=>{
-      const el=track.current;
-      if(!el)return;
-      trackStart=el.getBoundingClientRect().top+window.scrollY;
-    };
+    const viewH=()=>window.innerHeight;
     const read=()=>{
       const el=track.current;
       if(!el)return 0;
       const vh=viewH();
-      if(el.offsetHeight<vh*1.15)return 0;
-      const total=Math.max(1,el.offsetHeight-vh);
-      return clamp((window.scrollY-trackStart)/total)*END;
+      const height=el.offsetHeight;
+      if(height<vh*1.1)return 0;
+      const range=Math.max(vh*0.35,height-vh);
+      const top=el.getBoundingClientRect().top;
+      if(top>2)return 0;
+      if(el.getBoundingClientRect().bottom<=vh+2)return END;
+      return clamp(-top/range)*END;
     };
 
     if("scrollRestoration" in history)history.scrollRestoration="manual";
@@ -302,19 +300,42 @@ export function TreeExperience(){
       raf=shown===target&&seen===want?0:requestAnimationFrame(tick);
     };
     const onScroll=()=>{
-      if(reduce.matches)return;
       target=read();
+      if(reduce.matches){
+        cancelAnimationFrame(raf);raf=0;
+        shown=target;
+        seen=seasonAt(shown);
+        paint(shown,seen);
+        return;
+      }
       if(!raf){last=performance.now();raf=requestAnimationFrame(tick)}
     };
     const settle=()=>{
       cancelAnimationFrame(raf);raf=0;
-      measureStart();
-      target=shown=reduce.matches?END:read();
+      const next=read();
+      if(reduce.matches){
+        target=shown=next;
+        seen=seasonAt(shown);
+        paint(shown,seen);
+        return;
+      }
+      target=shown=next;
       seen=seasonAt(shown);
       paint(shown,seen);
     };
 
-    requestAnimationFrame(()=>requestAnimationFrame(settle));
+    const boot=()=>{
+      settle();
+      const el=track.current;
+      if(!el)return;
+      const top=el.getBoundingClientRect().top;
+      const vh=viewH();
+      if(top>4&&top<vh*0.85){
+        window.scrollTo({top:window.scrollY+top,behavior:"auto"});
+        settle();
+      }
+    };
+    requestAnimationFrame(()=>requestAnimationFrame(boot));
     const ro=new ResizeObserver(settle);
     if(track.current)ro.observe(track.current);
     window.addEventListener("scroll",onScroll,{passive:true});
