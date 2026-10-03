@@ -15,5 +15,22 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: "#fffdf8", colorScheme: "light", width:"device-width", initialScale:1 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="pt-BR"><body><a className="skip-link" href="#conteudo">Pular para o conteúdo</a>{children}{process.env.VERCEL === "1" ? <Analytics /> : null}</body></html>;
+  const isGitHubPages = process.env.GITHUB_ACTIONS === "true";
+
+  return (
+    <html lang="pt-BR">
+      <body>
+        <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
+        {children}
+        {process.env.VERCEL === "1" ? <Analytics /> : null}
+        {isGitHubPages ? (
+          <script
+            type="module"
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon='{"token":"04961303c74f426ba1ed02f139453059"}'
+          />
+        ) : null}
+      </body>
+    </html>
+  );
 }
