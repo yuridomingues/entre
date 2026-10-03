@@ -1819,9 +1819,10 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
 
 /* árvore: a história passa ao lado, a árvore fica */
 .tree-experience{background:#111}
-.tree-experience>.arv-track{min-height:860vh;height:calc(100vh + 760vh);height:calc(100svh + 760svh);background:#efe5cf}
-.tree-experience>.arv-track .tree-story-stage.arv-stage{height:100vh;max-height:100vh;min-height:0;touch-action:pan-y;--nav-safe:calc(env(safe-area-inset-top,0px) + 56px)}
-@supports (height:100dvh){.tree-experience>.arv-track .tree-story-stage.arv-stage{height:100dvh;max-height:100dvh}}
+.tree-experience>.arv-scrollport{position:relative}
+.tree-experience .arv-track{position:relative;overflow:visible;min-height:860vh;height:calc(100vh + 760vh);height:calc(100svh + 760svh);background:#efe5cf}
+.tree-experience .arv-track .tree-story-stage.arv-stage{position:-webkit-sticky;position:sticky;top:0;height:100vh;max-height:100vh;min-height:0;touch-action:pan-y;overflow:hidden;--nav-safe:calc(env(safe-area-inset-top,0px) + 56px)}
+@supports (height:100dvh){.tree-experience .arv-track .tree-story-stage.arv-stage{height:100dvh;max-height:100dvh}}
 .arv-stage{--pad:clamp(20px,5vw,90px);--top:clamp(80px,12svh,128px);--ys:clamp(56px,7.6vw,120px);--gh:clamp(56px,11svh,110px);--cw:min(46vw,600px);--tree-h:min(78svh,860px);--tree-r:2.5vw;--tree-w:calc(100vw - var(--pad) - var(--cw) - var(--tree-r) - 3vw);--ex:36svh;min-height:0;background:radial-gradient(120% 90% at 70% 8%,#f8f0dc 0,#efe5cf 55%,#e6d9bd 100%);color:#211b15;transition:none}
 .arv-sun{position:absolute;right:calc(var(--tree-r) + var(--tree-w)*.08);top:13svh;width:clamp(70px,10vw,160px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(240,196,92,.62) 0 42%,rgba(240,196,92,.2) 46%,rgba(240,196,92,0) 70%)}
 .arv-ground{--ground:#bccd84;position:absolute;left:0;bottom:0;width:100%;height:calc(var(--gh) + 14px)}
@@ -1893,8 +1894,10 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
   .arv-copy p{font-size:13px;line-height:1.35}
 }
 @media(max-width:720px),(max-aspect-ratio:4/5){
-  .tree-experience>.arv-track{min-height:calc(100vh + 380vh);height:calc(100vh + 380vh);height:calc(100svh + 380svh)}
-  .tree-experience>.arv-track .tree-story-stage.arv-stage{--nav-safe:calc(env(safe-area-inset-top,0px) + 52px)}
+  .tree-experience>.arv-scrollport{height:100vh;height:100svh;max-height:100svh;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y}
+  @supports (height:100dvh){.tree-experience>.arv-scrollport{height:100dvh;max-height:100dvh}}
+  .tree-experience .arv-track{min-height:calc(100vh + 380vh);height:calc(100vh + 380vh);height:calc(100svh + 380svh)}
+  .tree-experience .arv-track .tree-story-stage.arv-stage{--nav-safe:calc(env(safe-area-inset-top,0px) + 52px)}
   .arv-stage{--pad:16px;--top:var(--nav-safe);--ys:clamp(34px,9.5vw,46px);--gh:clamp(40px,6svh,56px);--cw:calc(100vw - 32px);--tree-h:min(26svh,68vw);--tree-r:10px;--tree-w:calc(100vw - 20px);--ex:min(24svh,200px)}
   .arv-year{left:auto;right:var(--pad);top:var(--nav-safe);z-index:4;text-align:right;max-width:calc(100% - 120px);line-height:.82}
   .arv-col{top:calc(var(--nav-safe) + var(--ys) + 8px);bottom:calc(var(--gh) + var(--tree-h) + 8px);gap:10px}
@@ -1916,7 +1919,6 @@ a{color:inherit;text-decoration:none}button,input,select{font:inherit}button{col
   .arv-copy h2{font-size:clamp(20px,5.8vw,26px)}
 }
 @media(prefers-reduced-motion:reduce){
-  .arv-stage{position:relative}
   .arv-tree,.arv-fall{animation:none}
   .arv-falling{display:none}
 }
