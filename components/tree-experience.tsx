@@ -142,7 +142,6 @@ function Visual({scene}:{scene:Scene}){
 export function TreeExperience(){
   preload(beats[1].img!,{as:"image",fetchPriority:"high"});
   preload(beats[2].img!,{as:"image"});
-  const scrollport=useRef<HTMLDivElement>(null);
   const track=useRef<HTMLDivElement>(null);
   const stage=useRef<HTMLDivElement>(null);
 
@@ -270,29 +269,15 @@ export function TreeExperience(){
       if(i>=N-1)return beats[N-1].season;
       return beats[i].season+(beats[i+1].season-beats[i].season)*ramp(u,.6,1);
     };
-    const viewH=()=>window.innerHeight;
-    const mobileQ=window.matchMedia("(max-width:720px),(max-aspect-ratio:4/5)");
-    const usesScrollport=()=>{
-      const port=scrollport.current;
-      if(!port||!mobileQ.matches)return false;
-      const oy=window.getComputedStyle(port).overflowY;
-      return oy==="auto"||oy==="scroll";
-    };
+    const viewH=()=>window.visualViewport?.height||window.innerHeight;
     const read=()=>{
       const el=track.current;
       if(!el)return 0;
       const vh=viewH();
       const height=el.offsetHeight;
       if(height<vh*1.5)return 0;
-      const port=scrollport.current;
-      if(usesScrollport()&&port){
-        const scrollable=port.scrollHeight-port.clientHeight;
-        if(scrollable<vh*.15)return 0;
-        const t=port.scrollTop/scrollable;
-        return t>=.998?END:clamp(t)*END;
-      }
       const top=el.getBoundingClientRect().top;
-      if(top>2)return 0;
+      if(top>0)return 0;
       const scrollable=height-vh;
       if(scrollable<=0)return 0;
       const scrolled=-top;
@@ -341,38 +326,19 @@ export function TreeExperience(){
       paint(shown,seen);
     };
 
-    const boot=()=>{
-      settle();
-      if(usesScrollport())return;
-      const el=track.current;
-      if(!el)return;
-      const top=el.getBoundingClientRect().top;
-      const vh=viewH();
-      if(top>4&&top<vh*0.85){
-        window.scrollTo({top:window.scrollY+top,behavior:"auto"});
-        settle();
-      }
-    };
-    requestAnimationFrame(()=>requestAnimationFrame(boot));
+    requestAnimationFrame(()=>requestAnimationFrame(settle));
     const ro=new ResizeObserver(settle);
     if(track.current)ro.observe(track.current);
-    if(scrollport.current)ro.observe(scrollport.current);
-    const portEl=scrollport.current;
-    const onScrollAny=()=>onScroll();
-    portEl?.addEventListener("scroll",onScrollAny,{passive:true});
-    window.addEventListener("scroll",onScrollAny,{passive:true});
+    window.addEventListener("scroll",onScroll,{passive:true});
     window.addEventListener("resize",settle);
     window.visualViewport?.addEventListener("resize",settle);
-    const offMobile=subscribeMediaQuery(mobileQ,settle);
     const offReduce=subscribeMediaQuery(reduce,settle);
     return()=>{
       cancelAnimationFrame(raf);
       ro.disconnect();
-      portEl?.removeEventListener("scroll",onScrollAny);
-      window.removeEventListener("scroll",onScrollAny);
+      window.removeEventListener("scroll",onScroll);
       window.removeEventListener("resize",settle);
       window.visualViewport?.removeEventListener("resize",settle);
-      offMobile();
       offReduce();
     };
   },[]);
@@ -380,7 +346,6 @@ export function TreeExperience(){
   const finaleRings=()=>Array.from({length:9}).map((_,i)=><i key={i} style={{inset:(6+i*3.5)+"%"}}/>);
 
   return <div className="tree-experience">
-  <div className="arv-scrollport" ref={scrollport}>
   <div className="arv-track" ref={track}>
     <div className="tree-story-stage arv-stage" ref={stage} role="img" aria-label="Uma árvore fica no mesmo lugar enquanto a história passa ao lado dela: Copérnico tira a Terra do centro em 1543, Newton liga a maçã e a Lua em 1687, Darwin mostra que as espécies são parentes em 1859, Edison grava a voz em 1877, a ARPANET manda a primeira mensagem em 1969 e, em 2026, você.">
       <i className="arv-sun"/>
@@ -418,7 +383,6 @@ export function TreeExperience(){
       <i className="arv-halftone"/>
       <p className="arv-credit">retratos e foto: Wikimedia Commons · domínio público</p>
     </div>
-  </div>
   </div>
     <section className="tree-finale">
       <div className="tree-rings-stage">
