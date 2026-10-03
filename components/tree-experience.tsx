@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { subscribeMediaQuery } from "@/lib/browser";
 import { preload } from "react-dom";
 import { assetPath } from "@/lib/asset-path";
 
@@ -167,7 +168,7 @@ export function TreeExperience(){
     const year=q<HTMLElement>(".arv-year b");
     const groups=[...root.querySelectorAll(".arv-leafgroup")];
     const apple=q(".arv-treeapple"),fall=q(".arv-falling"),sun=q(".arv-sun"),snow=q(".arv-snow"),art=q(".arv-tree"),soil=q(".arv-ground");
-    const reduce=matchMedia("(prefers-reduced-motion: reduce)");
+    const reduce=window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const load=(i:number)=>{const img=faces[i];if(img&&!img.src)img.src=img.dataset.src!};
 
@@ -253,7 +254,7 @@ export function TreeExperience(){
       put(fall,"--fall-play",fo>.01?"running":"paused");
       put(snow,"opacity",(ramp(sf,2.75,3)*(1-ramp(sf,3.7,3.95))).toFixed(2));
       put(sun,"opacity",(A.sun+(B.sun-A.sun)*t).toFixed(2));
-      put(sun,"transform",`translate3d(0,${f1((1-(A.sun+(B.sun-A.sun)*t))*18)}svh,0)`);
+      put(sun,"transform",`translate3d(0,${f1((1-(A.sun+(B.sun-A.sun)*t))*18)}vh,0)`);
 
       const ai=beats.findIndex(x=>x.scene==="apple");
       const ao=Number(memo.get(layers[ai])?.opacity??0);
@@ -269,12 +270,22 @@ export function TreeExperience(){
       return beats[i].season+(beats[i+1].season-beats[i].season)*ramp(u,.6,1);
     };
     const viewH=()=>window.visualViewport?.height??window.innerHeight;
+    let trackStart=0;
+    const measureStart=()=>{
+      const el=track.current;
+      if(!el)return;
+      trackStart=el.getBoundingClientRect().top+window.scrollY;
+    };
     const read=()=>{
       const el=track.current;
       if(!el)return 0;
-      const total=Math.max(1,el.offsetHeight-viewH());
-      return clamp(-el.getBoundingClientRect().top/total)*END;
+      const vh=viewH();
+      if(el.offsetHeight<vh*1.15)return 0;
+      const total=Math.max(1,el.offsetHeight-vh);
+      return clamp((window.scrollY-trackStart)/total)*END;
     };
+
+    if("scrollRestoration" in history)history.scrollRestoration="manual";
 
     let target=0,shown=0,seen=0,raf=0,last=0;
     const tick=(now:number)=>{
@@ -297,27 +308,26 @@ export function TreeExperience(){
     };
     const settle=()=>{
       cancelAnimationFrame(raf);raf=0;
+      measureStart();
       target=shown=reduce.matches?END:read();
       seen=seasonAt(shown);
       paint(shown,seen);
     };
 
-    settle();
+    requestAnimationFrame(()=>requestAnimationFrame(settle));
     const ro=new ResizeObserver(settle);
     if(track.current)ro.observe(track.current);
-    addEventListener("scroll",onScroll,{passive:true});
-    addEventListener("resize",settle);
+    window.addEventListener("scroll",onScroll,{passive:true});
+    window.addEventListener("resize",settle);
     window.visualViewport?.addEventListener("resize",settle);
-    window.visualViewport?.addEventListener("scroll",onScroll);
-    reduce.addEventListener("change",settle);
+    const offReduce=subscribeMediaQuery(reduce,settle);
     return()=>{
       cancelAnimationFrame(raf);
       ro.disconnect();
-      removeEventListener("scroll",onScroll);
-      removeEventListener("resize",settle);
+      window.removeEventListener("scroll",onScroll);
+      window.removeEventListener("resize",settle);
       window.visualViewport?.removeEventListener("resize",settle);
-      window.visualViewport?.removeEventListener("scroll",onScroll);
-      reduce.removeEventListener("change",settle);
+      offReduce();
     };
   },[]);
 

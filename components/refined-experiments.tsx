@@ -269,7 +269,7 @@ export function RefinedHumanRandom(){
       if(done||e.repeat||e.ctrlKey||e.metaKey||e.altKey)return;
       if(e.target instanceof HTMLElement&&e.target.closest("input,textarea,select,[contenteditable]"))return;
       const box=progressRef.current?.getBoundingClientRect();
-      if(!box||box.top<0||box.bottom>innerHeight)return;
+      if(!box||box.top<0||box.bottom>window.innerHeight)return;
       if(e.key==="ArrowLeft"||e.key.toLowerCase()==="a"){e.preventDefault();add("E")}
       if(e.key==="ArrowRight"||e.key.toLowerCase()==="d"){e.preventDefault();add("D")}
     };

@@ -20,12 +20,12 @@ export function TreeTimeline(){
     const update=()=>{
       if(!ref.current)return;
       const rect=ref.current.getBoundingClientRect();
-      const total=ref.current.offsetHeight-innerHeight;
+      const total=ref.current.offsetHeight-window.innerHeight;
       setProgress(Math.max(0,Math.min(1,-rect.top/Math.max(total,1))));
     };
     update();
-    addEventListener("scroll",update,{passive:true});
-    return()=>removeEventListener("scroll",update);
+    window.addEventListener("scroll",update,{passive:true});
+    return()=>window.removeEventListener("scroll",update);
   },[]);
 
   const index=Math.min(moments.length-1,Math.floor(progress*moments.length));

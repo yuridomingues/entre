@@ -158,11 +158,11 @@ export function EarthDepth(){
     const update=()=>{
       if(!ref.current)return;
       const r=ref.current.getBoundingClientRect();
-      const total=Math.max(1,ref.current.offsetHeight-innerHeight);
+      const total=Math.max(1,ref.current.offsetHeight-window.innerHeight);
       setP(Math.max(0,Math.min(1,-r.top/total)));
     };
-    update();addEventListener("scroll",update,{passive:true});
-    return()=>removeEventListener("scroll",update);
+    update();window.addEventListener("scroll",update,{passive:true});
+    return()=>window.removeEventListener("scroll",update);
   },[]);
   const depth=depthFromProgress(p);
   let mark=depthMarks[0];

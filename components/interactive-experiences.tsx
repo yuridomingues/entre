@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { createAudioContext } from "@/lib/browser";
 import { usePulseTick } from "@/lib/use-motion";
 
 const treeMoments=[
@@ -21,12 +22,12 @@ export function TreeTimeline(){
     const update=()=>{
       if(!ref.current)return;
       const rect=ref.current.getBoundingClientRect();
-      const total=ref.current.offsetHeight-innerHeight;
+      const total=ref.current.offsetHeight-window.innerHeight;
       setProgress(Math.max(0,Math.min(1,-rect.top/Math.max(total,1))));
     };
     update();
-    addEventListener("scroll",update,{passive:true});
-    return()=>removeEventListener("scroll",update);
+    window.addEventListener("scroll",update,{passive:true});
+    return()=>window.removeEventListener("scroll",update);
   },[]);
 
   const index=Math.min(treeMoments.length-1,Math.floor(progress*treeMoments.length));
@@ -211,7 +212,8 @@ export function MusicLab(){
   };
 
   const start=async()=>{
-    ctx.current??=new AudioContext();
+    ctx.current??=createAudioContext();
+    if(!ctx.current)return;
     await ctx.current.resume();
     stepRef.current=0;
     tick();
@@ -231,7 +233,7 @@ export function MusicLab(){
     <section className="mixer"><p className="step-label">parte 1 · camadas</p><h2>Uma música pode parecer uma coisa só.</h2><p>Desligue uma parte por vez e ouça o espaço que ela ocupava.</p>
       {([["pulse","pulso","marca o tempo"],["bass","baixo","cria um padrão grave"],["harmony","harmonia","muda o chão das notas"],["spark","melodia","desenha movimento"]] as [Layer,string,string][]).map(([k,n,d])=><button key={k} onClick={()=>toggle(k)} className={layers[k]?"track on":"track"} aria-pressed={layers[k]}><span>{layers[k]?"ligada":"desligada"}</span><strong>{n}</strong><small>{d}</small></button>)}
     </section>
-    <section className="wave-lab"><div><p className="step-label">parte 2 · timbre</p><h2>A mesma nota pode ter texturas diferentes.</h2><p>Escolha uma forma e toque a mesma nota. A altura continua igual, mas a textura muda.</p></div><div className="wave-controls"><label htmlFor="wave">forma do som</label><select id="wave" value={wave} onChange={e=>setWave(e.target.value as OscillatorType)}><option value="sine">senoidal, mais pura</option><option value="triangle">triangular, mais macia</option><option value="square">quadrada, mais áspera</option><option value="sawtooth">serrilhada, mais brilhante</option></select><button className="pill-button" onClick={async()=>{ctx.current??=new AudioContext();await ctx.current.resume();tone(440,.8,.05,wave)}}>ouvir a mesma nota</button></div></section>
+    <section className="wave-lab"><div><p className="step-label">parte 2 · timbre</p><h2>A mesma nota pode ter texturas diferentes.</h2><p>Escolha uma forma e toque a mesma nota. A altura continua igual, mas a textura muda.</p></div><div className="wave-controls"><label htmlFor="wave">forma do som</label><select id="wave" value={wave} onChange={e=>setWave(e.target.value as OscillatorType)}><option value="sine">senoidal, mais pura</option><option value="triangle">triangular, mais macia</option><option value="square">quadrada, mais áspera</option><option value="sawtooth">serrilhada, mais brilhante</option></select><button className="pill-button" onClick={async()=>{ctx.current??=createAudioContext();if(!ctx.current)return;await ctx.current.resume();tone(440,.8,.05,wave)}}>ouvir a mesma nota</button></div></section>
     <aside className="source-note music-source-note">Todo o som é criado na hora. Nenhuma gravação é usada.</aside>
   </div>;
 }
